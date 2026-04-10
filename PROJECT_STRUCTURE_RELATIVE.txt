@@ -1,0 +1,117 @@
+LifeBalanceOS - Relative Project Structure
+
+public/
+  favicon.svg
+  file.svg
+  globe.svg
+  next.svg
+  vercel.svg
+  window.svg
+
+src/
+  app/
+    auth/
+      reset-password/
+        page.tsx
+    daily/
+      page.tsx
+    dashboard/
+      page.tsx
+    finance/
+      page.tsx
+    garden/
+      page.tsx
+    goals/
+      page.tsx
+    habits/
+      page.tsx
+    kids/
+      page.tsx
+    reflections/
+      page.tsx
+    weekly-review/
+      page.tsx
+    globals.css
+    layout.tsx
+    page.tsx
+  
+  components/
+    auth/
+      AuthGate.tsx
+    common/
+      AppLogo.tsx
+      Navbar.tsx
+      PageHeader.tsx
+      Sidebar.tsx
+      StatCard.tsx
+    dashboard/
+      DailyChecklist.tsx
+      LifePillarsCards.tsx
+      LifeRadarChart.tsx
+      LifeScoreCard.tsx
+      PillarCard.tsx
+      WeeklyReviewForm.tsx
+    layout/
+      AppShell.tsx
+      MainNavigation.tsx
+  
+  lib/
+    api/
+      index.ts
+    auth-context.tsx
+    demoData.ts
+    persistence.ts
+    score.ts
+    supabaseClient.ts
+  
+  store/
+    slices/
+      dailySlice.ts
+      financeSlice.ts
+      goalsSlice.ts
+      habitSlice.ts
+      kidsSlice.ts
+      reflectionSlice.ts
+      weeklyReviewSlice.ts
+    provider.tsx
+    store.ts
+  
+  theme/
+    theme.ts
+  
+  types/
+    index.ts
+  
+  utils/
+    supabase/
+      client.ts
+      middleware.ts
+      server.ts
+  
+  proxy.ts
+
+supabase/
+  schema.sql
+
+Configuration Files:
+  .env.example
+  .env.local
+  .eslintrc.json
+  .gitignore
+  eslint.config.mjs
+  next.config.mjs
+  next-env.d.ts
+  postcss.config.mjs
+  package.json
+  package-lock.json
+  tsconfig.json
+
+Documentation:
+  AGENTS.md
+  CLAUDE.md
+  PROJECT_STRUCTURE.txt
+  PROJECT_STRUCTURE_RELATIVE.txt
+  README.md
+
+Scripts:
+  tmp-rewrite-pages.ps1

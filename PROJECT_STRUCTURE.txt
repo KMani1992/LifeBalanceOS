@@ -1,0 +1,92 @@
+LifeBalanceOS Project Structure
+
+/
+├── public/                          # Static assets
+│   ├── favicon.svg
+│   ├── file.svg
+│   ├── globe.svg
+│   ├── next.svg
+│   ├── vercel.svg
+│   └── window.svg
+├── src/
+│   ├── app/                         # Next.js app directory
+│   │   ├── auth/
+│   │   │   └── reset-password/
+│   │   ├── daily/
+│   │   ├── dashboard/
+│   │   ├── finance/
+│   │   ├── garden/
+│   │   ├── goals/
+│   │   ├── habits/
+│   │   ├── kids/
+│   │   ├── reflections/
+│   │   ├── weekly-review/
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/                  # React components
+│   │   ├── auth/
+│   │   │   └── AuthGate.tsx
+│   │   ├── common/
+│   │   │   ├── AppLogo.tsx
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── PageHeader.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   └── StatCard.tsx
+│   │   ├── dashboard/
+│   │   │   ├── DailyChecklist.tsx
+│   │   │   ├── LifePillarsCards.tsx
+│   │   │   ├── LifeRadarChart.tsx
+│   │   │   ├── LifeScoreCard.tsx
+│   │   │   ├── PillarCard.tsx
+│   │   │   └── WeeklyReviewForm.tsx
+│   │   └── layout/
+│   │       ├── AppShell.tsx
+│   │       └── MainNavigation.tsx
+│   ├── lib/                         # Core library functions
+│   │   ├── api/
+│   │   ├── auth-context.tsx
+│   │   ├── demoData.ts
+│   │   ├── persistence.ts
+│   │   ├── score.ts
+│   │   └── supabaseClient.ts
+│   ├── store/                       # Redux store
+│   │   ├── slices/
+│   │   │   ├── dailySlice.ts
+│   │   │   ├── financeSlice.ts
+│   │   │   ├── goalsSlice.ts
+│   │   │   ├── habitSlice.ts
+│   │   │   ├── kidsSlice.ts
+│   │   │   ├── reflectionSlice.ts
+│   │   │   └── weeklyReviewSlice.ts
+│   │   ├── provider.tsx
+│   │   └── store.ts
+│   ├── theme/
+│   │   └── theme.ts
+│   ├── types/
+│   │   └── index.ts
+│   ├── utils/
+│   │   └── supabase/
+│   │       ├── client.ts
+│   │       ├── middleware.ts
+│   │       └── server.ts
+│   └── proxy.ts
+├── supabase/
+│   └── schema.sql                   # Database schema
+├── .env.example                     # Environment variables example
+├── .env.local                       # Local environment variables
+├── .eslintrc.json                   # ESLint configuration
+├── .gitignore                       # Git ignore rules
+├── eslint.config.mjs                # ESLint config module
+├── next.config.mjs                  # Next.js configuration
+├── next-env.d.ts                    # Next.js TypeScript definitions
+├── package.json                     # Project dependencies
+├── package-lock.json                # Dependency lock file
+├── postcss.config.mjs               # PostCSS configuration
+├── tsconfig.json                    # TypeScript configuration
+├── AGENTS.md                        # AI Agents documentation
+├── CLAUDE.md                        # Claude AI integration docs
+├── PROJECT_STRUCTURE.txt            # This file
+├── PROJECT_STRUCTURE_RELATIVE.txt   # Relative structure
+├── README.md                        # Project README
+└── tmp-rewrite-pages.ps1            # Temporary script
