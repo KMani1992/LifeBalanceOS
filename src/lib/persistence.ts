@@ -273,14 +273,14 @@ export async function signInWithPassword(email: string, password: string) {
 }
 
 /**
- * Starts Google OAuth sign-in and redirects back to the current route.
+ * Starts Google OAuth sign-in and redirects to the auth callback handler.
  */
 export async function signInWithGoogle(): Promise<OAuthSignInResult> {
   const client = requireSupabase();
   const redirectTo =
     typeof window !== "undefined"
-      ? `${window.location.origin}${window.location.pathname}${window.location.search}`
-      : "/";
+      ? `${window.location.origin}/auth/callback`
+      : "/auth/callback";
 
   const { error } = await client.auth.signInWithOAuth({
     provider: "google",
