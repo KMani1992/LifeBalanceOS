@@ -123,11 +123,12 @@ class PWAManager {
       }
 
       const registration = await navigator.serviceWorker.ready;
+      const vapidKey = this.urlBase64ToUint8Array(
+        process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
+      );
       await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(
-          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || ''
-        ) as BufferSource,
+        applicationServerKey: vapidKey,
       });
 
       console.log('Subscribed to push notifications');
@@ -149,7 +150,7 @@ class PWAManager {
 
     try {
       const registration = await navigator.serviceWorker.ready;
-      await registration.sync.register('sync-data');
+      await (registration as any).sync.register('sync-data');
       console.log('Background sync registered');
       return true;
     } catch (error) {
@@ -169,7 +170,7 @@ class PWAManager {
 
     try {
       const registration = await navigator.serviceWorker.ready;
-      const syncManager = registration.periodicSync as PeriodicSyncManager;
+      const syncManager = (registration as any).periodicSync;
       await syncManager.register(tagName, { minInterval });
       console.log(`Periodic sync registered: ${tagName}`);
       return true;
@@ -209,7 +210,7 @@ class PWAManager {
   /**
    * Convert VAPID key from base64 to Uint8Array
    */
-  private urlBase64ToUint8Array(base64String: string): Uint8Array {
+  private urlBase64ToUint8Array(base64String: string): any {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
     const base64 = (base64String + padding)
       .replace(/\-/g, '+')

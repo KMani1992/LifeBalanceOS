@@ -1,5 +1,5 @@
 
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import AppShell from "@/components/layout/AppShell";
 import AppProviders from "@/store/provider";
@@ -9,6 +9,10 @@ const manrope = Manrope({
   subsets: ["latin"],
   variable: "--font-manrope",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#2563eb",
+};
 
 export const metadata: Metadata = {
   title: "LifeBalanceOS",
@@ -28,7 +32,6 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-  themeColor: "#2563eb",
 };
 
 /**

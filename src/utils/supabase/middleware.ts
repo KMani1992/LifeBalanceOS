@@ -20,7 +20,7 @@ export function createClient(request: NextRequest) {
     request: { headers: request.headers },
   });
 
-  createServerClient<Database>(
+  createServerClient(
     url,
     key,
     {
