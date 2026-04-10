@@ -2,26 +2,5 @@
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "env": [
-    {
-      "key": "NEXT_PUBLIC_SUPABASE_URL",
-      "description": "Your Supabase project URL"
-    },
-    {
-      "key": "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
-      "description": "Your Supabase publishable/anon key"
-    },
-    {
-      "key": "NEXT_PUBLIC_APP_URL",
-      "description": "Your application URL (e.g., https://lifebalanceos.vercel.app)",
-      "value": ""
-    }
-  ],
-  "public": true,
-  "git": {
-    "deploymentEnabled": {
-      "main": true
-    }
-  }
+  "framework": "nextjs"
 }
