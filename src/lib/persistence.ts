@@ -1,7 +1,7 @@
 
 import { User } from "@supabase/supabase-js";
 import { calculateLifeBalanceScore } from "@/lib/score";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import {
   DailyTask,
   DailyTaskCategory,
@@ -66,11 +66,11 @@ type AnyTable = any;
  * The .from() calls are typed via safe local casts at each call site.
  */
 function requireSupabase() {
-  if (!supabaseClient) {
+  if (!supabase) {
     throw new Error("Supabase is not configured. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.");
   }
 
-  return supabaseClient as Omit<typeof supabaseClient, "from"> & {
+  return supabase as Omit<typeof supabase, "from"> & {
     from: (table: string) => AnyTable;
   };
 }

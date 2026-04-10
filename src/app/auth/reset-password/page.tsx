@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { updateCurrentUserPassword } from "@/lib/persistence";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 
 /**
  * Renders the password reset screen reached from the Supabase recovery email.
@@ -37,7 +37,7 @@ export default function ResetPasswordPage() {
    * Updates the user's password after validating the new value.
    */
   async function handleUpdatePassword() {
-    if (!supabaseClient) {
+    if (!supabase) {
       setError("Supabase is not configured.");
       return;
     }

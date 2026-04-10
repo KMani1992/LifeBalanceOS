@@ -14,7 +14,7 @@ import {
   type OAuthSignInResult,
   type PasswordResetRequestResult,
 } from "@/lib/persistence";
-import { supabaseClient } from "@/lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
 import { setTasks } from "@/store/slices/dailySlice";
 import { setFinanceEntries } from "@/store/slices/financeSlice";
 import { setGoals } from "@/store/slices/goalsSlice";
@@ -97,7 +97,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
      * Resolves the initial session and subscribes to later auth events.
      */
     async function initializeAuth() {
-      if (!supabaseClient) {
+      if (!supabase) {
         if (active) {
           setIsInitializing(false);
           setAuthError("Supabase is not configured.");
@@ -105,7 +105,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      const { data, error } = await supabaseClient.auth.getSession();
+      const { data, error } = await supabase.auth.getSession();
       if (!active) {
         return;
       }
@@ -130,13 +130,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
     void initializeAuth();
 
-    if (!supabaseClient) {
+    if (!supabase) {
       return () => {
         active = false;
       };
     }
 
-    const { data: subscription } = supabaseClient.auth.onAuthStateChange((_event, session) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       const nextUser = session?.user ?? null;
       setUser(nextUser);
       if (!nextUser) {
