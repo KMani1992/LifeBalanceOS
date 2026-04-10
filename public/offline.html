@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline - LifeBalanceOS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .offline-container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .offline-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: #f3f4f6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    h1 {
+      color: #1f2937;
+      margin-bottom: 12px;
+      font-size: 28px;
+    }
+
+    .offline-message {
+      color: #6b7280;
+      margin-bottom: 32px;
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    .offline-actions {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .offline-tips {
+      margin-top: 32px;
+      padding-top: 32px;
+      border-top: 1px solid #e5e7eb;
+      text-align: left;
+    }
+
+    .offline-tips h3 {
+      color: #1f2937;
+      font-size: 14px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .offline-tips ul {
+      list-style: none;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .offline-tips li {
+      padding: 8px 0;
+    }
+
+    .offline-tips li::before {
+      content: "✓ ";
+      color: #10b981;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">📡</div>
+    <h1>You're Offline</h1>
+    <p class="offline-message">
+      It looks like you've lost your internet connection. Don't worry, some features of LifeBalanceOS
+      are still available offline!
+    </p>
+
+    <div class="offline-actions">
+      <button class="btn-primary" onclick="tryReload()">Try Again</button>
+      <button class="btn-secondary" onclick="goHome()">Go to Home</button>
+    </div>
+
+    <div class="offline-tips">
+      <h3>What you can do offline:</h3>
+      <ul>
+        <li>View cached pages</li>
+        <li>Review your dashboard data</li>
+        <li>Create offline notes</li>
+        <li>View previously loaded content</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function tryReload() {
+      window.location.reload();
+    }
+
+    function goHome() {
+      window.location.href = '/';
+    }
+
+    // Check for connection restoration
+    window.addEventListener('online', function() {
+      console.log('Connection restored!');
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>
