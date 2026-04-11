@@ -273,14 +273,15 @@ export async function signInWithPassword(email: string, password: string) {
 }
 
 /**
- * Starts Google OAuth sign-in and redirects to the auth callback handler.
+ * Starts Google OAuth sign-in and redirects directly to home page.
+ * The auth context will handle session establishment from the OAuth tokens.
  */
 export async function signInWithGoogle(): Promise<OAuthSignInResult> {
   const client = requireSupabase();
   const redirectTo =
     typeof window !== "undefined"
-      ? `${window.location.origin}/auth/callback`
-      : "/auth/callback";
+      ? `${window.location.origin}/`
+      : "/";
 
   const { error } = await client.auth.signInWithOAuth({
     provider: "google",
