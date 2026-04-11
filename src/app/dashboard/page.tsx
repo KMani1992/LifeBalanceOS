@@ -28,7 +28,7 @@ import { DailyTaskCategory, moduleColors, PillarSummary } from "@/types";
  */
 export default function DashboardPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useAuth();
+  const { user, isHydrating } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const tasks = useSelector((state: RootState) => state.daily.tasks);
   const reviews = useSelector((state: RootState) => state.weeklyReviews.reviews);
@@ -182,7 +182,7 @@ export default function DashboardPage() {
         </Grid>
         <Grid container spacing={3}>
           <Grid item xs={12} xl={8}>
-            <LifeRadarChart pillars={pillars} />
+            <LifeRadarChart pillars={pillars} isHydrating={isHydrating} />
           </Grid>
           <Grid item xs={12} xl={4}>
             <Grid container spacing={2}>

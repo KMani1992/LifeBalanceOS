@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Card, CardContent, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, CircularProgress, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import {
   PolarAngleAxis,
@@ -15,13 +15,14 @@ import { PillarSummary } from "@/types";
 
 interface LifeRadarChartProps {
   pillars: PillarSummary[];
+  isHydrating?: boolean;
 }
 
 /**
  * Renders the four-pillar radar chart used on the dashboard.
- * Shows a placeholder message if no data is available yet.
+ * Shows a loading state during hydration and a placeholder if no data is available.
  */
-export default function LifeRadarChart({ pillars }: LifeRadarChartProps) {
+export default function LifeRadarChart({ pillars, isHydrating = false }: LifeRadarChartProps) {
   const data = pillars.map((pillar) => ({ subject: pillar.title, score: pillar.score }));
   
   // Check if any data exists (at least one pillar with a score > 0)
@@ -38,7 +39,11 @@ export default function LifeRadarChart({ pillars }: LifeRadarChartProps) {
             </Typography>
           </div>
           
-          {!hasData ? (
+          {isHydrating ? (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 320 }}>
+              <CircularProgress />
+            </Box>
+          ) : !hasData ? (
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: 320, bgcolor: "rgba(30, 136, 229, 0.05)", borderRadius: 1 }}>
               <Stack spacing={2} alignItems="center" sx={{ py: 4 }}>
                 <Typography variant="body1" color="text.secondary" sx={{ fontWeight: 500 }}>
