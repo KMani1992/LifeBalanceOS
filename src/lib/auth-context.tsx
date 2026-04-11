@@ -117,6 +117,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
       const sessionUser = data.session?.user ?? null;
       setUser(sessionUser);
       if (sessionUser) {
+        // Clear the hash from the URL after successful authentication
+        if (typeof window !== "undefined" && window.location.hash) {
+          window.history.replaceState(null, "", window.location.pathname + window.location.search);
+        }
         await hydrateApplicationData(sessionUser);
       } else {
         clearApplicationState();
@@ -144,6 +148,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
         setProfile(null);
         setIsHydrating(false);
         return;
+      }
+
+      // Clear the hash from the URL after successful authentication
+      if (typeof window !== "undefined" && window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname + window.location.search);
       }
 
       void hydrateApplicationData(nextUser);
