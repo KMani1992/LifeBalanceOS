@@ -11,7 +11,7 @@ import { useAuth } from '@/lib/auth-context';
  * from the OAuth provider, this page:
  * 1. Checks for auth tokens in the URL hash (client-side)
  * 2. Waits for the auth context to establish the session
- * 3. Redirects to dashboard on success or auth page on error
+ * 3. Redirects to home page on success or auth page on error
  */
 export default function AuthCallback() {
   const router = useRouter();
@@ -25,9 +25,9 @@ export default function AuthCallback() {
 
     // If auth context is done initializing, check the result
     if (!isInitializing) {
-      // User is authenticated - go to dashboard
+      // User is authenticated - go to home page (main page)
       if (user) {
-        router.replace('/dashboard');
+        router.replace('/');
         return;
       }
 
