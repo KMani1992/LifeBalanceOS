@@ -113,10 +113,10 @@ export default function Navbar({ title, subtitle, onOpenSidebar }: NavbarProps) 
           >
             <MenuItem disabled sx={{ py: 1.5 }}>
               <Stack spacing={0.25} sx={{ width: "100%" }}>
-                <Typography variant="subtitle2" fontWeight={700}>
+                <Typography variant="subtitle2" fontWeight={700} color="text.primary">
                   {displayName}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="text.primary" sx={{ opacity: 1 }}>
                   {profile?.email}
                 </Typography>
               </Stack>
