@@ -27,6 +27,8 @@ export default function AuthCallback() {
     if (!isInitializing) {
       // User is authenticated - go to home page (main page)
       if (user) {
+        // Clear the hash from the URL to prevent rendering issues
+        window.history.replaceState(null, '', window.location.pathname);
         router.replace('/');
         return;
       }
