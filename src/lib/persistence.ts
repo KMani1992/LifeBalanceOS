@@ -12,6 +12,8 @@ import {
   GardenTask,
   GardenTaskRow,
   Goal,
+  GoalSubTask,
+  GoalSubTaskRow,
   GoalCategory,
   GoalRow,
   Habit,
@@ -142,6 +144,19 @@ function mapGoal(row: GoalRow): Goal {
 }
 
 /**
+ * Maps a goal subtask row to the application model.
+ */
+function mapGoalSubTask(row: GoalSubTaskRow): GoalSubTask {
+  return {
+    id: row.id,
+    goalId: row.goal_id,
+    title: row.title,
+    completed: row.completed,
+    createdAt: row.created_at,
+  };
+}
+
+/**
  * Maps a kids activity row to the application model.
  */
 function mapKidsActivity(row: KidsActivityRow): KidsActivity {
@@ -160,9 +175,12 @@ function mapKidsActivity(row: KidsActivityRow): KidsActivity {
  * Maps a finance row to the application model.
  */
 function mapFinanceEntry(row: FinanceEntryRow): FinanceEntry {
+  const normalizedType: FinanceEntryType =
+    String(row.type) === "others" ? "other" : row.type;
+
   return {
     id: row.id,
-    type: row.type,
+    type: normalizedType,
     category: row.category ?? "General",
     amount: Number(row.amount),
     notes: row.notes ?? "",
@@ -280,8 +298,8 @@ export async function signInWithGoogle(): Promise<OAuthSignInResult> {
   const client = requireSupabase();
   const redirectTo =
     typeof window !== "undefined"
-      ? `${window.location.origin}/`
-      : "/";
+      ? `${window.location.origin}/dashboard`
+      : "/dashboard";
 
   const { error } = await client.auth.signInWithOAuth({
     provider: "google",
@@ -623,6 +641,98 @@ export async function updateGoalCompletion(id: string, completed: boolean): Prom
   }
 
   return mapGoal(data as GoalRow);
+}
+
+/**
+ * Checks whether the goal_subtasks table is available in the database.
+ * Returns false when the table hasn't been migrated yet.
+ */
+export async function checkGoalSubTasksAvailable(): Promise<boolean> {
+  const client = requireSupabase();
+  const { error } = await client.from("goal_subtasks").select("id").limit(1);
+  return !error;
+}
+
+/**
+ * Fetches subtasks for a specific goal.
+ */
+export async function listGoalSubTasks(goalId: string): Promise<GoalSubTask[]> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("goal_subtasks")
+    .select("*")
+    .eq("goal_id", goalId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    // Gracefully return empty list when the table doesn't exist yet (schema not yet migrated).
+    if (error.message?.includes("schema cache") || error.code === "42P01" || error.message?.includes("goal_subtasks")) {
+      return [];
+    }
+    throw new Error(error.message ?? "Failed to load goal subtasks.");
+  }
+
+  return ((data ?? []) as GoalSubTaskRow[]).map(mapGoalSubTask);
+}
+
+/**
+ * Creates a subtask under a goal.
+ */
+export async function createGoalSubTask(goalId: string, title: string): Promise<GoalSubTask> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("goal_subtasks")
+    .insert({ goal_id: goalId, title: title.trim(), completed: false })
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new Error(error.message ?? "Failed to create goal subtask.");
+  }
+
+  return mapGoalSubTask(data as GoalSubTaskRow);
+}
+
+/**
+ * Updates editable fields of a goal subtask.
+ */
+export async function updateGoalSubTask(
+  id: string,
+  payload: { title?: string; completed?: boolean },
+): Promise<GoalSubTask> {
+  const client = requireSupabase();
+  const updatePayload: { title?: string; completed?: boolean } = {};
+  if (typeof payload.title === "string") {
+    updatePayload.title = payload.title.trim();
+  }
+  if (typeof payload.completed === "boolean") {
+    updatePayload.completed = payload.completed;
+  }
+
+  const { data, error } = await client
+    .from("goal_subtasks")
+    .update(updatePayload)
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    throw new Error(error.message ?? "Failed to update goal subtask.");
+  }
+
+  return mapGoalSubTask(data as GoalSubTaskRow);
+}
+
+/**
+ * Deletes a goal subtask.
+ */
+export async function deleteGoalSubTask(id: string): Promise<void> {
+  const client = requireSupabase();
+  const { error } = await client.from("goal_subtasks").delete().eq("id", id);
+
+  if (error) {
+    throw new Error(error.message ?? "Failed to delete goal subtask.");
+  }
 }
 
 /**

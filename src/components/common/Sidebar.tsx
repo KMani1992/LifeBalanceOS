@@ -8,6 +8,7 @@ import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import GrassRoundedIcon from "@mui/icons-material/GrassRounded";
 import InsightsRoundedIcon from "@mui/icons-material/InsightsRounded";
 import RadarRoundedIcon from "@mui/icons-material/RadarRounded";
+import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import SavingsRoundedIcon from "@mui/icons-material/SavingsRounded";
 import SpaRoundedIcon from "@mui/icons-material/SpaRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
@@ -35,6 +36,7 @@ const groups = [
       { label: "Dashboard", href: "/dashboard", icon: RadarRoundedIcon },
       { label: "Daily Planner", href: "/daily", icon: TaskAltRoundedIcon },
       { label: "Weekly Review", href: "/weekly-review", icon: InsightsRoundedIcon },
+      { label: "Knowledge Base", href: "/knowledge-base", icon: SchoolRoundedIcon },
     ],
   },
   {

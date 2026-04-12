@@ -19,10 +19,12 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   MenuItem,
+  FormControlLabel,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { formatTimeHms } from "@/lib/date-time";
 import { DailyTask, DailyTaskCategory } from "@/types";
 
 interface DailyChecklistProps {
@@ -30,7 +32,7 @@ interface DailyChecklistProps {
   tasks: DailyTask[];
   onToggle: (id: string) => void;
   onDelete: (id: string) => void;
-  onAdd: (title: string, category: DailyTaskCategory) => void;
+  onAdd: (title: string, category: DailyTaskCategory, options?: { recurring?: boolean }) => void;
   onEdit: (id: string, title: string, category: DailyTaskCategory) => void;
 }
 
@@ -57,6 +59,7 @@ export default function DailyChecklist({
   const [open, setOpen] = useState(false);
   const [draftTitle, setDraftTitle] = useState("");
   const [draftCategory, setDraftCategory] = useState<DailyTaskCategory>("career");
+  const [draftRecurring, setDraftRecurring] = useState(false);
   const [editingTask, setEditingTask] = useState<DailyTask | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editCategory, setEditCategory] = useState<DailyTaskCategory>("career");
@@ -69,9 +72,10 @@ export default function DailyChecklist({
       return;
     }
 
-    onAdd(draftTitle.trim(), draftCategory);
+    onAdd(draftTitle.trim(), draftCategory, { recurring: draftRecurring });
     setDraftTitle("");
     setDraftCategory("career");
+    setDraftRecurring(false);
     setOpen(false);
   }
 
@@ -126,7 +130,7 @@ export default function DailyChecklist({
                 />
                 <ListItemText
                   primary={task.title}
-                  secondary={`${task.category} • ${task.createdAt}`}
+                  secondary={`${task.category} • ${formatTimeHms(task.createdAt)}`}
                   primaryTypographyProps={{
                     sx: {
                       textDecoration: task.completed ? "line-through" : "none",
@@ -184,6 +188,10 @@ export default function DailyChecklist({
                 </MenuItem>
               ))}
             </TextField>
+            <FormControlLabel
+              control={<Checkbox checked={draftRecurring} onChange={(event) => setDraftRecurring(event.target.checked)} />}
+              label="Repeat daily"
+            />
           </Stack>
         </DialogContent>
         <DialogActions>

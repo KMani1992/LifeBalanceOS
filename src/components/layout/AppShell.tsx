@@ -6,48 +6,11 @@ import { usePathname } from "next/navigation";
 import Navbar from "@/components/common/Navbar";
 import Sidebar, { drawerWidth } from "@/components/common/Sidebar";
 import AuthGate from "@/components/auth/AuthGate";
+import { ROUTE_META } from "@/constants/navigation";
 
-const routeMeta: Record<string, { title: string; subtitle: string }> = {
-  "/": {
-    title: "Overview",
-    subtitle: "Design a week that feels calm, intentional, and measurable.",
-  },
-  "/dashboard": {
-    title: "Dashboard",
-    subtitle: "Monitor balance across the four life pillars and today's execution.",
-  },
-  "/daily": {
-    title: "Daily Planner",
-    subtitle: "Keep the day finite, visible, and actionable.",
-  },
-  "/weekly-review": {
-    title: "Weekly Review",
-    subtitle: "Review the week honestly and reset the next one with clarity.",
-  },
-  "/goals": {
-    title: "Goals",
-    subtitle: "Translate long-term direction into a few meaningful active commitments.",
-  },
-  "/kids": {
-    title: "Kids",
-    subtitle: "Track small observations that compound into growth over time.",
-  },
-  "/finance": {
-    title: "Finance",
-    subtitle: "Watch cash flow, savings momentum, and confidence in the numbers.",
-  },
-  "/habits": {
-    title: "Habits",
-    subtitle: "Keep rhythm-based behaviors visible enough to sustain them.",
-  },
-  "/reflections": {
-    title: "Reflections",
-    subtitle: "Capture lessons, wins, and tomorrow's adjustment while it is fresh.",
-  },
-  "/garden": {
-    title: "Garden",
-    subtitle: "Keep recurring home care simple, visible, and easy to complete.",
-  },
+type BreadcrumbItem = {
+  label: string;
+  href?: string;
 };
 
 /**
@@ -59,9 +22,35 @@ export default function AppShell({ children }: PropsWithChildren) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const meta = useMemo(
-    () => routeMeta[pathname] ?? routeMeta["/dashboard"],
+    () => ROUTE_META[pathname] ?? ROUTE_META["/dashboard"],
     [pathname],
   );
+
+  const breadcrumbItems = useMemo<BreadcrumbItem[]>(() => {
+    if (pathname === "/") {
+      return [{ label: ROUTE_META["/"].title }];
+    }
+
+    const routeTitle = ROUTE_META[pathname]?.title;
+    if (routeTitle) {
+      return [
+        { label: ROUTE_META["/"].title, href: "/" },
+        { label: routeTitle },
+      ];
+    }
+
+    const segmentLabel = pathname
+      .split("/")
+      .filter(Boolean)
+      .map((segment) => segment.replace(/-/g, " "))
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(" / ");
+
+    return [
+      { label: ROUTE_META["/"].title, href: "/" },
+      { label: segmentLabel || "Page" },
+    ];
+  }, [pathname]);
 
   if (pathname.startsWith("/auth/reset-password")) {
     return <>{children}</>;
@@ -71,17 +60,48 @@ export default function AppShell({ children }: PropsWithChildren) {
     <AuthGate>
       <Box sx={{ display: "flex", minHeight: "100vh" }}>
         <Sidebar mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Navbar title={meta.title} subtitle={meta.subtitle} onOpenSidebar={() => setMobileOpen(true)} />
+        <Box sx={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+          <Navbar
+            title={meta.title}
+            subtitle={meta.subtitle}
+            breadcrumbs={breadcrumbItems}
+            onOpenSidebar={() => setMobileOpen(true)}
+          />
           <Box
             component="main"
             sx={{
-              px: { xs: 2, md: 2.5, xl: 3 },
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              overflowX: "clip",
+              px: { xs: 1.25, md: 2.5, xl: 3 },
               pb: { xs: 4, md: 5 },
               pt: 1.5,
             }}
           >
-            {children}
+            <Box sx={{ flex: 1 }}>{children}</Box>
+            <Box
+              component="footer"
+              sx={{
+                mt: 4,
+                py: 2,
+                textAlign: "center",
+                color: "text.secondary",
+                borderTop: "1px solid rgba(22,50,79,0.08)",
+              }}
+            >
+              <div>Small steps, repeated with calm, create extraordinary life balance.</div>
+              <div>
+                Designed and developed by {" "}
+                <Box
+                  component="a"
+                  href="mailto:kmanikandangce@gmail.com"
+                  sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600 }}
+                >
+                  kmanikandangce@gmail.com
+                </Box>
+              </div>
+            </Box>
           </Box>
         </Box>
       </Box>

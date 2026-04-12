@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  Autocomplete,
   Alert,
   Button,
   Card,
@@ -31,13 +32,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import PageHeader from "@/components/common/PageHeader";
 import { useAuth } from "@/lib/auth-context";
 import { createFinanceEntry, deleteFinanceEntry, updateFinanceEntry } from "@/lib/persistence";
 import { addFinanceEntry, removeFinanceEntry, replaceFinanceEntry } from "@/store/slices/financeSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { FinanceEntryType } from "@/types";
+import { FINANCE_ENTRY_TYPES } from "@/constants/options";
+import { STORAGE_KEYS } from "@/constants/storage";
 
-const entryTypes: FinanceEntryType[] = ["income", "expense", "savings", "investment"];
+const entryTypes: FinanceEntryType[] = FINANCE_ENTRY_TYPES;
 
 /**
  * Calculates the savings rate from the current finance entries.
@@ -66,19 +70,78 @@ export default function FinancePage() {
   const [category, setCategory] = useState("");
   const [notes, setNotes] = useState("");
   const [entryDate, setEntryDate] = useState(() => new Date().toISOString().slice(0, 10));
+  const [savedCategories, setSavedCategories] = useState<string[]>([]);
   const [editingEntry, setEditingEntry] = useState<null | typeof entries[0]>(null);
   const [editAmount, setEditAmount] = useState(0);
   const [editType, setEditType] = useState<FinanceEntryType>("income");
   const [editCategory, setEditCategory] = useState("");
   const [editNotes, setEditNotes] = useState("");
   const [editEntryDate, setEditEntryDate] = useState("");
+  const mobileCardSectionSx = {
+    ml: { xs: "-4px", md: 0 },
+    pr: { xs: "4px", md: 0 },
+  };
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const raw = window.localStorage.getItem(STORAGE_KEYS.financeCategories);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(raw) as string[];
+      if (Array.isArray(parsed)) {
+        setSavedCategories(
+          parsed.filter((item) => typeof item === "string" && item.trim().length > 0),
+        );
+      }
+    } catch {
+      // Ignore malformed local storage data.
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    window.localStorage.setItem(STORAGE_KEYS.financeCategories, JSON.stringify(savedCategories));
+  }, [savedCategories]);
+
+  const categoryOptions = useMemo(() => {
+    const combined = [...savedCategories, ...entries.map((entry) => entry.category ?? "")]
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    return Array.from(new Set(combined)).sort((left, right) => left.localeCompare(right));
+  }, [entries, savedCategories]);
+
+  function rememberCategory(value: string) {
+    const normalized = value.trim();
+    if (!normalized) {
+      return;
+    }
+
+    setSavedCategories((current) => {
+      const exists = current.some((item) => item.toLowerCase() === normalized.toLowerCase());
+      if (exists) {
+        return current;
+      }
+
+      return [...current, normalized];
+    });
+  }
 
   const totals = entries.reduce(
     (summary, entry) => {
       summary[entry.type] += entry.amount;
       return summary;
     },
-    { income: 0, expense: 0, savings: 0, investment: 0 },
+    { income: 0, expense: 0, savings: 0, investment: 0, other: 0 },
   );
 
   const savingsRate = calculateSavingsRate(totals.income, totals.savings + totals.investment);
@@ -108,6 +171,7 @@ export default function FinancePage() {
         entryDate,
       });
       dispatch(addFinanceEntry(entry));
+      rememberCategory(category);
       setCategory("");
       setNotes("");
       setAmount(0);
@@ -141,6 +205,7 @@ export default function FinancePage() {
         entryDate: editEntryDate,
       });
       dispatch(replaceFinanceEntry(updated));
+      rememberCategory(editCategory);
       setEditingEntry(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to update entry.");
@@ -163,15 +228,14 @@ export default function FinancePage() {
   return (
     <>
       <Stack spacing={3}>
-      <div>
-        <Typography variant="h3">Finance Tracker</Typography>
-          <Typography color="text.secondary">
-            Track income, expenses, savings, and investments, then monitor the monthly savings rate.
-          </Typography>
-        </div>
+        <PageHeader
+          title="Finance Tracker"
+          description="Track income, expenses, savings, and investments, then monitor the monthly savings rate."
+        />
         {error ? <Alert severity="error">{error}</Alert> : null}
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={7}>
+        <Stack direction={{ xs: "column", lg: "row" }} spacing={2} alignItems="stretch" sx={mobileCardSectionSx}>
+          {/* Left column: entry form + trends chart */}
+          <Stack spacing={2} sx={{ flex: 7, minWidth: 0 }}>
             <Card>
               <CardContent>
                 <Grid container spacing={2}>
@@ -188,7 +252,14 @@ export default function FinancePage() {
                     </TextField>
                   </Grid>
                   <Grid item xs={12} md={3}>
-                    <TextField label="Category" value={category} onChange={(event) => setCategory(event.target.value)} fullWidth />
+                    <Autocomplete
+                      freeSolo
+                      options={categoryOptions}
+                      value={category}
+                      onChange={(_, value) => setCategory((value ?? "") as string)}
+                      onInputChange={(_, value) => setCategory(value)}
+                      renderInput={(params) => <TextField {...params} label="Category" fullWidth />}
+                    />
                   </Grid>
                   <Grid item xs={12} md={3}>
                     <TextField label="Notes" value={notes} onChange={(event) => setNotes(event.target.value)} fullWidth />
@@ -204,24 +275,6 @@ export default function FinancePage() {
                 </Grid>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} lg={5}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <Stack spacing={1.5}>
-                  <Typography variant="h5">Monthly Snapshot</Typography>
-                  <Typography>Income: ₹{totals.income.toFixed(2)}</Typography>
-                  <Typography>Expense: ₹{totals.expense.toFixed(2)}</Typography>
-                  <Typography>Savings: ₹{totals.savings.toFixed(2)}</Typography>
-                  <Typography>Investment: ₹{totals.investment.toFixed(2)}</Typography>
-                  <Typography variant="h6">Savings Rate: {savingsRate}%</Typography>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={7}>
             <Card>
               <CardContent>
                 <Typography variant="h5" gutterBottom>
@@ -238,10 +291,24 @@ export default function FinancePage() {
                 </ResponsiveContainer>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} lg={5}>
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
+          </Stack>
+          {/* Right column: snapshot + recent entries */}
+          <Stack spacing={2} sx={{ flex: 5, minWidth: 0 }}>
+            <Card sx={{ flex: 1 }}>
+              <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
+                <Stack spacing={1.5}>
+                  <Typography variant="h5">Monthly Snapshot</Typography>
+                  <Typography>Income: ₹{totals.income.toFixed(2)}</Typography>
+                  <Typography>Expense: ₹{totals.expense.toFixed(2)}</Typography>
+                  <Typography>Savings: ₹{totals.savings.toFixed(2)}</Typography>
+                  <Typography>Investment: ₹{totals.investment.toFixed(2)}</Typography>
+                  <Typography>Other: ₹{totals.other.toFixed(2)}</Typography>
+                  <Typography variant="h6">Savings Rate: {savingsRate}%</Typography>
+                </Stack>
+              </CardContent>
+            </Card>
+            <Card sx={{ flex: 1 }}>
+              <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
                 <Stack spacing={1.5}>
                   <Typography variant="h5">Recent Entries</Typography>
                   {entries.slice(0, 6).map((entry) => (
@@ -266,8 +333,8 @@ export default function FinancePage() {
                 </Stack>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Stack>
+        </Stack>
       </Stack>
 
       {/* Edit Dialog */}

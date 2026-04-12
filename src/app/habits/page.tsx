@@ -33,13 +33,15 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import PageHeader from "@/components/common/PageHeader";
 import { useAuth } from "@/lib/auth-context";
 import { createHabit, toggleHabitCompletion, updateHabit, deleteHabit } from "@/lib/persistence";
 import { addHabit, setHabits, replaceHabit, removeHabit } from "@/store/slices/habitSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { HabitCategory } from "@/types";
+import { HABIT_CATEGORIES } from "@/constants/options";
 
-const categories: HabitCategory[] = ["learning", "exercise", "kids", "family", "reflection"];
+const categories: HabitCategory[] = HABIT_CATEGORIES;
 
 /**
  * Renders the habit tracker with streak visibility and daily completion toggles.
@@ -127,12 +129,10 @@ export default function HabitsPage() {
   return (
     <>
       <Stack spacing={3}>
-      <div>
-        <Typography variant="h3">Habit Tracker</Typography>
-          <Typography color="text.secondary">
-            Track learning, exercise, kids study, family conversation, reflection, or any other repeated habit.
-          </Typography>
-        </div>
+      <PageHeader
+        title="Habit Tracker"
+        description="Build consistent routines with streak visibility and complete habits daily for balance."
+      />
         {error ? <Alert severity="error">{error}</Alert> : null}
         <Card>
           <CardContent>

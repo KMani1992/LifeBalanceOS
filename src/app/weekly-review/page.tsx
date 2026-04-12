@@ -17,6 +17,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import PageHeader from "@/components/common/PageHeader";
 import WeeklyReviewForm from "@/components/dashboard/WeeklyReviewForm";
 import { useAuth } from "@/lib/auth-context";
 import { createWeeklyReview } from "@/lib/persistence";
@@ -65,16 +66,14 @@ export default function WeeklyReviewPage() {
   }
 
   return (
-    <Stack spacing={3} sx={{ py: 3 }}>
-        <div>
-          <Typography variant="h3">Weekly Review</Typography>
-          <Typography color="text.secondary">
-            Score the four areas from 1 to 10, calculate the average, and track the direction over time.
-          </Typography>
-        </div>
-        {error ? <Alert severity="error">{error}</Alert> : null}
-        <WeeklyReviewForm onSubmit={handleSubmit} />
-        <Stack direction={{ xs: "column", lg: "row" }} spacing={3} alignItems="stretch">
+    <Stack spacing={3} sx={{ py: { xs: 1.5, md: 3 } }}>
+      <PageHeader
+        title="Weekly Review"
+        description="Score the four areas from 1 to 10, calculate the average, and track the direction over time."
+      />
+      {error ? <Alert severity="error">{error}</Alert> : null}
+      <WeeklyReviewForm onSubmit={handleSubmit} />
+      <Stack direction={{ xs: "column", lg: "row" }} spacing={3} alignItems="stretch">
           <Card sx={{ height: "100%", flex: 1, minWidth: 0 }}>
             <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
               <Typography variant="h5" gutterBottom>

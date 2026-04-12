@@ -18,7 +18,6 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
   Stack,
   TextField,
@@ -163,8 +162,19 @@ export default function GardenPage() {
           <Stack direction={{ xs: "column", md: "row" }} spacing={2} alignItems={{ md: "center" }}>
             <TextField label="Task" value={taskName} onChange={(event) => setTaskName(event.target.value)} fullWidth />
             <TextField label="Description" value={description} onChange={(event) => setDescription(event.target.value)} fullWidth />
-            <TextField type="date" label="Due date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} InputLabelProps={{ shrink: true }} sx={{ minWidth: 160 }} />
-            <Button variant="contained" onClick={handleAddTask} sx={{ minWidth: 120, whiteSpace: "nowrap" }}>
+            <TextField
+              type="date"
+              label="Due date"
+              value={dueDate}
+              onChange={(event) => setDueDate(event.target.value)}
+              InputLabelProps={{ shrink: true }}
+              sx={{ width: { xs: "100%", md: "auto" }, minWidth: { md: 160 } }}
+            />
+            <Button
+              variant="contained"
+              onClick={handleAddTask}
+              sx={{ width: { xs: "100%", md: "auto" }, minWidth: { md: 120 }, whiteSpace: "nowrap" }}
+            >
               Add Task
             </Button>
           </Stack>
@@ -194,7 +204,7 @@ export default function GardenPage() {
           ) : (
             <List disablePadding>
               {tasks.map((task) => (
-                <ListItem key={task.id} divider sx={{ pr: 7 }}>
+                <ListItem key={task.id} divider sx={{ alignItems: "flex-start", px: 0 }}>
                   <Checkbox checked={task.completed} onChange={() => void handleToggleTask(task)} />
                   <ListItemText
                     primary={task.taskName}
@@ -202,15 +212,16 @@ export default function GardenPage() {
                     primaryTypographyProps={{
                       sx: { textDecoration: task.completed ? "line-through" : "none", fontWeight: 600 },
                     }}
+                    sx={{ minWidth: 0, my: 0 }}
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton onClick={() => openEditTask(task)} aria-label={`Edit garden task ${task.taskName}`}>
+                  <Stack direction="row" spacing={0.5} sx={{ flexShrink: 0, mt: 0.25 }}>
+                    <IconButton onClick={() => openEditTask(task)} aria-label={`Edit garden task ${task.taskName}`} size="small">
                       <EditRoundedIcon />
                     </IconButton>
-                    <IconButton onClick={() => void handleDeleteTask(task.id)} aria-label={`Delete garden task ${task.taskName}`}>
+                    <IconButton onClick={() => void handleDeleteTask(task.id)} aria-label={`Delete garden task ${task.taskName}`} size="small">
                       <DeleteOutlineRoundedIcon />
                     </IconButton>
-                  </ListItemSecondaryAction>
+                  </Stack>
                 </ListItem>
               ))}
             </List>

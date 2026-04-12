@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
@@ -13,12 +13,14 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  Slider,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import PageHeader from "@/components/common/PageHeader";
 import { useAuth } from "@/lib/auth-context";
 import { createReflection, updateReflection, deleteReflection } from "@/lib/persistence";
 import { addReflection, replaceReflection, removeReflection } from "@/store/slices/reflectionSlice";
@@ -32,16 +34,46 @@ export default function ReflectionsPage() {
   const { user } = useAuth();
   const [error, setError] = useState<string | null>(null);
   const reflections = useSelector((state: RootState) => state.reflections.reflections);
+  const tasks = useSelector((state: RootState) => state.daily.tasks);
   const [reflectionDate, setReflectionDate] = useState("2026-04-10");
   const [wentWell, setWentWell] = useState("");
   const [learnedToday, setLearnedToday] = useState("");
   const [improveTomorrow, setImproveTomorrow] = useState("");
   const [mood, setMood] = useState(8);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiPositive, setAiPositive] = useState("");
   const [editingReflection, setEditingReflection] = useState<null | typeof reflections[0]>(null);
   const [editWentWell, setEditWentWell] = useState("");
   const [editLearned, setEditLearned] = useState("");
   const [editImprove, setEditImprove] = useState("");
   const [editMood, setEditMood] = useState(8);
+
+  const autoMood = useMemo(() => {
+    const selectedDayTasks = tasks.filter(
+      (task) => task.createdAt.slice(0, 10) === reflectionDate,
+    );
+
+    if (selectedDayTasks.length === 0) {
+      return 5;
+    }
+
+    const completedTasks = selectedDayTasks.filter((task) => task.completed);
+    const completionRatio = completedTasks.length / selectedDayTasks.length;
+
+    const totalCategories = new Set(selectedDayTasks.map((task) => task.category)).size;
+    const completedCategories = new Set(
+      completedTasks.map((task) => task.category),
+    ).size;
+    const categoryCoverage =
+      totalCategories > 0 ? completedCategories / totalCategories : 0;
+
+    const score = Math.round(3 + completionRatio * 5 + categoryCoverage * 2);
+    return Math.max(1, Math.min(10, score));
+  }, [reflectionDate, tasks]);
+
+  useEffect(() => {
+    setMood(autoMood);
+  }, [autoMood]);
 
   /**
    * Adds a reflection entry when all prompt answers are present.
@@ -66,6 +98,45 @@ export default function ReflectionsPage() {
       setImproveTomorrow("");
     } catch (submissionError) {
       setError(submissionError instanceof Error ? submissionError.message : "Failed to save reflection.");
+    }
+  }
+
+  /**
+   * Requests a concise observation and suggestion from the AI coach.
+   */
+  async function handleGenerateAiInsight() {
+    const reflectionText = [wentWell, learnedToday, improveTomorrow].filter(Boolean).join("\n");
+    if (!reflectionText.trim()) {
+      setError("Write a short reflection first, then ask AI for insights.");
+      return;
+    }
+
+    try {
+      setError(null);
+      setAiLoading(true);
+      const response = await fetch("/api/reflection-coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reflectionText }),
+      });
+      const data = (await response.json()) as {
+        positiveObservation?: string;
+        improvementSuggestion?: string;
+        error?: string;
+      };
+
+      if (!response.ok) {
+        throw new Error(data.error ?? "Failed to generate AI insight.");
+      }
+
+      setAiPositive(data.positiveObservation ?? "You stayed consistent today.");
+      if (data.improvementSuggestion) {
+        setImproveTomorrow(data.improvementSuggestion);
+      }
+    } catch (aiError) {
+      setError(aiError instanceof Error ? aiError.message : "Failed to generate AI insight.");
+    } finally {
+      setAiLoading(false);
     }
   }
 
@@ -109,13 +180,11 @@ export default function ReflectionsPage() {
 
   return (
     <Stack spacing={3}>
-      <div>
-        <Typography variant="h3">Daily Reflections</Typography>
-          <Typography color="text.secondary">
-            Capture what worked, what you learned, and what you will improve tomorrow.
-          </Typography>
-        </div>
-        {error ? <Alert severity="error">{error}</Alert> : null}
+      <PageHeader
+        title="Daily Reflections"
+        description="Capture what worked, what you learned, and what you will improve tomorrow."
+      />
+      {error ? <Alert severity="error">{error}</Alert> : null}
         <Card>
           <CardContent>
             <Stack spacing={2}>
@@ -123,7 +192,16 @@ export default function ReflectionsPage() {
               <TextField label="What went well today?" value={wentWell} onChange={(event) => setWentWell(event.target.value)} multiline minRows={2} fullWidth />
               <TextField label="What did I learn today?" value={learnedToday} onChange={(event) => setLearnedToday(event.target.value)} multiline minRows={2} fullWidth />
               <TextField label="What will I improve tomorrow?" value={improveTomorrow} onChange={(event) => setImproveTomorrow(event.target.value)} multiline minRows={2} fullWidth />
-              <TextField type="number" label="Mood (1-10)" value={mood} onChange={(event) => setMood(Math.min(10, Math.max(1, Number(event.target.value))))} sx={{ maxWidth: 220 }} />
+              <Stack spacing={0.5} sx={{ maxWidth: 360 }}>
+                <Typography color="text.secondary">Mood (1-10, auto from completed tasks): {mood}</Typography>
+                <Slider value={mood} min={1} max={10} step={1} marks onChange={(_, value) => setMood(value as number)} />
+              </Stack>
+              <Button variant="outlined" onClick={() => void handleGenerateAiInsight()} disabled={aiLoading} sx={{ alignSelf: "flex-start" }}>
+                {aiLoading ? "Generating insight..." : "Get AI Insight"}
+              </Button>
+              {aiPositive ? (
+                <Alert severity="success">{aiPositive}</Alert>
+              ) : null}
               <Button variant="contained" onClick={handleSaveReflection} sx={{ alignSelf: "flex-start" }}>
                 Save Reflection
               </Button>

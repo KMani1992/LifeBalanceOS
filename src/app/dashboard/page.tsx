@@ -5,7 +5,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
+  Box,
   Button,
+  Card,
+  CardContent,
   Grid,
   Stack,
   Typography,
@@ -72,6 +75,8 @@ export default function DashboardPage() {
   const completedGoals = goals.filter((goal) => goal.completed).length;
   const completedHabits = habits.filter((habit) => habit.completedToday).length;
   const scoreNote = `${completedTasks}/${Math.max(tasks.length, 1)} tasks complete, ${goals.filter((goal) => goal.completed).length} goals closed, ${habits.filter((habit) => habit.completedToday).length} habits done today.`;
+  // Shifts all card sections 4 px left without affecting the page header.
+  const cardShiftSx = { ml: -5, mr: 0 };
 
   /**
    * Creates a daily task and persists it in Supabase.
@@ -151,108 +156,110 @@ export default function DashboardPage() {
           </Stack>
         </PageHeader>
         {error ? <Alert severity="error">{error}</Alert> : null}
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} xl={3}>
-            <LifeScoreCard score={latestReview?.lifeBalanceScore ?? 0} note={scoreNote} />
-          </Grid>
-          <Grid item xs={12} md={6} xl={3}>
-            <StatCard
-              label="Task Completion"
-              value={`${completionRate}%`}
-              support={`${completedTasks} of ${tasks.length} daily tasks completed.`}
-              accent={moduleColors.career}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} xl={3}>
-            <StatCard
-              label="Goals Closed"
-              value={`${completedGoals}`}
-              support={`${goals.length - completedGoals} still in active focus.`}
-              accent={moduleColors.finance}
-            />
-          </Grid>
-          <Grid item xs={12} md={6} xl={3}>
-            <StatCard
-              label="Habits Today"
-              value={`${completedHabits}`}
-              support={`${habits.length - completedHabits} habits still open today.`}
-              accent={moduleColors.peace}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={3}>
-          <Grid item xs={12} xl={8}>
-            <LifeRadarChart pillars={pillars} isHydrating={isHydrating} />
-          </Grid>
-          <Grid item xs={12} xl={4}>
-            <Grid container spacing={2}>
-              {pillars.slice(0, 2).map((pillar) => (
-                <Grid item xs={12} sm={6} xl={12} key={pillar.key}>
-                  <StatCard
-                    label={pillar.title}
-                    value={`${pillar.score}/10`}
-                    support={pillar.description}
-                    accent={pillar.color}
-                  />
-                </Grid>
-              ))}
+        <Box sx={cardShiftSx}>
+          <Grid container spacing={{ xs: 2, md: 3 }}>
+            <Grid item xs={12} md={6} xl={3}>
+              <LifeScoreCard score={latestReview?.lifeBalanceScore ?? 0} note={scoreNote} />
+            </Grid>
+            <Grid item xs={12} md={6} xl={3}>
+              <StatCard
+                label="Task Completion"
+                value={`${completionRate}%`}
+                support={`${completedTasks} of ${tasks.length} daily tasks completed.`}
+                accent={moduleColors.career}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} xl={3}>
+              <StatCard
+                label="Goals Closed"
+                value={`${completedGoals}`}
+                support={`${goals.length - completedGoals} still in active focus.`}
+                accent={moduleColors.finance}
+              />
+            </Grid>
+            <Grid item xs={12} md={6} xl={3}>
+              <StatCard
+                label="Habits Today"
+                value={`${completedHabits}`}
+                support={`${habits.length - completedHabits} habits still open today.`}
+                accent={moduleColors.peace}
+              />
             </Grid>
           </Grid>
-        </Grid>
-        <LifePillarsCards pillars={pillars} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={8}>
-            <DailyChecklist
-              title="Today&apos;s Checklist"
-              tasks={tasks}
-              onToggle={handleToggleTask}
-              onDelete={handleDeleteTask}
-              onAdd={handleAddTask}
-              onEdit={handleEditTask}
-            />
+        </Box>
+        <Box sx={cardShiftSx}>
+          <Grid container spacing={{ xs: 2, md: 3 }}>
+            <Grid item xs={12} xl={8}>
+              <LifeRadarChart pillars={pillars} isHydrating={isHydrating} />
+            </Grid>
+            <Grid item xs={12} xl={4}>
+              <Grid container spacing={{ xs: 1.5, md: 2 }}>
+                {pillars.slice(0, 2).map((pillar) => (
+                  <Grid item xs={12} sm={6} xl={12} key={pillar.key}>
+                    <StatCard
+                      label={pillar.title}
+                      value={`${pillar.score}/10`}
+                      support={pillar.description}
+                      accent={pillar.color}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item xs={12} lg={4}>
-            <Stack spacing={2}>
-              <StatCard
-                label="Quick Insight"
-                value={latestReview ? `${latestReview.weekStart}` : "No review"}
-                support={latestReview ? "Latest weekly review anchor date." : "Create your first weekly review to generate a balance score."}
-                accent={moduleColors.family}
+        </Box>
+        <Box sx={cardShiftSx}>
+          <LifePillarsCards pillars={pillars} />
+        </Box>
+        <Box sx={cardShiftSx}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} lg={8}>
+              <DailyChecklist
+                title="Today&apos;s Checklist"
+                tasks={tasks}
+                onToggle={handleToggleTask}
+                onDelete={handleDeleteTask}
+                onAdd={handleAddTask}
+                onEdit={handleEditTask}
               />
-              <Stack
-                spacing={1.5}
-                sx={{
-                  p: 2.5,
-                  borderRadius: 3,
-                  bgcolor: "rgba(255,255,255,0.72)",
-                  border: "1px solid rgba(22,50,79,0.08)",
-                  aspectRatio: "1/1",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <Typography variant="h6" sx={{ fontWeight: 700 }}>
-                  Quick Actions
-                </Typography>
-                <Stack spacing={1} sx={{ flex: 1 }}>
-                  <Button component={Link} href="/daily" variant="contained" size="small" fullWidth>
-                    Daily Planner
-                  </Button>
-                  <Button component={Link} href="/weekly-review" variant="outlined" size="small" fullWidth>
-                    Weekly Review
-                  </Button>
-                  <Button component={Link} href="/finance" variant="outlined" size="small" fullWidth>
-                    Finance
-                  </Button>
-                  <Button component={Link} href="/reflections" variant="outlined" size="small" fullWidth>
-                    Reflection
-                  </Button>
-                </Stack>
+            </Grid>
+            <Grid item xs={12} lg={4}>
+              <Stack direction={{ xs: "column", lg: "row" }} spacing={2} alignItems="stretch" sx={{ height: "100%" }}>
+                <Card sx={{ flex: 1, minWidth: 0 }}>
+                  <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
+                    <StatCard
+                      label="Quick Insight"
+                      value={latestReview ? `${latestReview.weekStart}` : "No review"}
+                      support={latestReview ? "Latest weekly review anchor date." : "Create your first weekly review to generate a balance score."}
+                      accent={moduleColors.family}
+                    />
+                  </CardContent>
+                </Card>
+                <Card sx={{ flex: 1, minWidth: 0 }}>
+                  <CardContent sx={{ p: { xs: 2.5, md: 3 }, height: "100%", display: "flex", flexDirection: "column" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
+                      Quick Actions
+                    </Typography>
+                    <Stack spacing={1.25} sx={{ flex: 1 }}>
+                      <Button component={Link} href="/daily" variant="contained" fullWidth sx={{ minHeight: 44 }}>
+                        Daily Planner
+                      </Button>
+                      <Button component={Link} href="/weekly-review" variant="outlined" fullWidth sx={{ minHeight: 44 }}>
+                        Weekly Review
+                      </Button>
+                      <Button component={Link} href="/finance" variant="outlined" fullWidth sx={{ minHeight: 44 }}>
+                        Finance
+                      </Button>
+                      <Button component={Link} href="/reflections" variant="outlined" fullWidth sx={{ minHeight: 44 }}>
+                        Reflection
+                      </Button>
+                    </Stack>
+                  </CardContent>
+                </Card>
               </Stack>
-            </Stack>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
       </Stack>
   );
 }

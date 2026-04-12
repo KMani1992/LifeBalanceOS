@@ -1,6 +1,7 @@
 
 import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import AppShell from "@/components/layout/AppShell";
 import AppProviders from "@/store/provider";
 import "@/app/globals.css";
@@ -54,9 +55,11 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body>
-        <AppProviders>
-          <AppShell>{children}</AppShell>
-        </AppProviders>
+        <AppRouterCacheProvider>
+          <AppProviders>
+            <AppShell>{children}</AppShell>
+          </AppProviders>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

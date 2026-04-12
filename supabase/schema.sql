@@ -1,219 +1,267 @@
 
-create extension if not exists pgcrypto;
+export type LifePillar = "career" | "family" | "finance" | "peace";
 
-create table if not exists public.users (
-  id uuid primary key references auth.users(id) on delete cascade,
-  email text,
-  name text,
-  created_at timestamp with time zone default now()
-);
+export type DailyTaskCategory =
+  | "career"
+  | "health"
+  | "family"
+  | "kids"
+  | "finance"
+  | "personal";
 
-create table if not exists public.daily_tasks (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  title text not null,
-  category text check (category in (
-    'career','health','family','kids','finance','personal'
-  )),
-  completed boolean default false,
-  created_at timestamp with time zone default now(),
-  completed_at timestamp with time zone
-);
+export type GoalCategory = "career" | "family" | "finance" | "peace";
 
-create table if not exists public.weekly_reviews (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  week_start date,
-  career_score integer check (career_score between 1 and 10),
-  family_score integer check (family_score between 1 and 10),
-  finance_score integer check (finance_score between 1 and 10),
-  peace_score integer check (peace_score between 1 and 10),
-  life_balance_score numeric,
-  notes text,
-  created_at timestamp with time zone default now()
-);
+export type KidsActivityType =
+  | "study"
+  | "behavior"
+  | "physical"
+  | "creativity";
 
-create table if not exists public.goals (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  title text not null,
-  description text,
-  category text check (category in (
-    'career','family','finance','peace'
-  )),
-  target_date date,
-  completed boolean default false,
-  completed_at timestamp with time zone,
-  created_at timestamp with time zone default now()
-);
+export type FinanceEntryType =
+  | "income"
+  | "expense"
+  | "savings"
+  | "investment"
+  | "other";
 
-create table if not exists public.kids_activities (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  child_name text,
-  activity_type text check (activity_type in (
-    'study','behavior','physical','creativity'
-  )),
-  description text,
-  activity_date date,
-  rating integer check (rating between 1 and 5),
-  created_at timestamp with time zone default now()
-);
+export type HabitCategory =
+  | "learning"
+  | "exercise"
+  | "kids"
+  | "family"
+  | "reflection"
+  | "other";
 
-create table if not exists public.finance_entries (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  type text check (type in (
-    'income','expense','savings','investment'
-  )),
-  category text,
-  amount numeric not null,
-  notes text,
-  entry_date date,
-  created_at timestamp with time zone default now()
-);
+export interface UserProfile {
+  id: string;
+  email: string | null;
+  name: string | null;
+  createdAt: string;
+}
 
-create table if not exists public.reflections (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  reflection_date date,
-  went_well text,
-  learned_today text,
-  improve_tomorrow text,
-  mood integer check (mood between 1 and 10),
-  created_at timestamp with time zone default now()
-);
+export interface DailyTask {
+  id: string;
+  title: string;
+  category: DailyTaskCategory;
+  completed: boolean;
+  createdAt: string;
+  completedAt: string | null;
+}
 
-create table if not exists public.habits (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  title text not null,
-  category text check (category in (
-    'learning','exercise','kids','family','reflection'
-  )),
-  target_frequency integer default 7,
-  created_at timestamp with time zone default now()
-);
+export interface WeeklyReview {
+  id: string;
+  weekStart: string;
+  careerScore: number;
+  familyScore: number;
+  financeScore: number;
+  peaceScore: number;
+  lifeBalanceScore: number;
+  notes: string;
+  createdAt: string;
+}
 
-create table if not exists public.habit_logs (
-  id uuid primary key default gen_random_uuid(),
-  habit_id uuid references public.habits(id) on delete cascade,
-  completed_date date,
-  created_at timestamp with time zone default now()
-);
+export interface Goal {
+  id: string;
+  title: string;
+  description: string;
+  category: GoalCategory;
+  targetDate: string | null;
+  completed: boolean;
+  completedAt: string | null;
+  createdAt: string;
+}
 
-create table if not exists public.garden_tasks (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references public.users(id) on delete cascade,
-  task_name text,
-  description text,
-  completed boolean default false,
-  due_date date,
-  completed_at timestamp with time zone,
-  created_at timestamp with time zone default now()
-);
+export interface GoalSubTask {
+  id: string;
+  goalId: string;
+  title: string;
+  completed: boolean;
+  createdAt: string;
+}
 
-create index if not exists idx_daily_tasks_user on public.daily_tasks(user_id);
-create index if not exists idx_goals_user on public.goals(user_id);
-create index if not exists idx_finance_user on public.finance_entries(user_id);
-create index if not exists idx_habits_user on public.habits(user_id);
-create index if not exists idx_weekly_reviews_user on public.weekly_reviews(user_id);
-create index if not exists idx_habit_logs_habit on public.habit_logs(habit_id);
-create index if not exists idx_garden_tasks_user on public.garden_tasks(user_id);
-create index if not exists idx_kids_activities_user on public.kids_activities(user_id);
-create index if not exists idx_reflections_user on public.reflections(user_id);
+export interface KidsActivity {
+  id: string;
+  childName: string;
+  activityType: KidsActivityType;
+  description: string;
+  activityDate: string;
+  rating: number;
+  createdAt: string;
+}
 
-alter table public.users enable row level security;
-alter table public.daily_tasks enable row level security;
-alter table public.weekly_reviews enable row level security;
-alter table public.goals enable row level security;
-alter table public.kids_activities enable row level security;
-alter table public.finance_entries enable row level security;
-alter table public.reflections enable row level security;
-alter table public.habits enable row level security;
-alter table public.habit_logs enable row level security;
-alter table public.garden_tasks enable row level security;
+export interface FinanceEntry {
+  id: string;
+  type: FinanceEntryType;
+  category: string;
+  amount: number;
+  notes: string;
+  entryDate: string;
+  createdAt: string;
+}
 
-drop policy if exists "Users can access their own profile" on public.users;
-create policy "Users can access their own profile"
-on public.users
-for all
-using (auth.uid() = id)
-with check (auth.uid() = id);
+export interface Reflection {
+  id: string;
+  reflectionDate: string;
+  wentWell: string;
+  learnedToday: string;
+  improveTomorrow: string;
+  mood: number;
+  createdAt: string;
+}
 
-drop policy if exists "Users can access their own daily tasks" on public.daily_tasks;
-create policy "Users can access their own daily tasks"
-on public.daily_tasks
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface Habit {
+  id: string;
+  title: string;
+  category: HabitCategory;
+  targetFrequency: number;
+  streak: number;
+  completedToday: boolean;
+  createdAt: string;
+}
 
-drop policy if exists "Users can access their own weekly reviews" on public.weekly_reviews;
-create policy "Users can access their own weekly reviews"
-on public.weekly_reviews
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface HabitLog {
+  id: string;
+  habitId: string;
+  completedDate: string;
+  createdAt: string;
+}
 
-drop policy if exists "Users can access their own goals" on public.goals;
-create policy "Users can access their own goals"
-on public.goals
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface GardenTask {
+  id: string;
+  taskName: string;
+  description: string;
+  completed: boolean;
+  dueDate: string | null;
+  completedAt: string | null;
+  createdAt: string;
+}
 
-drop policy if exists "Users can access their own kids activities" on public.kids_activities;
-create policy "Users can access their own kids activities"
-on public.kids_activities
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface PillarSummary {
+  key: LifePillar;
+  title: string;
+  description: string;
+  score: number;
+  color: string;
+}
 
-drop policy if exists "Users can access their own finance entries" on public.finance_entries;
-create policy "Users can access their own finance entries"
-on public.finance_entries
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface NavItem {
+  label: string;
+  href: string;
+}
 
-drop policy if exists "Users can access their own reflections" on public.reflections;
-create policy "Users can access their own reflections"
-on public.reflections
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface UserProfileRow {
+  id: string;
+  email: string | null;
+  name: string | null;
+  created_at: string;
+}
 
-drop policy if exists "Users can access their own habits" on public.habits;
-create policy "Users can access their own habits"
-on public.habits
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface DailyTaskRow {
+  id: string;
+  user_id: string;
+  title: string;
+  category: DailyTaskCategory;
+  completed: boolean;
+  created_at: string;
+  completed_at: string | null;
+}
 
-drop policy if exists "Users can access logs for their habits" on public.habit_logs;
-create policy "Users can access logs for their habits"
-on public.habit_logs
-for all
-using (
-  exists (
-    select 1
-    from public.habits
-    where public.habits.id = public.habit_logs.habit_id
-      and public.habits.user_id = auth.uid()
-  )
-)
-with check (
-  exists (
-    select 1
-    from public.habits
-    where public.habits.id = public.habit_logs.habit_id
-      and public.habits.user_id = auth.uid()
-  )
-);
+export interface WeeklyReviewRow {
+  id: string;
+  user_id: string;
+  week_start: string;
+  career_score: number;
+  family_score: number;
+  finance_score: number;
+  peace_score: number;
+  life_balance_score: number;
+  notes: string | null;
+  created_at: string;
+}
 
-drop policy if exists "Users can access their own garden tasks" on public.garden_tasks;
-create policy "Users can access their own garden tasks"
-on public.garden_tasks
-for all
-using (auth.uid() = user_id)
-with check (auth.uid() = user_id);
+export interface GoalRow {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string | null;
+  category: GoalCategory;
+  target_date: string | null;
+  completed: boolean;
+  completed_at: string | null;
+  created_at: string;
+}
+
+export interface GoalSubTaskRow {
+  id: string;
+  goal_id: string;
+  title: string;
+  completed: boolean;
+  created_at: string;
+}
+
+export interface KidsActivityRow {
+  id: string;
+  user_id: string;
+  child_name: string | null;
+  activity_type: KidsActivityType;
+  description: string | null;
+  activity_date: string | null;
+  rating: number | null;
+  created_at: string;
+}
+
+export interface FinanceEntryRow {
+  id: string;
+  user_id: string;
+  type: FinanceEntryType;
+  category: string | null;
+  amount: number;
+  notes: string | null;
+  entry_date: string | null;
+  created_at: string;
+}
+
+export interface ReflectionRow {
+  id: string;
+  user_id: string;
+  reflection_date: string | null;
+  went_well: string | null;
+  learned_today: string | null;
+  improve_tomorrow: string | null;
+  mood: number | null;
+  created_at: string;
+}
+
+export interface HabitRow {
+  id: string;
+  user_id: string;
+  title: string;
+  category: HabitCategory;
+  target_frequency: number;
+  created_at: string;
+}
+
+export interface HabitLogRow {
+  id: string;
+  habit_id: string;
+  completed_date: string | null;
+  created_at: string;
+}
+
+export interface GardenTaskRow {
+  id: string;
+  user_id: string;
+  task_name: string | null;
+  description: string | null;
+  completed: boolean;
+  due_date: string | null;
+  completed_at: string | null;
+  created_at: string;
+}
+
+export const moduleColors: Record<LifePillar, string> = {
+  career: "#1E88E5",
+  family: "#43A047",
+  finance: "#FB8C00",
+  peace: "#8E24AA",
+};

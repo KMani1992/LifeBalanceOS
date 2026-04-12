@@ -1,7 +1,8 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import GoogleIcon from "@mui/icons-material/Google";
+import { useRouter } from "next/navigation";
 import {
   Alert,
   Box,
@@ -24,7 +25,9 @@ type AuthMode = "sign-in" | "sign-up";
  * Protects the application and renders a sign-in form when no session exists.
  */
 export default function AuthGate({ children }: PropsWithChildren) {
+  const router = useRouter();
   const { user, isInitializing, isHydrating, signIn, signInWithGoogle, signUp, sendPasswordReset, authError } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<AuthMode>("sign-in");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -32,6 +35,10 @@ export default function AuthGate({ children }: PropsWithChildren) {
   const [localError, setLocalError] = useState<string | null>(null);
   const [localSuccess, setLocalSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   /**
    * Sends a password reset email for the entered address.
@@ -83,11 +90,14 @@ export default function AuthGate({ children }: PropsWithChildren) {
         );
         if (result.requiresEmailConfirmation) {
           setMode("sign-in");
+        } else {
+          router.push("/dashboard");
         }
         return;
       }
 
       await signIn(email.trim(), password);
+      router.push("/dashboard");
     } catch (error) {
       setLocalError(error instanceof Error ? error.message : `Unable to ${mode === "sign-up" ? "sign up" : "sign in"}.`);
     } finally {
@@ -110,6 +120,8 @@ export default function AuthGate({ children }: PropsWithChildren) {
     }
   }
 
+  // No blanket redirect — Overview at "/" is intentionally accessible when logged in.
+
   if (!isSupabaseConfigured) {
     return (
       <Container maxWidth="sm" sx={{ py: 8 }}>
@@ -120,12 +132,21 @@ export default function AuthGate({ children }: PropsWithChildren) {
     );
   }
 
-  if (isInitializing || (user && isHydrating)) {
+  if (!mounted) {
     return (
       <Box sx={{ minHeight: "calc(100vh - 88px)", display: "grid", placeItems: "center" }}>
-        <Stack spacing={2} alignItems="center">
-          <CircularProgress />
-          <Typography color="text.secondary">Loading your LifeBalanceOS data…</Typography>
+        <Stack spacing={2} alignItems="center" role="status" aria-label="Loading application">
+          <CircularProgress size={44} thickness={4.5} />
+        </Stack>
+      </Box>
+    );
+  }
+
+  if (isInitializing) {
+    return (
+      <Box sx={{ minHeight: "calc(100vh - 88px)", display: "grid", placeItems: "center" }}>
+        <Stack spacing={2} alignItems="center" role="status" aria-label="Loading application">
+          <CircularProgress size={44} thickness={4.5} />
         </Stack>
       </Box>
     );
@@ -150,16 +171,25 @@ export default function AuthGate({ children }: PropsWithChildren) {
       >
         <Card
           sx={{
-            borderRadius: 4,
+            borderRadius: { xs: 3, sm: 3.25 },
             border: "1px solid rgba(22,50,79,0.10)",
             boxShadow: "0 20px 50px rgba(22,50,79,0.12)",
             background: "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,252,255,0.92) 100%)",
           }}
         >
-          <CardContent sx={{ p: { xs: 2.5, sm: 3.5 } }}>
+          <CardContent sx={{ px: { xs: 2.5, sm: 3.5 }, pb: { xs: 2.5, sm: 3.5 }, pt: { xs: 4, sm: 5 } }}>
             <Stack spacing={3.2}>
               <div>
-                <Typography variant="h4" sx={{ fontWeight: 700, letterSpacing: -0.3 }}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 700,
+                    fontSize: { xs: "2rem", sm: "2.125rem" },
+                    lineHeight: 1.15,
+                    letterSpacing: { xs: 0, sm: -0.3 },
+                    overflowWrap: "anywhere",
+                  }}
+                >
                   {modeTitle}
                 </Typography>
                 <Typography color="text.secondary" sx={{ mt: 0.75, lineHeight: 1.5 }}>
@@ -223,6 +253,16 @@ export default function AuthGate({ children }: PropsWithChildren) {
             </Stack>
           </CardContent>
         </Card>
+        <Typography variant="caption" color="text.secondary" sx={{ mt: 1.5, textAlign: "center" }}>
+          Designed and developed by {" "}
+          <Box
+            component="a"
+            href="mailto:kmanikandangce@gmail.com"
+            sx={{ color: "primary.main", textDecoration: "none", fontWeight: 600 }}
+          >
+            kmanikandangce@gmail.com
+          </Box>
+        </Typography>
       </Container>
     );
   }

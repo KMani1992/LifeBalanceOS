@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
@@ -25,13 +25,39 @@ import {
   DialogActions,
   IconButton,
 } from "@mui/material";
+import PageHeader from "@/components/common/PageHeader";
 import { useAuth } from "@/lib/auth-context";
-import { createGoal, updateGoal, updateGoalCompletion, deleteGoal } from "@/lib/persistence";
+import {
+  createGoal,
+  updateGoal,
+  updateGoalCompletion,
+  deleteGoal,
+  listGoalSubTasks,
+  createGoalSubTask,
+  updateGoalSubTask,
+  deleteGoalSubTask,
+  checkGoalSubTasksAvailable,
+} from "@/lib/persistence";
 import { addGoal, replaceGoal, removeGoal } from "@/store/slices/goalsSlice";
 import { AppDispatch, RootState } from "@/store/store";
-import { GoalCategory } from "@/types";
+import { GoalCategory, GoalSubTask } from "@/types";
+import { GOAL_CATEGORIES } from "@/constants/options";
+import { STORAGE_KEYS } from "@/constants/storage";
+import { formatDateTimeHms } from "@/lib/date-time";
 
-const goalCategories: GoalCategory[] = ["career", "family", "finance", "peace"];
+const goalCategories: GoalCategory[] = GOAL_CATEGORIES;
+
+function loadFallbackSubTasks(): Record<string, GoalSubTask[]> {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.goalSubTasksFallback) ?? "{}") as Record<string, GoalSubTask[]>;
+  } catch {
+    return {};
+  }
+}
+
+function saveFallbackSubTasks(data: Record<string, GoalSubTask[]>) {
+  localStorage.setItem(STORAGE_KEYS.goalSubTasksFallback, JSON.stringify(data));
+}
 
 /**
  * Renders the goals system with goal creation and completion tracking.
@@ -50,6 +76,75 @@ export default function GoalsPage() {
   const [editDescription, setEditDescription] = useState("");
   const [editCategory, setEditCategory] = useState<GoalCategory>("career");
   const [editTargetDate, setEditTargetDate] = useState("");
+  const [goalSubTasks, setGoalSubTasks] = useState<Record<string, GoalSubTask[]>>({});
+  const [newSubTaskTitle, setNewSubTaskTitle] = useState<Record<string, string>>({});
+  const [editingSubTask, setEditingSubTask] = useState<null | { goalId: string; subTask: GoalSubTask }>(null);
+  const [editSubTaskTitle, setEditSubTaskTitle] = useState("");
+  // null = unknown, true = DB available, false = using localStorage fallback
+  const [subtasksDbAvailable, setSubtasksDbAvailable] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setGoalSubTasks({});
+      return;
+    }
+
+    if (goals.length === 0) {
+      setGoalSubTasks({});
+      return;
+    }
+
+    let active = true;
+
+    async function hydrateGoalSubTasks() {
+      try {
+        const tableAvailable = await checkGoalSubTasksAvailable();
+
+        if (!tableAvailable) {
+          setSubtasksDbAvailable(false);
+          setGoalSubTasks(loadFallbackSubTasks());
+          return;
+        }
+
+        setSubtasksDbAvailable(true);
+        const tuples = await Promise.all(
+          goals.map(async (goal) => [goal.id, await listGoalSubTasks(goal.id)] as const),
+        );
+
+        if (!active) {
+          return;
+        }
+
+        setGoalSubTasks(Object.fromEntries(tuples));
+      } catch (subTaskError) {
+        if (!active) {
+          return;
+        }
+        // Non-table errors (network, auth) — show them.
+        setError(subTaskError instanceof Error ? subTaskError.message : "Failed to load goal subtasks.");
+      }
+    }
+
+    void hydrateGoalSubTasks();
+
+    return () => {
+      active = false;
+    };
+  }, [goals, user]);
+
+  const progressByGoal = useMemo(() => {
+    const progress: Record<string, number> = {};
+    goals.forEach((goal) => {
+      const subtasks = goalSubTasks[goal.id] ?? [];
+      if (subtasks.length === 0) {
+        progress[goal.id] = goal.completed ? 100 : 0;
+        return;
+      }
+      const done = subtasks.filter((subtask) => subtask.completed).length;
+      progress[goal.id] = Math.round((done / subtasks.length) * 100);
+    });
+    return progress;
+  }, [goalSubTasks, goals]);
 
   /**
    * Creates a goal when the required fields are present.
@@ -126,15 +221,175 @@ export default function GoalsPage() {
     }
   }
 
+  async function handleAddSubTask(goalId: string) {
+    const subTaskTitle = (newSubTaskTitle[goalId] ?? "").trim();
+    if (!subTaskTitle) {
+      return;
+    }
+
+    if (subtasksDbAvailable === false) {
+      // localStorage fallback when DB table doesn't exist yet.
+      const localSubTask: GoalSubTask = {
+        id: crypto.randomUUID(),
+        goalId,
+        title: subTaskTitle,
+        completed: false,
+        createdAt: new Date().toISOString(),
+      };
+      setGoalSubTasks((current) => {
+        const updated = { ...current, [goalId]: [...(current[goalId] ?? []), localSubTask] };
+        saveFallbackSubTasks(updated);
+        return updated;
+      });
+      setNewSubTaskTitle((current) => ({ ...current, [goalId]: "" }));
+      return;
+    }
+
+    try {
+      setError(null);
+      const created = await createGoalSubTask(goalId, subTaskTitle);
+      setGoalSubTasks((current) => ({
+        ...current,
+        [goalId]: [...(current[goalId] ?? []), created],
+      }));
+      setNewSubTaskTitle((current) => ({ ...current, [goalId]: "" }));
+    } catch (subTaskError) {
+      setError(subTaskError instanceof Error ? subTaskError.message : "Failed to create sub-task.");
+    }
+  }
+
+  async function handleToggleSubTask(goalId: string, subTaskId: string) {
+    const subtasks = goalSubTasks[goalId] ?? [];
+    const currentSubTask = subtasks.find((subtask) => subtask.id === subTaskId);
+    if (!currentSubTask) {
+      return;
+    }
+
+    const updatedList = subtasks.map((subtask) =>
+      subtask.id === subTaskId ? { ...subtask, completed: !subtask.completed } : subtask,
+    );
+
+    if (subtasksDbAvailable === false) {
+      setGoalSubTasks((current) => {
+        const updated = { ...current, [goalId]: updatedList };
+        saveFallbackSubTasks(updated);
+        return updated;
+      });
+      return;
+    }
+
+    try {
+      setError(null);
+      const updatedSubTask = await updateGoalSubTask(subTaskId, {
+        completed: !currentSubTask.completed,
+      });
+      const syncedList = subtasks.map((subtask) =>
+        subtask.id === subTaskId ? updatedSubTask : subtask,
+      );
+
+      setGoalSubTasks((current) => ({ ...current, [goalId]: syncedList }));
+
+      const allCompleted = syncedList.length > 0 && syncedList.every((subtask) => subtask.completed);
+      const updatedGoal = await updateGoalCompletion(goalId, allCompleted);
+      dispatch(replaceGoal(updatedGoal));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to sync goal completion from subtasks.");
+    }
+  }
+
+  async function handleDeleteSubTask(goalId: string, subTaskId: string) {
+    const updatedList = (goalSubTasks[goalId] ?? []).filter((subtask) => subtask.id !== subTaskId);
+
+    if (subtasksDbAvailable === false) {
+      setGoalSubTasks((current) => {
+        const updated = { ...current, [goalId]: updatedList };
+        saveFallbackSubTasks(updated);
+        return updated;
+      });
+      return;
+    }
+
+    try {
+      setError(null);
+      await deleteGoalSubTask(subTaskId);
+      setGoalSubTasks((current) => ({
+        ...current,
+        [goalId]: updatedList,
+      }));
+
+      if (updatedList.length > 0) {
+        const allCompleted = updatedList.every((subtask) => subtask.completed);
+        const updatedGoal = await updateGoalCompletion(goalId, allCompleted);
+        dispatch(replaceGoal(updatedGoal));
+      }
+    } catch (subTaskError) {
+      setError(subTaskError instanceof Error ? subTaskError.message : "Failed to delete sub-task.");
+    }
+  }
+
+  function openSubTaskEdit(goalId: string, subTask: GoalSubTask) {
+    setEditingSubTask({ goalId, subTask });
+    setEditSubTaskTitle(subTask.title);
+  }
+
+  async function handleSaveSubTaskEdit() {
+    if (!editingSubTask) {
+      return;
+    }
+
+    const trimmed = editSubTaskTitle.trim();
+    if (!trimmed) {
+      return;
+    }
+
+    if (subtasksDbAvailable === false) {
+      setGoalSubTasks((current) => {
+        const updated = {
+          ...current,
+          [editingSubTask.goalId]: (current[editingSubTask.goalId] ?? []).map((subtask) =>
+            subtask.id === editingSubTask.subTask.id ? { ...subtask, title: trimmed } : subtask,
+          ),
+        };
+        saveFallbackSubTasks(updated);
+        return updated;
+      });
+      setEditingSubTask(null);
+      setEditSubTaskTitle("");
+      return;
+    }
+
+    try {
+      setError(null);
+      const updatedSubTask = await updateGoalSubTask(editingSubTask.subTask.id, {
+        title: trimmed,
+      });
+
+      setGoalSubTasks((current) => ({
+        ...current,
+        [editingSubTask.goalId]: (current[editingSubTask.goalId] ?? []).map((subtask) =>
+          subtask.id === updatedSubTask.id ? updatedSubTask : subtask,
+        ),
+      }));
+
+      setEditingSubTask(null);
+      setEditSubTaskTitle("");
+    } catch (subTaskError) {
+      setError(subTaskError instanceof Error ? subTaskError.message : "Failed to update sub-task.");
+    }
+  }
+
   return (
     <Stack spacing={3}>
-      <div>
-        <Typography variant="h3">Goals</Typography>
-          <Typography color="text.secondary">
-            Convert the long-term priorities into specific targets with dates and visible completion status.
-          </Typography>
-        </div>
+      <PageHeader
+        title="Goals"
+        description="Convert the long-term priorities into specific targets with dates and visible completion status."
+      />
         {error ? <Alert severity="error">{error}</Alert> : null}
+      {subtasksDbAvailable === false ? (
+        <Alert severity="info">
+          Sub-tasks are saved locally (browser only). To enable cloud sync, run the <strong>goal_subtasks</strong> migration in your Supabase SQL editor — see <code>supabase/schema.sql</code>.
+        </Alert>
+      ) : null}
         <Card>
           <CardContent>
             <Grid container spacing={2}>
@@ -194,10 +449,43 @@ export default function GoalsPage() {
                       </IconButton>
                     </Stack>
                     <Typography color="text.secondary">{goal.description || "No description provided."}</Typography>
-                    <LinearProgress variant="determinate" value={goal.completed ? 100 : 0} sx={{ height: 10, borderRadius: 999 }} />
+                    <LinearProgress variant="determinate" value={progressByGoal[goal.id] ?? 0} sx={{ height: 10, borderRadius: 999 }} />
                     <Typography variant="body2" color="text.secondary">
-                      {goal.completed ? `Completed at ${goal.completedAt?.slice(0, 10) ?? "today"}` : "In progress"}
+                      {(progressByGoal[goal.id] ?? 0) === 100
+                        ? `Completed at ${goal.completedAt ? formatDateTimeHms(goal.completedAt) : "today"}`
+                        : "In progress"}
                     </Typography>
+                    <Stack spacing={1}>
+                      <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                        Sub-tasks
+                      </Typography>
+                      {(goalSubTasks[goal.id] ?? []).map((subtask) => (
+                        <Stack key={subtask.id} direction="row" alignItems="center" spacing={1}>
+                          <Checkbox checked={subtask.completed} onChange={() => void handleToggleSubTask(goal.id, subtask.id)} size="small" />
+                          <Typography sx={{ flex: 1, textDecoration: subtask.completed ? "line-through" : "none" }}>
+                            {subtask.title}
+                          </Typography>
+                          <IconButton size="small" onClick={() => openSubTaskEdit(goal.id, subtask)} aria-label="Edit sub-task">
+                            <EditRoundedIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton size="small" onClick={() => handleDeleteSubTask(goal.id, subtask.id)} aria-label="Delete sub-task">
+                            <DeleteOutlineRoundedIcon fontSize="small" />
+                          </IconButton>
+                        </Stack>
+                      ))}
+                      <Stack direction="row" spacing={1}>
+                        <TextField
+                          size="small"
+                          placeholder="Add sub-task"
+                          value={newSubTaskTitle[goal.id] ?? ""}
+                          onChange={(event) => setNewSubTaskTitle((current) => ({ ...current, [goal.id]: event.target.value }))}
+                          fullWidth
+                        />
+                        <Button variant="outlined" onClick={() => void handleAddSubTask(goal.id)}>
+                          Add
+                        </Button>
+                      </Stack>
+                    </Stack>
                   </Stack>
                 </CardContent>
               </Card>
@@ -221,6 +509,24 @@ export default function GoalsPage() {
         <DialogActions>
           <Button onClick={() => setEditingGoal(null)}>Cancel</Button>
           <Button variant="contained" onClick={() => void handleSaveEdit()}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog open={Boolean(editingSubTask)} onClose={() => setEditingSubTask(null)} fullWidth maxWidth="xs">
+        <DialogTitle>Edit Sub-task</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ pt: 1 }}>
+            <TextField
+              label="Sub-task title"
+              value={editSubTaskTitle}
+              onChange={(event) => setEditSubTaskTitle(event.target.value)}
+              fullWidth
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditingSubTask(null)}>Cancel</Button>
+          <Button variant="contained" onClick={() => void handleSaveSubTaskEdit()}>Save</Button>
         </DialogActions>
       </Dialog>
     </Stack>

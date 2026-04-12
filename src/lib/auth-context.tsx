@@ -43,6 +43,22 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 /**
+ * Returns true when Supabase reports a stale or missing refresh token.
+ */
+function isMissingRefreshTokenError(error: unknown): boolean {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const maybeError = error as { code?: string; message?: string };
+  return (
+    maybeError.code === "refresh_token_not_found"
+    || maybeError.message?.toLowerCase().includes("refresh token not found")
+    || false
+  );
+}
+
+/**
  * Provides authentication state plus initial application data hydration.
  */
 export function AuthProvider({ children }: PropsWithChildren) {
@@ -111,6 +127,21 @@ export function AuthProvider({ children }: PropsWithChildren) {
       }
 
       if (error) {
+        if (isMissingRefreshTokenError(error)) {
+          try {
+            await supabase.auth.signOut({ scope: "local" });
+          } catch {
+            // Best-effort local cleanup only.
+          }
+
+          setUser(null);
+          setProfile(null);
+          clearApplicationState();
+          setAuthError(null);
+          setIsInitializing(false);
+          return;
+        }
+
         setAuthError(error.message);
       }
 
@@ -136,7 +167,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       };
     }
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, session) => {
       const nextUser = session?.user ?? null;
       setUser(nextUser);
       if (!nextUser) {
@@ -146,7 +177,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
         return;
       }
 
-      void hydrateApplicationData(nextUser);
+      if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+        void hydrateApplicationData(nextUser);
+      }
     });
 
     return () => {

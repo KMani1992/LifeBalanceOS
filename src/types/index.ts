@@ -21,14 +21,16 @@ export type FinanceEntryType =
   | "income"
   | "expense"
   | "savings"
-  | "investment";
+  | "investment"
+  | "other";
 
 export type HabitCategory =
   | "learning"
   | "exercise"
   | "kids"
   | "family"
-  | "reflection";
+  | "reflection"
+  | "other";
 
 export interface UserProfile {
   id: string;
@@ -66,6 +68,14 @@ export interface Goal {
   targetDate: string | null;
   completed: boolean;
   completedAt: string | null;
+  createdAt: string;
+}
+
+export interface GoalSubTask {
+  id: string;
+  goalId: string;
+  title: string;
+  completed: boolean;
   createdAt: string;
 }
 
@@ -178,6 +188,14 @@ export interface GoalRow {
   target_date: string | null;
   completed: boolean;
   completed_at: string | null;
+  created_at: string;
+}
+
+export interface GoalSubTaskRow {
+  id: string;
+  goal_id: string;
+  title: string;
+  completed: boolean;
   created_at: string;
 }
 
