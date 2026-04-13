@@ -76,7 +76,7 @@ export default function DashboardPage() {
   const completedHabits = habits.filter((habit) => habit.completedToday).length;
   const scoreNote = `${completedTasks}/${Math.max(tasks.length, 1)} tasks complete, ${goals.filter((goal) => goal.completed).length} goals closed, ${habits.filter((habit) => habit.completedToday).length} habits done today.`;
   // Shifts all card sections 4 px left without affecting the page header.
-  const cardShiftSx = { ml: -5, mr: 0 };
+  const cardShiftSx = { ml: "-4px", mr: "-4px" };
 
   /**
    * Creates a daily task and persists it in Supabase.
@@ -224,7 +224,12 @@ export default function DashboardPage() {
               />
             </Grid>
             <Grid item xs={12} lg={4}>
-              <Stack direction={{ xs: "column", lg: "row" }} spacing={2} alignItems="stretch" sx={{ height: "100%" }}>
+              <Stack
+                direction={{ xs: "column", lg: "row" }}
+                spacing={2}
+                alignItems="stretch"
+                sx={{ height: { xs: "auto", lg: "100%" } }}
+              >
                 <Card sx={{ flex: 1, minWidth: 0 }}>
                   <CardContent sx={{ p: { xs: 2.5, md: 3 } }}>
                     <StatCard
@@ -236,11 +241,18 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
                 <Card sx={{ flex: 1, minWidth: 0 }}>
-                  <CardContent sx={{ p: { xs: 2.5, md: 3 }, height: "100%", display: "flex", flexDirection: "column" }}>
+                  <CardContent
+                    sx={{
+                      p: { xs: 2.5, md: 3 },
+                      height: { xs: "auto", lg: "100%" },
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
                     <Typography variant="h6" sx={{ fontWeight: 700, mb: 1.5 }}>
                       Quick Actions
                     </Typography>
-                    <Stack spacing={1.25} sx={{ flex: 1 }}>
+                    <Stack spacing={1.25} sx={{ flex: { xs: "unset", lg: 1 } }}>
                       <Button component={Link} href="/daily" variant="contained" fullWidth sx={{ minHeight: 44 }}>
                         Daily Planner
                       </Button>
