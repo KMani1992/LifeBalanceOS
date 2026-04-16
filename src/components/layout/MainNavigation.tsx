@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "Daily", href: "/daily" },
   { label: "Weekly Review", href: "/weekly-review" },
+  { label: "User Guide", href: "/user-guide" },
   { label: "Goals", href: "/goals" },
   { label: "Kids", href: "/kids" },
   { label: "Finance", href: "/finance" },

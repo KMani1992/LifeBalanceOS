@@ -25,7 +25,8 @@ export const demoDailyTasks: DailyTask[] = [
   {
     id: "task-2",
     title: "30 minute mobility session",
-    category: "health",
+    category: "peace",
+    subCategory: "health",
     completed: false,
     createdAt: now,
     completedAt: null,

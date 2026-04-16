@@ -7,12 +7,14 @@ import ChildCareRoundedIcon from "@mui/icons-material/ChildCareRounded";
 import EventNoteRoundedIcon from "@mui/icons-material/EventNoteRounded";
 import GrassRoundedIcon from "@mui/icons-material/GrassRounded";
 import InsightsRoundedIcon from "@mui/icons-material/InsightsRounded";
+import CalendarMonthRoundedIcon from "@mui/icons-material/CalendarMonthRounded";
 import RadarRoundedIcon from "@mui/icons-material/RadarRounded";
 import SchoolRoundedIcon from "@mui/icons-material/SchoolRounded";
 import SavingsRoundedIcon from "@mui/icons-material/SavingsRounded";
 import SpaRoundedIcon from "@mui/icons-material/SpaRounded";
 import TaskAltRoundedIcon from "@mui/icons-material/TaskAltRounded";
 import TrackChangesRoundedIcon from "@mui/icons-material/TrackChangesRounded";
+import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import {
   Box,
   Divider,
@@ -36,7 +38,9 @@ const groups = [
       { label: "Dashboard", href: "/dashboard", icon: RadarRoundedIcon },
       { label: "Daily Planner", href: "/daily", icon: TaskAltRoundedIcon },
       { label: "Weekly Review", href: "/weekly-review", icon: InsightsRoundedIcon },
+      { label: "Monthly Review", href: "/monthly-review", icon: CalendarMonthRoundedIcon },
       { label: "Knowledge Base", href: "/knowledge-base", icon: SchoolRoundedIcon },
+      { label: "User Guide", href: "/user-guide", icon: MenuBookRoundedIcon },
     ],
   },
   {

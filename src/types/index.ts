@@ -1,15 +1,25 @@
 
 export type LifePillar = "career" | "family" | "finance" | "peace";
 
-export type DailyTaskCategory =
-  | "career"
-  | "health"
-  | "family"
-  | "kids"
-  | "finance"
-  | "personal";
+// 4 core pillars ONLY — extended via sub_category
+export type DailyTaskCategory = LifePillar;
 
-export type GoalCategory = "career" | "family" | "finance" | "peace";
+export type GoalCategory = LifePillar;
+
+// Sub-categories for granular grouping without creating new pillars
+export type SubCategory = "kids" | "health" | "personal" | "general";
+
+export type FamilySubCategory = "kids" | "general";
+
+export type PeaceSubCategory = "health" | "personal" | "general";
+
+export type GoalType = "master" | "milestone" | "task";
+
+export type GoalPeriod = "daily" | "weekly" | "monthly" | "one-time";
+
+export type GoalRepeat = "none" | "weekly" | "monthly";
+
+export type WeekTag = "week1" | "week2" | "week3" | "week4";
 
 export type KidsActivityType =
   | "study"
@@ -43,9 +53,13 @@ export interface DailyTask {
   id: string;
   title: string;
   category: DailyTaskCategory;
+  subCategory?: SubCategory | null;
   completed: boolean;
+  taskDate?: string | null;
   createdAt: string;
   completedAt: string | null;
+  goalId?: string | null;
+  weekTag?: WeekTag | null;
 }
 
 export interface WeeklyReview {
@@ -68,6 +82,30 @@ export interface Goal {
   targetDate: string | null;
   completed: boolean;
   completedAt: string | null;
+  createdAt: string;
+  subCategory?: SubCategory | null;
+  goalType?: GoalType;
+  period?: GoalPeriod;
+  levelCurrent?: number;
+  levelTarget?: number;
+  repeat?: GoalRepeat;
+}
+
+export interface Milestone {
+  id: string;
+  goalId: string;
+  title: string;
+  completed: boolean;
+  createdAt: string;
+}
+
+export interface MonthlyReview {
+  id: string;
+  userId: string;
+  month: string;
+  improved: string;
+  notImproved: string;
+  levelChange: string;
   createdAt: string;
 }
 
@@ -117,6 +155,7 @@ export interface Habit {
   streak: number;
   completedToday: boolean;
   createdAt: string;
+  subCategory?: SubCategory | null;
 }
 
 export interface HabitLog {
@@ -161,9 +200,13 @@ export interface DailyTaskRow {
   user_id: string;
   title: string;
   category: DailyTaskCategory;
+  sub_category?: SubCategory | null;
   completed: boolean;
+  task_date?: string | null;
   created_at: string;
   completed_at: string | null;
+  goal_id: string | null;
+  week_tag: WeekTag | null;
 }
 
 export interface WeeklyReviewRow {
@@ -185,9 +228,33 @@ export interface GoalRow {
   title: string;
   description: string | null;
   category: GoalCategory;
+  sub_category: SubCategory | null;
   target_date: string | null;
   completed: boolean;
   completed_at: string | null;
+  created_at: string;
+  goal_type: string | null;
+  period: string | null;
+  level_current: number | null;
+  level_target: number | null;
+  repeat: string | null;
+}
+
+export interface MilestoneRow {
+  id: string;
+  goal_id: string;
+  title: string;
+  completed: boolean;
+  created_at: string;
+}
+
+export interface MonthlyReviewRow {
+  id: string;
+  user_id: string;
+  month: string | null;
+  improved: string | null;
+  not_improved: string | null;
+  level_change: string | null;
   created_at: string;
 }
 
@@ -237,6 +304,7 @@ export interface HabitRow {
   user_id: string;
   title: string;
   category: HabitCategory;
+  sub_category?: SubCategory | null;
   target_frequency: number;
   created_at: string;
 }
@@ -257,6 +325,11 @@ export interface GardenTaskRow {
   due_date: string | null;
   completed_at: string | null;
   created_at: string;
+}
+
+export interface LevelUpSuggestion {
+  canLevelUp: boolean;
+  message: string;
 }
 
 export const moduleColors: Record<LifePillar, string> = {

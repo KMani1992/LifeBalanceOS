@@ -5,6 +5,7 @@ import financeReducer from "@/store/slices/financeSlice";
 import goalsReducer from "@/store/slices/goalsSlice";
 import habitsReducer from "@/store/slices/habitSlice";
 import kidsReducer from "@/store/slices/kidsSlice";
+import monthlyReviewReducer from "@/store/slices/monthlyReviewSlice";
 import reflectionReducer from "@/store/slices/reflectionSlice";
 import weeklyReviewReducer from "@/store/slices/weeklyReviewSlice";
 
@@ -12,6 +13,7 @@ export const store = configureStore({
   reducer: {
     daily: dailyReducer,
     weeklyReviews: weeklyReviewReducer,
+    monthlyReviews: monthlyReviewReducer,
     goals: goalsReducer,
     finance: financeReducer,
     kids: kidsReducer,

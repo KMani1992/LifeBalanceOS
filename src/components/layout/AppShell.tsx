@@ -1,12 +1,13 @@
 "use client";
 
-import { PropsWithChildren, useMemo, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { Box } from "@mui/material";
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/common/Navbar";
 import Sidebar, { drawerWidth } from "@/components/common/Sidebar";
 import AuthGate from "@/components/auth/AuthGate";
 import { ROUTE_META } from "@/constants/navigation";
+import { cleanupWeeklySuggestionHistory } from "@/lib/useWeeklySummary";
 
 type BreadcrumbItem = {
   label: string;
@@ -20,6 +21,11 @@ type BreadcrumbItem = {
 export default function AppShell({ children }: PropsWithChildren) {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Cleanup old duplicate history entries on first render
+  useEffect(() => {
+    cleanupWeeklySuggestionHistory();
+  }, []);
 
   const meta = useMemo(
     () => ROUTE_META[pathname] ?? ROUTE_META["/dashboard"],

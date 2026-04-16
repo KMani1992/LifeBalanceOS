@@ -12,10 +12,13 @@ import {
   GardenTask,
   GardenTaskRow,
   Goal,
+  GoalCategory,
+  GoalPeriod,
+  GoalRepeat,
+  GoalRow,
   GoalSubTask,
   GoalSubTaskRow,
-  GoalCategory,
-  GoalRow,
+  GoalType,
   Habit,
   HabitCategory,
   HabitLogRow,
@@ -23,10 +26,15 @@ import {
   KidsActivity,
   KidsActivityRow,
   KidsActivityType,
+  Milestone,
+  MilestoneRow,
+  MonthlyReview,
+  MonthlyReviewRow,
   Reflection,
   ReflectionRow,
   UserProfile,
   UserProfileRow,
+  WeekTag,
   WeeklyReview,
   WeeklyReviewRow,
 } from "@/types";
@@ -34,6 +42,7 @@ import {
 export interface ApplicationData {
   dailyTasks: DailyTask[];
   weeklyReviews: WeeklyReview[];
+  monthlyReviews: MonthlyReview[];
   goals: Goal[];
   kidsActivities: KidsActivity[];
   financeEntries: FinanceEntry[];
@@ -104,9 +113,13 @@ function mapDailyTask(row: DailyTaskRow): DailyTask {
     id: row.id,
     title: row.title,
     category: row.category,
+    subCategory: row.sub_category ?? null,
     completed: row.completed,
+    taskDate: row.task_date ?? toDateOnly(row.created_at),
     createdAt: row.created_at,
     completedAt: row.completed_at,
+    goalId: row.goal_id ?? null,
+    weekTag: (row.week_tag as WeekTag | null) ?? null,
   };
 }
 
@@ -139,6 +152,39 @@ function mapGoal(row: GoalRow): Goal {
     targetDate: row.target_date,
     completed: row.completed,
     completedAt: row.completed_at,
+    createdAt: row.created_at,
+    goalType: (row.goal_type as GoalType | null) ?? "task",
+    period: (row.period as GoalPeriod | null) ?? "one-time",
+    levelCurrent: row.level_current ?? 1,
+    levelTarget: row.level_target ?? 5,
+    repeat: (row.repeat as GoalRepeat | null) ?? "none",
+  };
+}
+
+/**
+ * Maps a milestone row to the application model.
+ */
+function mapMilestone(row: MilestoneRow): Milestone {
+  return {
+    id: row.id,
+    goalId: row.goal_id,
+    title: row.title,
+    completed: row.completed,
+    createdAt: row.created_at,
+  };
+}
+
+/**
+ * Maps a monthly review row to the application model.
+ */
+function mapMonthlyReview(row: MonthlyReviewRow): MonthlyReview {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    month: row.month ?? toDateOnly(row.created_at),
+    improved: row.improved ?? "",
+    notImproved: row.not_improved ?? "",
+    levelChange: row.level_change ?? "",
     createdAt: row.created_at,
   };
 }
@@ -256,6 +302,7 @@ function mapHabit(row: HabitRow, logs: HabitLogRow[]): Habit {
     id: row.id,
     title: row.title,
     category: row.category,
+    subCategory: row.sub_category ?? null,
     targetFrequency: row.target_frequency,
     streak: calculateHabitStreak(logs),
     completedToday: logs.some((log) => isToday(log.completed_date)),
@@ -417,20 +464,30 @@ export async function ensureUserProfile(user: User): Promise<UserProfile> {
  * Loads all persisted module data required by the application shell.
  */
 export async function loadApplicationData(): Promise<ApplicationData> {
-  const [dailyTasks, weeklyReviews, goals, kidsActivities, financeEntries, reflections, habits] =
-    await Promise.all([
-      listDailyTasks(),
-      listWeeklyReviews(),
-      listGoals(),
-      listKidsActivities(),
-      listFinanceEntries(),
-      listReflections(),
-      listHabits(),
-    ]);
+  const [
+    dailyTasks,
+    weeklyReviews,
+    monthlyReviews,
+    goals,
+    kidsActivities,
+    financeEntries,
+    reflections,
+    habits,
+  ] = await Promise.all([
+    listDailyTasks(),
+    listWeeklyReviews(),
+    listMonthlyReviews(),
+    listGoals(),
+    listKidsActivities(),
+    listFinanceEntries(),
+    listReflections(),
+    listHabits(),
+  ]);
 
   return {
     dailyTasks,
     weeklyReviews,
+    monthlyReviews,
     goals,
     kidsActivities,
     financeEntries,
@@ -456,11 +513,21 @@ export async function listDailyTasks(): Promise<DailyTask[]> {
 /**
  * Creates a daily task for the authenticated user.
  */
-export async function createDailyTask(userId: string, payload: { title: string; category: DailyTaskCategory }): Promise<DailyTask> {
+export async function createDailyTask(
+  userId: string,
+  payload: { title: string; category: DailyTaskCategory; subCategory?: string | null; weekTag?: string | null; taskDate?: string | null },
+): Promise<DailyTask> {
   const client = requireSupabase();
   const { data, error } = await client
     .from("daily_tasks")
-    .insert({ user_id: userId, title: payload.title, category: payload.category, completed: false })
+    .insert({
+      user_id: userId,
+      title: payload.title,
+      category: payload.category,
+      sub_category: payload.subCategory ?? null,
+      week_tag: payload.weekTag ?? null,
+      completed: false,
+    })
     .select("*")
     .single();
 
@@ -495,12 +562,17 @@ export async function updateDailyTaskCompletion(id: string, completed: boolean):
  */
 export async function updateDailyTask(
   id: string,
-  payload: { title: string; category: DailyTaskCategory },
+  payload: { title: string; category: DailyTaskCategory; subCategory?: string | null; weekTag?: string | null; taskDate?: string | null },
 ): Promise<DailyTask> {
   const client = requireSupabase();
   const { data, error } = await client
     .from("daily_tasks")
-    .update({ title: payload.title, category: payload.category })
+    .update({
+      title: payload.title,
+      category: payload.category,
+      sub_category: payload.subCategory ?? null,
+      week_tag: payload.weekTag ?? null,
+    })
     .eq("id", id)
     .select("*")
     .single();
@@ -601,7 +673,18 @@ export async function listGoals(): Promise<Goal[]> {
  */
 export async function createGoal(
   userId: string,
-  payload: { title: string; description: string; category: GoalCategory; targetDate: string | null },
+  payload: {
+    title: string;
+    description: string;
+    category: GoalCategory;
+    subCategory?: string | null;
+    targetDate: string | null;
+    goalType?: GoalType;
+    period?: GoalPeriod;
+    levelCurrent?: number;
+    levelTarget?: number;
+    repeat?: GoalRepeat;
+  },
 ): Promise<Goal> {
   const client = requireSupabase();
   const { data, error } = await client
@@ -611,8 +694,14 @@ export async function createGoal(
       title: payload.title,
       description: payload.description,
       category: payload.category,
+      sub_category: payload.subCategory ?? null,
       target_date: payload.targetDate,
       completed: false,
+      goal_type: payload.goalType ?? "task",
+      period: payload.period ?? "one-time",
+      level_current: payload.levelCurrent ?? 1,
+      level_target: payload.levelTarget ?? 5,
+      repeat: payload.repeat ?? "none",
     })
     .select("*")
     .single();
@@ -1068,16 +1157,40 @@ export async function deleteGardenTask(id: string): Promise<void> {
 }
 
 /**
- * Updates a goal's editable fields.
+ * Updates a goal's editable fields including new enhancement columns.
  */
 export async function updateGoal(
   id: string,
-  payload: { title: string; description: string; category: GoalCategory; targetDate: string | null },
+  payload: {
+    title: string;
+    description: string;
+    category: GoalCategory;
+    subCategory?: string | null;
+    targetDate: string | null;
+    goalType?: GoalType;
+    period?: GoalPeriod;
+    levelCurrent?: number;
+    levelTarget?: number;
+    repeat?: GoalRepeat;
+  },
 ): Promise<Goal> {
   const client = requireSupabase();
+  const updatePayload: Record<string, unknown> = {
+    title: payload.title,
+    description: payload.description,
+    category: payload.category,
+    sub_category: payload.subCategory ?? null,
+    target_date: payload.targetDate,
+  };
+  if (payload.goalType !== undefined) updatePayload.goal_type = payload.goalType;
+  if (payload.period !== undefined) updatePayload.period = payload.period;
+  if (payload.levelCurrent !== undefined) updatePayload.level_current = payload.levelCurrent;
+  if (payload.levelTarget !== undefined) updatePayload.level_target = payload.levelTarget;
+  if (payload.repeat !== undefined) updatePayload.repeat = payload.repeat;
+
   const { data, error } = await client
     .from("goals")
-    .update({ title: payload.title, description: payload.description, category: payload.category, target_date: payload.targetDate })
+    .update(updatePayload)
     .eq("id", id)
     .select("*")
     .single();
@@ -1181,4 +1294,179 @@ export async function updateHabit(
     .single();
   if (error) { throw new Error(error.message ?? "Failed to update habit."); }
   return mapHabit(data as HabitRow, []);
+}
+
+// ===================================================
+// Milestones
+// ===================================================
+
+/**
+ * Fetches milestones for a specific goal.
+ */
+export async function listMilestones(goalId: string): Promise<Milestone[]> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("milestones")
+    .select("*")
+    .eq("goal_id", goalId)
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    if (error.code === "42P01" || error.message?.includes("milestones")) return [];
+    throw new Error(error.message ?? "Failed to load milestones.");
+  }
+
+  return ((data ?? []) as MilestoneRow[]).map(mapMilestone);
+}
+
+/**
+ * Creates a milestone under a goal.
+ */
+export async function createMilestone(goalId: string, title: string): Promise<Milestone> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("milestones")
+    .insert({ goal_id: goalId, title: title.trim(), completed: false })
+    .select("*")
+    .single();
+
+  if (error) throw new Error(error.message ?? "Failed to create milestone.");
+  return mapMilestone(data as MilestoneRow);
+}
+
+/**
+ * Toggles a milestone completion.
+ */
+export async function updateMilestoneCompletion(id: string, completed: boolean): Promise<Milestone> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("milestones")
+    .update({ completed })
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) throw new Error(error.message ?? "Failed to update milestone.");
+  return mapMilestone(data as MilestoneRow);
+}
+
+/**
+ * Deletes a milestone.
+ */
+export async function deleteMilestone(id: string): Promise<void> {
+  const client = requireSupabase();
+  const { error } = await client.from("milestones").delete().eq("id", id);
+  if (error) throw new Error(error.message ?? "Failed to delete milestone.");
+}
+
+/**
+ * Updates editable fields of a daily task including goal_id and week_tag.
+ */
+export async function updateDailyTaskGoalLink(
+  id: string,
+  payload: { goalId: string | null; weekTag: string | null },
+): Promise<DailyTask> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("daily_tasks")
+    .update({ goal_id: payload.goalId, week_tag: payload.weekTag })
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) throw new Error(error.message ?? "Failed to update task goal link.");
+  return mapDailyTask(data as DailyTaskRow);
+}
+
+// ===================================================
+// Monthly Reviews
+// ===================================================
+
+/**
+ * Fetches the authenticated user's monthly reviews.
+ */
+export async function listMonthlyReviews(): Promise<MonthlyReview[]> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("monthly_reviews")
+    .select("*")
+    .order("month", { ascending: false });
+
+  if (error) {
+    if (error.code === "42P01" || error.message?.includes("monthly_reviews")) return [];
+    throw new Error(error.message ?? "Failed to load monthly reviews.");
+  }
+
+  return ((data ?? []) as MonthlyReviewRow[]).map(mapMonthlyReview);
+}
+
+/**
+ * Creates a monthly review record.
+ */
+export async function createMonthlyReview(
+  userId: string,
+  payload: { month: string; improved: string; notImproved: string; levelChange: string },
+): Promise<MonthlyReview> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("monthly_reviews")
+    .insert({
+      user_id: userId,
+      month: payload.month,
+      improved: payload.improved,
+      not_improved: payload.notImproved,
+      level_change: payload.levelChange,
+    })
+    .select("*")
+    .single();
+
+  if (error) throw new Error(error.message ?? "Failed to create monthly review.");
+  return mapMonthlyReview(data as MonthlyReviewRow);
+}
+
+/**
+ * Updates a monthly review's editable fields.
+ */
+export async function updateMonthlyReview(
+  id: string,
+  payload: { improved: string; notImproved: string; levelChange: string },
+): Promise<MonthlyReview> {
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("monthly_reviews")
+    .update({ improved: payload.improved, not_improved: payload.notImproved, level_change: payload.levelChange })
+    .eq("id", id)
+    .select("*")
+    .single();
+
+  if (error) throw new Error(error.message ?? "Failed to update monthly review.");
+  return mapMonthlyReview(data as MonthlyReviewRow);
+}
+
+/**
+ * Deletes a monthly review.
+ */
+export async function deleteMonthlyReview(id: string): Promise<void> {
+  const client = requireSupabase();
+  const { error } = await client.from("monthly_reviews").delete().eq("id", id);
+  if (error) throw new Error(error.message ?? "Failed to delete monthly review.");
+}
+
+/**
+ * Increments the level_current of a goal by 1 (up to level_target).
+ */
+export async function promoteGoalLevel(goal: { id: string; levelCurrent?: number; levelTarget?: number }): Promise<Goal> {
+  const current = goal.levelCurrent ?? 1;
+  const target = goal.levelTarget ?? 5;
+  const next = Math.min(current + 1, target);
+  const client = requireSupabase();
+  const { data, error } = await client
+    .from("goals")
+    .update({ level_current: next })
+    .eq("id", goal.id)
+    .select("*")
+    .single();
+
+  if (error) throw new Error(error.message ?? "Failed to promote goal level.");
+  return mapGoal(data as GoalRow);
 }

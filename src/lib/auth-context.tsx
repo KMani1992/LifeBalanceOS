@@ -20,6 +20,7 @@ import { setFinanceEntries } from "@/store/slices/financeSlice";
 import { setGoals } from "@/store/slices/goalsSlice";
 import { setHabits } from "@/store/slices/habitSlice";
 import { setKidsActivities } from "@/store/slices/kidsSlice";
+import { setMonthlyReviews } from "@/store/slices/monthlyReviewSlice";
 import { setReflections } from "@/store/slices/reflectionSlice";
 import { setWeeklyReviews } from "@/store/slices/weeklyReviewSlice";
 import { AppDispatch } from "@/store/store";
@@ -75,6 +76,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const clearApplicationState = useCallback(() => {
     dispatch(setTasks([]));
     dispatch(setWeeklyReviews([]));
+    dispatch(setMonthlyReviews([]));
     dispatch(setGoals([]));
     dispatch(setKidsActivities([]));
     dispatch(setFinanceEntries([]));
@@ -93,6 +95,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       setProfile(ensuredProfile);
       dispatch(setTasks(appData.dailyTasks));
       dispatch(setWeeklyReviews(appData.weeklyReviews));
+      dispatch(setMonthlyReviews(appData.monthlyReviews));
       dispatch(setGoals(appData.goals));
       dispatch(setKidsActivities(appData.kidsActivities));
       dispatch(setFinanceEntries(appData.financeEntries));

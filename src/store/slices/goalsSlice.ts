@@ -1,6 +1,6 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Goal, GoalCategory } from "@/types";
+import { Goal, GoalCategory, GoalPeriod, GoalRepeat, GoalType } from "@/types";
 
 interface GoalsState {
   goals: Goal[];
@@ -19,7 +19,17 @@ const goalsSlice = createSlice({
     },
     addGoal: (
       state,
-      action: PayloadAction<Goal | { title: string; description: string; category: GoalCategory; targetDate: string | null }>,
+      action: PayloadAction<Goal | {
+        title: string;
+        description: string;
+        category: GoalCategory;
+        targetDate: string | null;
+        goalType?: GoalType;
+        period?: GoalPeriod;
+        levelCurrent?: number;
+        levelTarget?: number;
+        repeat?: GoalRepeat;
+      }>,
     ) => {
       if ("id" in action.payload) {
         state.goals.unshift(action.payload);
@@ -35,6 +45,11 @@ const goalsSlice = createSlice({
         completed: false,
         completedAt: null,
         createdAt: new Date().toISOString(),
+        goalType: action.payload.goalType ?? "task",
+        period: action.payload.period ?? "one-time",
+        levelCurrent: action.payload.levelCurrent ?? 1,
+        levelTarget: action.payload.levelTarget ?? 5,
+        repeat: action.payload.repeat ?? "none",
       });
     },
     replaceGoal: (state, action: PayloadAction<Goal>) => {

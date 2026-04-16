@@ -1,6 +1,6 @@
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DailyTask, DailyTaskCategory } from "@/types";
+import { DailyTask, DailyTaskCategory, WeekTag } from "@/types";
 
 interface DailyState {
   tasks: DailyTask[];
@@ -19,7 +19,7 @@ const dailySlice = createSlice({
     },
     addTask: (
       state,
-      action: PayloadAction<DailyTask | { title: string; category: DailyTaskCategory }>,
+      action: PayloadAction<DailyTask | { title: string; category: DailyTaskCategory; goalId?: string | null; weekTag?: WeekTag | null; taskDate?: string | null }>,
     ) => {
       if ("id" in action.payload) {
         state.tasks.unshift(action.payload);
@@ -31,8 +31,11 @@ const dailySlice = createSlice({
         title: action.payload.title,
         category: action.payload.category,
         completed: false,
+        taskDate: action.payload.taskDate ?? new Date().toISOString().slice(0, 10),
         createdAt: new Date().toISOString(),
         completedAt: null,
+        goalId: action.payload.goalId ?? null,
+        weekTag: action.payload.weekTag ?? null,
       });
     },
     replaceTask: (state, action: PayloadAction<DailyTask>) => {

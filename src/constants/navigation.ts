@@ -44,8 +44,16 @@ export const ROUTE_META: Record<string, RouteMeta> = {
     title: "Garden",
     subtitle: "Keep recurring home care simple, visible, and easy to complete.",
   },
+  "/monthly-review": {
+    title: "Monthly Review",
+    subtitle: "Reflect on the month, track level changes, and set next-month intent.",
+  },
   "/knowledge-base": {
     title: "Knowledge Base",
     subtitle: "Bilingual quick guide for daily rhythm and intentional decisions.",
+  },
+  "/user-guide": {
+    title: "User Guide",
+    subtitle: "Simple daily, weekly, and monthly instructions to use Life Balance OS effectively.",
   },
 };
