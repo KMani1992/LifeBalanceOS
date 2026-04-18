@@ -122,7 +122,7 @@ export default function GoalsPage() {
     | "longTermFirst"
     | "categoryAZ"
     | "categoryZA"
-  >("categoryAZ");
+  >("longTermFirst");
   const [viewMode, setViewMode] = useState<"tile" | "list">("list");
   const [expandedGoalIds, setExpandedGoalIds] = useState<Record<string, boolean>>({});
   const [isGoalsCleanupRunning, setIsGoalsCleanupRunning] = useState(false);
@@ -322,6 +322,24 @@ export default function GoalsPage() {
         if (aLongTerm !== bLongTerm) {
           return aLongTerm ? -1 : 1;
         }
+
+        // Keep category ordering stable while reviewing long-term priorities.
+        const categoryPriority: Record<GoalCategory, number> = {
+          career: 0,
+          family: 1,
+          finance: 2,
+          peace: 3,
+        };
+        const categoryOrder = categoryPriority[a.category] - categoryPriority[b.category];
+        if (categoryOrder !== 0) {
+          return categoryOrder;
+        }
+
+        const createdOrder = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        if (createdOrder !== 0) {
+          return createdOrder;
+        }
+
         return a.title.localeCompare(b.title);
       }
 

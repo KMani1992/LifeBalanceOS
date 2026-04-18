@@ -71,6 +71,7 @@ export default function AppShell({ children }: PropsWithChildren) {
             title={meta.title}
             subtitle={meta.subtitle}
             breadcrumbs={breadcrumbItems}
+            pathname={pathname}
             onOpenSidebar={() => setMobileOpen(true)}
           />
           <Box

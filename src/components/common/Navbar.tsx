@@ -20,19 +20,21 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { drawerWidth } from "@/components/common/Sidebar";
+import ModuleQuickGuide from "@/components/common/ModuleQuickGuide";
 import { useAuth } from "@/lib/auth-context";
 
 interface NavbarProps {
   title: string;
   subtitle: string;
   breadcrumbs: Array<{ label: string; href?: string }>;
+  pathname: string;
   onOpenSidebar: () => void;
 }
 
 /**
  * Renders the top application bar with context, user identity, and profile dropdown.
  */
-export default function Navbar({ title, subtitle, breadcrumbs, onOpenSidebar }: NavbarProps) {
+export default function Navbar({ title, subtitle, breadcrumbs, pathname, onOpenSidebar }: NavbarProps) {
   const { profile, signOut } = useAuth();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isProfileOpen = Boolean(anchorEl);
@@ -68,9 +70,22 @@ export default function Navbar({ title, subtitle, breadcrumbs, onOpenSidebar }: 
           <MenuRoundedIcon />
         </IconButton>
         <Stack spacing={{ xs: 0.15, md: 0.25 }} sx={{ minWidth: 0, flex: 1 }}>
-          <Typography variant="h5" sx={{ lineHeight: 1.1, fontSize: { xs: "1.15rem", md: "1.65rem" } }}>
-            {title}
-          </Typography>
+          <Stack direction="row" spacing={0.75} alignItems="center" sx={{ minWidth: 0, width: "fit-content", maxWidth: "100%" }}>
+            <Typography
+              variant="h5"
+              noWrap
+              sx={{
+                lineHeight: 1.1,
+                fontSize: { xs: "1.15rem", md: "1.65rem" },
+                minWidth: 0,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {title}
+            </Typography>
+            <ModuleQuickGuide pathname={pathname} />
+          </Stack>
           <Breadcrumbs
             aria-label="breadcrumb"
             separator="/"
