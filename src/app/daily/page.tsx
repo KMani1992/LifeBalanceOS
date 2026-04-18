@@ -165,7 +165,7 @@ export default function DailyPlannerPage() {
     (state: RootState) => state.reflections.reflections,
   );
   const [quickMode, setQuickMode] = useState(true);
-  const [plannerView, setPlannerView] = useState<"today" | "all">("all");
+  const [plannerView, setPlannerView] = useState<"today" | "all">("today");
   const [taskSortBy, setTaskSortBy] = useState<
     "category-asc" | "category-desc"
   >("category-asc");
@@ -1295,7 +1295,7 @@ export default function DailyPlannerPage() {
                         spacing={1}
                         sx={{
                           p: 1.25,
-                          borderRadius: 2,
+                          borderRadius: 1.5,
                           border: "1px solid",
                           borderColor: "divider",
                           flexShrink: 0,
