@@ -64,7 +64,7 @@ export default function ModuleQuickGuide({ pathname }: ModuleQuickGuideProps) {
         aria-labelledby="quick-guide-dialog-title"
         PaperProps={{
           sx: {
-            borderRadius: { xs: 2, md: 2.5 },
+            borderRadius: { xs: 1.5, md: 2 },
           },
         }}
       >
