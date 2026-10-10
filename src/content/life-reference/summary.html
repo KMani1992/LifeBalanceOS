@@ -1,0 +1,3231 @@
+<!doctype html>
+<html data-saved=""><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link id="icon-font" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.42.0/dist/tabler-icons.min.css" media="print" onload="this.media='all'"><noscript><link id="icon-font" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.42.0/dist/tabler-icons.min.css"></noscript><style>
+:root{--font-anthropic-sans:"anthropic-sans", ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;--font-anthropic-serif:"anthropic-serif", ui-serif, Georgia, "Times New Roman", serif}
+:root {
+  --radius: calc(0.5rem * var(--cds-rem-scale, 1));
+  --radius-composer: calc(0.875rem * var(--cds-rem-scale, 1));
+  --h-control: calc(2rem * var(--cds-rem-scale, 1));
+  --h-control-nested: calc(1.375rem * var(--cds-rem-scale, 1));
+  --icon: calc(1.25rem * var(--cds-rem-scale, 1));
+  --pad-xs: calc(0.375rem * var(--cds-rem-scale, 1));
+  --pad-sm: calc(0.5rem * var(--cds-rem-scale, 1));
+  --pad-md: calc(0.75rem * var(--cds-rem-scale, 1));
+  --pad-lg: calc(1rem * var(--cds-rem-scale, 1));
+  --pad-xl: calc(1.5rem * var(--cds-rem-scale, 1));
+  --gap-xs: calc(0.5rem * var(--cds-rem-scale, 1));
+  --gap-sm: calc(0.75rem * var(--cds-rem-scale, 1));
+  --gap-md: calc(1rem * var(--cds-rem-scale, 1));
+  --gap-lg: calc(1.75rem * var(--cds-rem-scale, 1));
+  --gap-xl: calc(2.5rem * var(--cds-rem-scale, 1));
+  --outset-x: 0px;
+  --outset-y: 0px;
+  --border-editor-comment-target: var(--yellow-450);
+  --shadow-drop-ring: inset 0 0 0 2px var(--fill-accent);
+  --shadow-drop-ring-danger: inset 0 0 0 2px var(--fill-danger);
+  --shadow-drop-glow: inset 0 0 24px -2px hsl(from var(--fill-accent) h s l / 20%);
+  --shadow-drop-glow-danger: inset 0 0 24px -2px hsl(from var(--fill-danger) h s l / 20%);
+  --ring-hairline: 1px;
+  --font-mono: var(--font-mono-override,) var(--font-anthropic-mono, "SF Mono"), "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-mono-ui: var(--font-anthropic-mono, "SF Mono"), "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --font-system: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "PingFang TC", "Hiragino Sans", "Apple SD Gothic Neo", sans-serif;
+  --font-sans: var(--font-anthropic-sans, var(--font-system)), var(--font-system);
+  --font-sans-display: var(--font-anthropic-sans-display, var(--font-sans)), var(--font-sans);
+  --font-voice: var(--font-anthropic-serif, ui-serif), ui-serif, Georgia, "Times New Roman", serif;
+  --ease-out: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-snap: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.3, 0.64, 1);
+  --dur-fast: 60ms;
+  --dur-snap: 120ms;
+  --dur-base: 200ms;
+  --dur-sheet: 300ms;
+  --dur-slow: 450ms;
+  --btn-spring: linear(0, 0.2459, 0.6526, 0.9468, 1.0764, 1.0915, 1.0585, 1.0219, 0.9993, 0.9914, 0.9921, 0.9957, 0.9988, 1.0004, 1);
+  --black: #000000;
+  --oncolor-200: hsl(60 6.7% 97.1% / 0.75);
+  --oncolor-300: hsl(60 6.7% 97.1% / 0.5);
+  --clay: #d97757;
+  --clay-emphasized: #c6613f;
+  --heather: #cbcadb;
+  --plum: #827dbd;
+  --cactus: #bcd1ca;
+  --mineral: #629987;
+  --gray-0: #ffffff;
+  --gray-10: #fcfcfb;
+  --gray-20: #f9f9f7;
+  --gray-30: #f6f6f4;
+  --gray-40: #f3f3f0;
+  --gray-50: #f0efec;
+  --gray-60: #edece8;
+  --gray-70: #eae9e4;
+  --gray-80: #e7e6e1;
+  --gray-90: #e4e3dd;
+  --gray-100: #e1e0d9;
+  --gray-150: #d2d1c7;
+  --gray-200: #c3c2b7;
+  --gray-250: #b4b3a8;
+  --gray-300: #a5a49a;
+  --gray-350: #97958d;
+  --gray-400: #898781;
+  --gray-450: #7b7974;
+  --gray-500: #6d6b67;
+  --gray-550: #5f5e5a;
+  --gray-600: #52514e;
+  --gray-650: #454442;
+  --gray-700: #383835;
+  --gray-750: #2c2c2a;
+  --gray-800: #20201f;
+  --gray-810: #1e1e1d;
+  --gray-820: #1c1c1b;
+  --gray-830: #1a1a19;
+  --gray-840: #181817;
+  --gray-850: #151515;
+  --gray-860: #131313;
+  --gray-870: #111111;
+  --gray-880: #0f0f0f;
+  --gray-890: #0d0d0d;
+  --gray-900: #0b0b0b;
+  --red-0: #ffffff;
+  --red-10: #fffbfb;
+  --red-20: #fef7f7;
+  --red-30: #fef3f3;
+  --red-40: #fdefef;
+  --red-50: #fbebeb;
+  --red-60: #fae7e7;
+  --red-70: #fae3e3;
+  --red-80: #fadfdf;
+  --red-90: #fadada;
+  --red-100: #fad6d6;
+  --red-150: #f7c1c1;
+  --red-200: #f4abab;
+  --red-250: #f09595;
+  --red-300: #ec7e7e;
+  --red-350: #e66767;
+  --red-400: #e34948;
+  --red-450: #d03b3b;
+  --red-500: #b93535;
+  --red-550: #a32c2c;
+  --red-600: #8e2626;
+  --red-650: #791e1e;
+  --red-700: #641919;
+  --red-750: #511212;
+  --red-800: #3c0e0e;
+  --red-810: #380d0d;
+  --red-820: #340c0c;
+  --red-830: #310b0b;
+  --red-840: #2d0a0a;
+  --red-850: #280a0a;
+  --red-860: #230b0a;
+  --red-870: #1d0b0a;
+  --red-880: #170c0b;
+  --red-890: #110c0b;
+  --red-900: #0b0b0b;
+  --orange-0: #ffffff;
+  --orange-10: #fefbfa;
+  --orange-20: #fdf7f5;
+  --orange-30: #fcf4f0;
+  --orange-40: #faf0ec;
+  --orange-50: #f9ece7;
+  --orange-60: #f8e9e2;
+  --orange-70: #f7e5dd;
+  --orange-80: #f7e1d7;
+  --orange-90: #f7dcd1;
+  --orange-100: #f7d8cb;
+  --orange-150: #f3c5b2;
+  --orange-200: #f4ae94;
+  --orange-250: #f09978;
+  --orange-300: #ec835a;
+  --orange-350: #eb6834;
+  --orange-400: #d95926;
+  --orange-450: #c25124;
+  --orange-500: #ae461c;
+  --orange-550: #993d19;
+  --orange-600: #863311;
+  --orange-650: #712b0f;
+  --orange-700: #5d230b;
+  --orange-750: #4b1b08;
+  --orange-800: #371407;
+  --orange-810: #341307;
+  --orange-820: #301106;
+  --orange-830: #2d1006;
+  --orange-840: #290f06;
+  --orange-850: #240e07;
+  --orange-860: #1f0e08;
+  --orange-870: #1a0e09;
+  --orange-880: #150d0a;
+  --orange-890: #100c0b;
+  --orange-900: #0b0b0b;
+  --yellow-0: #ffffff;
+  --yellow-10: #fefcf8;
+  --yellow-20: #fcf8f1;
+  --yellow-30: #fbf5ea;
+  --yellow-40: #f9f2e4;
+  --yellow-50: #f9eeda;
+  --yellow-60: #faebce;
+  --yellow-70: #fae7c2;
+  --yellow-80: #fae3b8;
+  --yellow-90: #f9e0b0;
+  --yellow-100: #f9dca4;
+  --yellow-150: #f9c868;
+  --yellow-200: #fab219;
+  --yellow-250: #eda100;
+  --yellow-300: #db9300;
+  --yellow-350: #c98500;
+  --yellow-400: #b77700;
+  --yellow-450: #a66a00;
+  --yellow-500: #945d00;
+  --yellow-550: #835100;
+  --yellow-600: #734500;
+  --yellow-650: #623900;
+  --yellow-700: #512e00;
+  --yellow-750: #412400;
+  --yellow-800: #311a00;
+  --yellow-810: #2e1800;
+  --yellow-820: #2b1700;
+  --yellow-830: #271500;
+  --yellow-840: #231402;
+  --yellow-850: #1f1204;
+  --yellow-860: #1b1106;
+  --yellow-870: #171007;
+  --yellow-880: #130e09;
+  --yellow-890: #0f0d0a;
+  --yellow-900: #0b0b0b;
+  --green-0: #ffffff;
+  --green-10: #fafdfa;
+  --green-20: #f5fbf4;
+  --green-30: #f0f9ef;
+  --green-40: #ebf7e9;
+  --green-50: #e5f4e4;
+  --green-60: #e0f2de;
+  --green-70: #dbf0d8;
+  --green-80: #d5eed3;
+  --green-90: #d0eccd;
+  --green-100: #caeac7;
+  --green-150: #aee0a9;
+  --green-200: #91d68b;
+  --green-250: #73cb6d;
+  --green-300: #55bf50;
+  --green-350: #35b231;
+  --green-400: #0ca30c;
+  --green-450: #009300;
+  --green-500: #008300;
+  --green-550: #007300;
+  --green-600: #006300;
+  --green-650: #005400;
+  --green-700: #074506;
+  --green-750: #0f350d;
+  --green-800: #11260f;
+  --green-810: #10230f;
+  --green-820: #10210f;
+  --green-830: #101e0f;
+  --green-840: #101b0f;
+  --green-850: #0f180e;
+  --green-860: #0e160e;
+  --green-870: #0e130d;
+  --green-880: #0d100d;
+  --green-890: #0c0e0c;
+  --green-900: #0b0b0b;
+  --aqua-0: #ffffff;
+  --aqua-10: #f9fdfb;
+  --aqua-20: #f3fbf8;
+  --aqua-30: #edf9f4;
+  --aqua-40: #e8f7f1;
+  --aqua-50: #e2f4ed;
+  --aqua-60: #dcf2ea;
+  --aqua-70: #d5f0e6;
+  --aqua-80: #ceefe2;
+  --aqua-90: #c7eddf;
+  --aqua-100: #bfebdb;
+  --aqua-150: #a0e1c9;
+  --aqua-200: #7ad7b4;
+  --aqua-250: #5acba0;
+  --aqua-300: #3bbd8c;
+  --aqua-350: #1baf7a;
+  --aqua-400: #199e70;
+  --aqua-450: #138e65;
+  --aqua-500: #0f7e5c;
+  --aqua-550: #0e6e53;
+  --aqua-600: #065f49;
+  --aqua-650: #095040;
+  --aqua-700: #034235;
+  --aqua-750: #02342b;
+  --aqua-800: #022720;
+  --aqua-810: #02241e;
+  --aqua-820: #02221c;
+  --aqua-830: #021f1a;
+  --aqua-840: #031c18;
+  --aqua-850: #051a16;
+  --aqua-860: #071713;
+  --aqua-870: #081411;
+  --aqua-880: #0a110f;
+  --aqua-890: #0b0e0d;
+  --aqua-900: #0b0b0b;
+  --blue-0: #ffffff;
+  --blue-10: #fafcff;
+  --blue-20: #f5f9fe;
+  --blue-30: #f0f7fe;
+  --blue-40: #ebf4fc;
+  --blue-50: #e7f1fb;
+  --blue-60: #e2eefa;
+  --blue-70: #ddebfa;
+  --blue-80: #d7e8fa;
+  --blue-90: #d2e5fa;
+  --blue-100: #cde2fb;
+  --blue-150: #b7d3f6;
+  --blue-200: #9ec5f4;
+  --blue-250: #86b6ef;
+  --blue-300: #6da7ec;
+  --blue-350: #5598e7;
+  --blue-400: #3987e5;
+  --blue-450: #2a78d6;
+  --blue-500: #256abf;
+  --blue-550: #1c5cab;
+  --blue-600: #184f95;
+  --blue-650: #104281;
+  --blue-700: #0d366b;
+  --blue-750: #062b57;
+  --blue-800: #032042;
+  --blue-810: #031e3d;
+  --blue-820: #021c39;
+  --blue-830: #021a36;
+  --blue-840: #021831;
+  --blue-850: #03162c;
+  --blue-860: #051426;
+  --blue-870: #07121f;
+  --blue-880: #091018;
+  --blue-890: #0a0d11;
+  --blue-900: #0b0b0b;
+  --violet-0: #ffffff;
+  --violet-10: #fcfbff;
+  --violet-20: #f8f8ff;
+  --violet-30: #f5f4ff;
+  --violet-40: #f2f1ff;
+  --violet-50: #efedff;
+  --violet-60: #ebeafe;
+  --violet-70: #e8e6fe;
+  --violet-80: #e5e2fd;
+  --violet-90: #e2dffd;
+  --violet-100: #dfdbfd;
+  --violet-150: #cfcafb;
+  --violet-200: #bfb9f5;
+  --violet-250: #b0a7f2;
+  --violet-300: #a096eb;
+  --violet-350: #9085e9;
+  --violet-400: #8173e3;
+  --violet-450: #7161e0;
+  --violet-500: #6250d6;
+  --violet-550: #5645be;
+  --violet-600: #4a3aa7;
+  --violet-650: #3e318e;
+  --violet-700: #322777;
+  --violet-750: #271e60;
+  --violet-800: #1d1649;
+  --violet-810: #1b1544;
+  --violet-820: #19133f;
+  --violet-830: #17123b;
+  --violet-840: #151036;
+  --violet-850: #130f32;
+  --violet-860: #110e2b;
+  --violet-870: #0f0e23;
+  --violet-880: #0e0d1b;
+  --violet-890: #0c0c13;
+  --violet-900: #0b0b0b;
+  --magenta-0: #ffffff;
+  --magenta-10: #fefbfc;
+  --magenta-20: #fef6f9;
+  --magenta-30: #fdf2f6;
+  --magenta-40: #fbeff3;
+  --magenta-50: #faebf0;
+  --magenta-60: #f9e6ed;
+  --magenta-70: #f9e2eb;
+  --magenta-80: #f9dee8;
+  --magenta-90: #f9d9e5;
+  --magenta-100: #f9d4e2;
+  --magenta-150: #f3c0d3;
+  --magenta-200: #f3a8c3;
+  --magenta-250: #ed93b4;
+  --magenta-300: #e87ba4;
+  --magenta-350: #e46191;
+  --magenta-400: #d55181;
+  --magenta-450: #c04873;
+  --magenta-500: #ad3d66;
+  --magenta-550: #993458;
+  --magenta-600: #862a4c;
+  --magenta-650: #722340;
+  --magenta-700: #5e1c34;
+  --magenta-750: #4c1429;
+  --magenta-800: #390f1f;
+  --magenta-810: #360d1c;
+  --magenta-820: #320c1a;
+  --magenta-830: #2f0b18;
+  --magenta-840: #2b0a16;
+  --magenta-850: #270a14;
+  --magenta-860: #220a12;
+  --magenta-870: #1c0b11;
+  --magenta-880: #170b0f;
+  --magenta-890: #110b0d;
+  --magenta-900: #0b0b0b;
+  --role-accent-50: var(--blue-50);
+  --role-accent-100: var(--blue-100);
+  --role-accent-250: var(--blue-250);
+  --role-accent-300: var(--blue-300);
+  --role-accent-400: var(--blue-400);
+  --role-accent-450: var(--blue-450);
+  --role-accent-600: var(--blue-600);
+  --role-accent-700: var(--blue-700);
+  --role-accent-800: var(--blue-800);
+  --role-accent-850: var(--blue-850);
+  --role-accent-fill: var(--role-accent-450);
+  --role-accent-fill-hover: var(--role-accent-400);
+  --role-accent-on: var(--gray-0);
+  --role-danger-100: var(--red-100);
+  --role-danger-250: var(--red-250);
+  --role-danger-300: var(--red-300);
+  --role-danger-400: var(--red-400);
+  --role-danger-450: var(--red-450);
+  --role-danger-600: var(--red-600);
+  --role-danger-700: var(--red-700);
+  --role-danger-800: var(--red-800);
+  --role-danger-fill: var(--role-danger-450);
+  --role-danger-fill-hover: var(--role-danger-400);
+  --role-danger-on: var(--gray-0);
+  --role-success-100: var(--green-100);
+  --role-success-250: var(--green-250);
+  --role-success-400: var(--green-400);
+  --role-success-450: var(--green-450);
+  --role-success-600: var(--green-600);
+  --role-success-700: var(--green-700);
+  --role-success-800: var(--green-800);
+  --role-success-fill: var(--role-success-450);
+  --role-success-fill-hover: var(--role-success-400);
+  --role-success-on: var(--gray-900);
+  --role-warning-100: var(--yellow-100);
+  --role-warning-200: var(--yellow-200);
+  --role-warning-250: var(--yellow-250);
+  --role-warning-300: var(--yellow-300);
+  --role-warning-600: var(--yellow-600);
+  --role-warning-700: var(--yellow-700);
+  --role-warning-800: var(--yellow-800);
+  --role-warning-fill: var(--role-warning-200);
+  --role-warning-fill-hover: var(--role-warning-250);
+  --role-warning-on: var(--gray-900);
+  --role-pro-100: var(--violet-100);
+  --role-pro-250: var(--violet-250);
+  --role-pro-300: var(--violet-300);
+  --role-pro-400: var(--violet-400);
+  --role-pro-450: var(--violet-450);
+  --role-pro-600: var(--violet-600);
+  --role-pro-700: var(--violet-700);
+  --role-pro-800: var(--violet-800);
+  --role-pro-fill: var(--role-pro-450);
+  --role-pro-fill-hover: var(--role-pro-400);
+  --role-pro-on: var(--gray-0);
+  --role-tooltip-bg: var(--gray-900);
+  --role-tooltip-fg: var(--gray-0);
+  --fill-accent: var(--role-accent-fill);
+  --fill-accent-hover: var(--role-accent-fill-hover);
+  --fill-danger: var(--role-danger-fill);
+  --fill-danger-hover: var(--role-danger-fill-hover);
+  --fill-success: var(--role-success-fill);
+  --fill-success-hover: var(--role-success-fill-hover);
+  --fill-warning: var(--role-warning-fill);
+  --fill-warning-hover: var(--role-warning-fill-hover);
+  --fill-pro: var(--role-pro-fill);
+  --fill-pro-hover: var(--role-pro-fill-hover);
+  --fill-brand: var(--clay-emphasized);
+  --fill-brand-hover: var(--clay);
+  --bg-accent-muted: color-mix(in srgb, var(--fill-accent) 10%, transparent);
+  --bg-highlight: color-mix(in srgb, var(--fill-warning) 33%, transparent);
+  --bg-editor-claude-pending: color-mix(in srgb, var(--clay) 22%, transparent);
+  --bg-editor-highlight-yellow: var(--bg-highlight);
+  --bg-editor-highlight-green: color-mix(in srgb, var(--green-300) 33%, transparent);
+  --bg-editor-highlight-blue: color-mix(in srgb, var(--blue-300) 33%, transparent);
+  --bg-editor-highlight-magenta: color-mix(in srgb, var(--magenta-300) 33%, transparent);
+  --bg-editor-highlight-violet: color-mix(in srgb, var(--violet-300) 33%, transparent);
+  --bg-editor-highlight-gray: color-mix(in srgb, var(--gray-300) 33%, transparent);
+  --bg-editor-collaborator-1: color-mix(in srgb, var(--editor-collaborator-1) 22%, transparent);
+  --bg-editor-collaborator-2: color-mix(in srgb, var(--editor-collaborator-2) 22%, transparent);
+  --bg-editor-collaborator-3: color-mix(in srgb, var(--editor-collaborator-3) 22%, transparent);
+  --bg-editor-collaborator-4: color-mix(in srgb, var(--editor-collaborator-4) 22%, transparent);
+  --bg-editor-collaborator-5: color-mix(in srgb, var(--editor-collaborator-5) 22%, transparent);
+  --bg-editor-collaborator-6: color-mix(in srgb, var(--editor-collaborator-6) 22%, transparent);
+  --bg-editor-comment: color-mix(in srgb, var(--fill-warning) 20%, transparent);
+  --bg-editor-comment-active: color-mix(in srgb, var(--fill-warning) 45%, transparent);
+  --font-size-caption: calc(0.75rem * var(--cds-rem-scale, 1));
+  --font-size-footnote: calc(0.8125rem * var(--cds-rem-scale, 1));
+  --font-size-code: calc(0.8125rem * var(--cds-rem-scale, 1));
+  --font-size-body: calc(0.875rem * var(--cds-rem-scale, 1));
+  --font-size-prose: 1rem;
+  --font-size-heading: calc(0.9375rem * var(--cds-rem-scale, 1));
+  --font-size-title: calc(1.375rem * var(--cds-rem-scale, 1));
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 580;
+  --font-weight-bold: 600;
+  --leading-caption: calc(1.0625rem * var(--cds-rem-scale, 1));
+  --leading-footnote: calc(1.0625rem * var(--cds-rem-scale, 1));
+  --leading-code: calc(1.1875rem * var(--cds-rem-scale, 1));
+  --leading-body: calc(1.25rem * var(--cds-rem-scale, 1));
+  --leading-prose: 1.5rem;
+  --leading-heading: calc(1.25rem * var(--cds-rem-scale, 1));
+  --leading-title: calc(1.75rem * var(--cds-rem-scale, 1));
+  --on-accent: var(--role-accent-on);
+  --on-danger: var(--role-danger-on);
+  --on-success: var(--role-success-on);
+  --on-warning: var(--role-warning-on);
+  --on-pro: var(--role-pro-on);
+  --on-brand: #ffffff;
+  --editor-collaborator-1: var(--violet-450);
+  --editor-collaborator-2: var(--magenta-450);
+  --editor-collaborator-3: var(--aqua-500);
+  --editor-collaborator-4: var(--green-500);
+  --editor-collaborator-5: var(--yellow-500);
+  --editor-collaborator-6: var(--gray-500);
+  --opacity-disabled: 0.4;
+  --opacity-icon-secondary: 0.4;
+  --z-modal: 40;
+  --z-coachmark: 35;
+  --z-popover: 50;
+  --z-tooltip: 50;
+  --z-toast: 60;
+}
+:root,
+[data-mode="light"],
+[data-mode="dark"],
+[data-mode="system"] {
+  --border: var(--alpha-2);
+  --border-accent: var(--role-accent-250);
+  --border-danger: var(--role-danger-250);
+  --border-success: var(--role-success-250);
+  --border-warning: var(--role-warning-250);
+  --border-pro: var(--role-pro-250);
+  --border-editor-comment: var(--yellow-400);
+  --border-editor-comment-open: var(--yellow-450);
+  --border-git-added: color-mix(in srgb, var(--text-git-added) 40%, transparent);
+  --border-git-removed: color-mix(in srgb, var(--text-git-removed) 40%, transparent);
+  --border-git-modified: color-mix(in srgb, var(--text-git-modified) 40%, transparent);
+  --border-git-merged: color-mix(in srgb, var(--text-git-merged) 40%, transparent);
+  --border-git-closed: color-mix(in srgb, var(--text-git-closed) 40%, transparent);
+  --border-git-conflicting: color-mix(in srgb, var(--text-git-conflicting) 40%, transparent);
+  --border-git-draft: color-mix(in srgb, var(--text-git-draft) 40%, transparent);
+  --border-git-opened: var(--border-git-added);
+  --border-git-queued: var(--border-git-modified);
+  --border-strong: var(--alpha-3);
+  --border-stronger: hsl(from var(--neutral-900) h s l / 40%);
+  --shadow-sm: 0 1px 2px 0 hsl(from var(--gray-900) h s l / 6%), 0 2px 8px 0 var(--shadow-color);
+  --shadow-md: 0 2px 4px 0 hsl(from var(--gray-900) h s l / 7%), 0 6px 16px 0 var(--shadow-color);
+  --shadow-lg: 0 4px 8px 0 hsl(from var(--gray-900) h s l / 8%), 0 12px 28px -2px var(--shadow-color);
+  --shadow-color: hsl(from var(--gray-900) h s l / 8%);
+  --shadow-popover: 0 8px 24px rgb(0 0 0 / 0.12), 0 2px 6px rgb(0 0 0 / 0.08);
+  --ring-outer: 1px;
+  --ring-inner: 0px;
+  --ring-color: var(--border);
+  --focus-shadow: inset 0 0 0 1px var(--page-bg), 0 0 0 1px var(--fill-accent), 0 0 6px 1px var(--bg-accent);
+  --focus-shadow-danger: inset 0 0 0 1px var(--page-bg), 0 0 0 1px var(--fill-danger), 0 0 6px 1px var(--bg-danger);
+  --pictogram-highlight-default: var(--gray-80);
+  --pictogram-highlight-heather: var(--heather);
+  --pictogram-highlight-cactus: var(--cactus);
+  --neutral-0: var(--gray-0);
+  --neutral-10: var(--gray-10);
+  --neutral-20: var(--gray-20);
+  --neutral-30: var(--gray-30);
+  --neutral-40: var(--gray-40);
+  --neutral-50: var(--gray-50);
+  --neutral-60: var(--gray-60);
+  --neutral-70: var(--gray-70);
+  --neutral-80: var(--gray-80);
+  --neutral-90: var(--gray-90);
+  --neutral-100: var(--gray-100);
+  --neutral-150: var(--gray-150);
+  --neutral-200: var(--gray-200);
+  --neutral-250: var(--gray-250);
+  --neutral-300: var(--gray-300);
+  --neutral-350: var(--gray-350);
+  --neutral-400: var(--gray-400);
+  --neutral-450: var(--gray-450);
+  --neutral-500: var(--gray-500);
+  --neutral-550: var(--gray-550);
+  --neutral-600: var(--gray-600);
+  --neutral-650: var(--gray-650);
+  --neutral-700: var(--gray-700);
+  --neutral-750: var(--gray-750);
+  --neutral-800: var(--gray-800);
+  --neutral-810: var(--gray-810);
+  --neutral-820: var(--gray-820);
+  --neutral-830: var(--gray-830);
+  --neutral-840: var(--gray-840);
+  --neutral-850: var(--gray-850);
+  --neutral-860: var(--gray-860);
+  --neutral-870: var(--gray-870);
+  --neutral-880: var(--gray-880);
+  --neutral-890: var(--gray-890);
+  --neutral-900: var(--gray-900);
+  --alpha-0: hsl(from var(--neutral-900) h s l / 0%);
+  --alpha-1: hsl(from var(--neutral-900) h s l / 5%);
+  --alpha-2: hsl(from var(--neutral-900) h s l / 10%);
+  --alpha-3: hsl(from var(--neutral-900) h s l / 20%);
+  --alpha-4: hsl(from var(--neutral-900) h s l / 35%);
+  --alpha-5: hsl(from var(--neutral-900) h s l / 50%);
+  --alpha-6: hsl(from var(--neutral-900) h s l / 60%);
+  --alpha-7: hsl(from var(--neutral-900) h s l / 70%);
+  --alpha-8: hsl(from var(--neutral-900) h s l / 85%);
+  --alpha-9: hsl(from var(--neutral-900) h s l / 95%);
+  --surface-0: var(--gray-20);
+  --surface-1: var(--gray-10);
+  --surface-2: var(--gray-0);
+  --surface-3: var(--gray-0);
+  --surface-popover: var(--surface-3);
+  --surface-panel: var(--surface-2);
+  --page-bg: var(--surface-0);
+  --fill-git-added: #1a8633;
+  --fill-git-added-hover: #1e9b3b;
+  --fill-git-removed: var(--text-git-removed);
+  --fill-git-removed-hover: #de295f;
+  --fill-git-modified: #8b751c;
+  --fill-git-modified-hover: #a08720;
+  --fill-git-merged: #855fd6;
+  --fill-git-merged-hover: #9473db;
+  --fill-git-closed: #ed0b00;
+  --fill-git-closed-hover: #ff1307;
+  --fill-git-conflicting: #b85b19;
+  --fill-git-conflicting-hover: #c5621b;
+  --fill-git-draft: var(--text-git-draft);
+  --fill-git-draft-hover: #808080;
+  --fill-git-opened: var(--fill-git-added);
+  --fill-git-opened-hover: var(--fill-git-added-hover);
+  --fill-git-queued: var(--fill-git-modified);
+  --fill-git-queued-hover: var(--fill-git-modified-hover);
+  --fill-primary: var(--neutral-900);
+  --fill-primary-hover: var(--neutral-750);
+  --fill-secondary: hsl(0 0% 100% / 0.1);
+  --fill-secondary-hover: var(--alpha-1);
+  --fill-secondary-ring: var(--border);
+  --fill-secondary-pressed-ring: var(--border);
+  --fill-field: hsl(0 0% 100% / 0.5);
+  --fill-field-ring: var(--border);
+  --fill-ghost-hover: var(--alpha-1);
+  --fill-ghost-selected: var(--alpha-2);
+  --fill-disabled: var(--alpha-1);
+  --fill-control: var(--alpha-2);
+  --fill-control-hover: var(--alpha-3);
+  --bg-accent: var(--role-accent-100);
+  --bg-danger: var(--role-danger-100);
+  --bg-success: var(--role-success-100);
+  --bg-warning: var(--role-warning-100);
+  --bg-pro: var(--role-pro-100);
+  --bg-tint-red: rgb(from var(--red-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-red-opaque: var(--red-100);
+  --bg-tint-orange: rgb(from var(--orange-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-orange-opaque: var(--orange-100);
+  --bg-tint-yellow: rgb(from var(--yellow-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-yellow-opaque: var(--yellow-100);
+  --bg-tint-green: rgb(from var(--green-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-green-opaque: var(--green-100);
+  --bg-tint-aqua: rgb(from var(--aqua-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-aqua-opaque: var(--aqua-100);
+  --bg-tint-blue: rgb(from var(--blue-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-blue-opaque: var(--blue-100);
+  --bg-tint-violet: rgb(from var(--violet-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-violet-opaque: var(--violet-100);
+  --bg-tint-magenta: rgb(from var(--magenta-100) calc((r - 163.8) / 0.35) calc((g - 163.8) / 0.35) calc((b - 163.15) / 0.35) / 35%);
+  --bg-tint-magenta-opaque: var(--magenta-100);
+  --bg-git-added: color-mix(in srgb, var(--text-git-added) 20%, transparent);
+  --bg-git-removed: color-mix(in srgb, var(--text-git-removed) 20%, transparent);
+  --bg-git-modified: color-mix(in srgb, var(--text-git-modified) 20%, transparent);
+  --bg-git-merged: color-mix(in srgb, var(--text-git-merged) 20%, transparent);
+  --bg-git-closed: color-mix(in srgb, var(--text-git-closed) 20%, transparent);
+  --bg-git-conflicting: color-mix(in srgb, var(--text-git-conflicting) 20%, transparent);
+  --bg-git-draft: color-mix(in srgb, var(--text-git-draft) 20%, transparent);
+  --bg-git-opened: var(--bg-git-added);
+  --bg-git-queued: var(--bg-git-modified);
+  --bg-editor-canvas: var(--neutral-60);
+  --bg-neutral: var(--alpha-1);
+  --bg-neutral-hover: var(--alpha-2);
+  --bg-user-message: var(--bg-neutral);
+  --backdrop: rgb(0 0 0 / 0.4);
+  --text-accent: var(--role-accent-600);
+  --text-danger: var(--role-danger-600);
+  --text-success: var(--role-success-600);
+  --text-warning: var(--role-warning-600);
+  --text-pro: var(--role-pro-600);
+  --text-tint-red: var(--red-600);
+  --text-tint-orange: var(--orange-600);
+  --text-tint-yellow: var(--yellow-600);
+  --text-tint-green: var(--green-600);
+  --text-tint-aqua: var(--aqua-600);
+  --text-tint-blue: var(--blue-600);
+  --text-tint-violet: var(--violet-600);
+  --text-tint-magenta: var(--magenta-600);
+  --text-git-added: #1e9e3c;
+  --text-git-removed: #cd2054;
+  --text-git-modified: #98801f;
+  --text-git-merged: #8e6bd9;
+  --text-git-closed: #ff3a30;
+  --text-git-conflicting: #c5621b;
+  --text-git-draft: #737373;
+  --text-git-opened: var(--text-git-added);
+  --text-git-queued: var(--text-git-modified);
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-muted: var(--neutral-400);
+  --text-disabled: var(--alpha-4);
+  --on-primary: var(--neutral-0);
+  --on-git-added: var(--gray-0);
+  --on-git-removed: var(--gray-0);
+  --on-git-modified: var(--gray-0);
+  --on-git-merged: var(--gray-0);
+  --on-git-closed: var(--gray-0);
+  --on-git-conflicting: var(--gray-0);
+  --on-git-draft: var(--gray-0);
+  --on-git-opened: var(--on-git-added);
+  --on-git-queued: var(--on-git-modified);
+  --chart-categorical-1: var(--blue-450);
+  --chart-categorical-2: var(--orange-350);
+  --chart-categorical-3: var(--aqua-350);
+  --chart-categorical-4: var(--yellow-250);
+  --chart-categorical-5: var(--magenta-300);
+  --chart-categorical-6: var(--green-500);
+  --chart-categorical-7: var(--violet-500);
+  --chart-categorical-8: var(--red-400);
+  --chart-sequential-1: var(--blue-100);
+  --chart-sequential-2: var(--blue-200);
+  --chart-sequential-3: var(--blue-300);
+  --chart-sequential-4: var(--blue-400);
+  --chart-sequential-5: var(--blue-500);
+  --chart-sequential-6: var(--blue-600);
+  --chart-sequential-7: var(--blue-700);
+  --chart-diverging-1: var(--blue-500);
+  --chart-diverging-2: var(--blue-350);
+  --chart-diverging-3: var(--blue-200);
+  --chart-diverging-4: var(--gray-50);
+  --chart-diverging-5: var(--red-200);
+  --chart-diverging-6: var(--red-350);
+  --chart-diverging-7: var(--red-500);
+  --chart-status-good: var(--green-400);
+  --chart-status-warning: var(--yellow-200);
+  --chart-status-serious: var(--orange-300);
+  --chart-status-critical: var(--red-450);
+  --chart-muted: var(--gray-200);
+  --chart-reference: var(--gray-400);
+  --chart-reference-tint: hsl(from var(--gray-400) h s l / 15%);
+  --chart-grid: var(--alpha-2);
+  --chart-axis: var(--gray-200);
+  --chart-baseline: var(--gray-200);
+}
+@media screen {
+  [data-mode="dark"] {
+    --border-accent: var(--role-accent-700);
+    --border-danger: var(--role-danger-700);
+    --border-success: var(--role-success-700);
+    --border-warning: var(--role-warning-700);
+    --border-pro: var(--role-pro-700);
+    --border-editor-comment: var(--yellow-300);
+    --border-editor-comment-open: var(--yellow-200);
+    --shadow-color: rgba(0, 0, 0, 0.24);
+    --shadow-popover: 0 8px 24px rgb(0 0 0 / 0.32), 0 2px 6px rgb(0 0 0 / 0.2);
+    --ring-outer: 0px;
+    --ring-inner: 1px;
+    --ring-color: var(--alpha-2);
+    --focus-shadow: inset 0 0 0 1px var(--page-bg), 0 0 0 1px var(--fill-accent), 0 0 6px 1px hsl(from var(--role-accent-600) h s l / 60%);
+    --focus-shadow-danger: inset 0 0 0 1px var(--page-bg), 0 0 0 1px var(--fill-danger), 0 0 6px 1px hsl(from var(--role-danger-600) h s l / 60%);
+    --pictogram-highlight-default: var(--gray-650);
+    --pictogram-highlight-heather: var(--plum);
+    --pictogram-highlight-cactus: var(--mineral);
+    --neutral-0: var(--gray-900);
+    --neutral-10: var(--gray-890);
+    --neutral-20: var(--gray-880);
+    --neutral-30: var(--gray-870);
+    --neutral-40: var(--gray-860);
+    --neutral-50: var(--gray-850);
+    --neutral-60: var(--gray-840);
+    --neutral-70: var(--gray-830);
+    --neutral-80: var(--gray-820);
+    --neutral-90: var(--gray-810);
+    --neutral-100: var(--gray-800);
+    --neutral-150: var(--gray-750);
+    --neutral-200: var(--gray-700);
+    --neutral-250: var(--gray-650);
+    --neutral-300: var(--gray-600);
+    --neutral-350: var(--gray-550);
+    --neutral-400: var(--gray-500);
+    --neutral-450: var(--gray-450);
+    --neutral-500: var(--gray-400);
+    --neutral-550: var(--gray-350);
+    --neutral-600: var(--gray-300);
+    --neutral-650: var(--gray-250);
+    --neutral-700: var(--gray-200);
+    --neutral-750: var(--gray-150);
+    --neutral-800: var(--gray-100);
+    --neutral-810: var(--gray-90);
+    --neutral-820: var(--gray-80);
+    --neutral-830: var(--gray-70);
+    --neutral-840: var(--gray-60);
+    --neutral-850: var(--gray-50);
+    --neutral-860: var(--gray-40);
+    --neutral-870: var(--gray-30);
+    --neutral-880: var(--gray-20);
+    --neutral-890: var(--gray-10);
+    --neutral-900: var(--gray-0);
+    --surface-0: var(--gray-900);
+    --surface-1: var(--gray-850);
+    --surface-2: var(--gray-830);
+    --surface-3: var(--gray-800);
+    --fill-git-added: var(--text-git-added);
+    --fill-git-added-hover: #27c840;
+    --fill-git-removed-hover: #ff1342;
+    --fill-git-modified: var(--text-git-modified);
+    --fill-git-modified-hover: #fac800;
+    --fill-git-merged: var(--text-git-merged);
+    --fill-git-merged-hover: #a67dff;
+    --fill-git-closed: var(--text-git-closed);
+    --fill-git-closed-hover: #ff4940;
+    --fill-git-conflicting: var(--text-git-conflicting);
+    --fill-git-conflicting-hover: #f97a1f;
+    --fill-git-draft-hover: #999999;
+    --fill-primary-hover: var(--gray-100);
+    --fill-secondary: var(--alpha-2);
+    --fill-secondary-hover: hsl(from var(--neutral-900) h s l / 14%);
+    --fill-secondary-ring: transparent;
+    --fill-field: var(--alpha-1);
+    --fill-ghost-hover: hsl(from var(--neutral-900) h s l / 7.5%);
+    --fill-ghost-selected: hsl(from var(--neutral-900) h s l / 15%);
+    --bg-accent: var(--role-accent-800);
+    --bg-danger: var(--role-danger-800);
+    --bg-success: var(--role-success-800);
+    --bg-warning: var(--role-warning-800);
+    --bg-pro: var(--role-pro-800);
+    --bg-tint-red: rgb(from var(--red-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-red-opaque: var(--red-800);
+    --bg-tint-orange: rgb(from var(--orange-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-orange-opaque: var(--orange-800);
+    --bg-tint-yellow: rgb(from var(--yellow-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-yellow-opaque: var(--yellow-800);
+    --bg-tint-green: rgb(from var(--green-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-green-opaque: var(--green-800);
+    --bg-tint-aqua: rgb(from var(--aqua-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-aqua-opaque: var(--aqua-800);
+    --bg-tint-blue: rgb(from var(--blue-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-blue-opaque: var(--blue-800);
+    --bg-tint-violet: rgb(from var(--violet-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-violet-opaque: var(--violet-800);
+    --bg-tint-magenta: rgb(from var(--magenta-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-magenta-opaque: var(--magenta-800);
+    --backdrop: rgb(0 0 0 / 0.5);
+    --text-accent: var(--role-accent-300);
+    --text-danger: var(--role-danger-300);
+    --text-success: var(--role-success-400);
+    --text-warning: var(--role-warning-300);
+    --text-pro: var(--role-pro-300);
+    --text-tint-red: var(--red-300);
+    --text-tint-orange: var(--orange-300);
+    --text-tint-yellow: var(--yellow-300);
+    --text-tint-green: var(--green-300);
+    --text-tint-aqua: var(--aqua-300);
+    --text-tint-blue: var(--blue-300);
+    --text-tint-violet: var(--violet-300);
+    --text-tint-magenta: var(--magenta-300);
+    --text-git-added: #32d74b;
+    --text-git-removed: #ff2c56;
+    --text-git-modified: #ffd014;
+    --text-git-merged: #b796ff;
+    --text-git-closed: #ff6159;
+    --text-git-conflicting: #fa832e;
+    --text-git-draft: #a6a6a6;
+    --text-primary: var(--gray-50);
+    --text-secondary: var(--gray-200);
+    --text-muted: var(--gray-400);
+    --on-git-added: var(--gray-900);
+    --on-git-removed: var(--gray-900);
+    --on-git-modified: var(--gray-900);
+    --on-git-merged: var(--gray-900);
+    --on-git-closed: var(--gray-900);
+    --on-git-conflicting: var(--gray-900);
+    --on-git-draft: var(--gray-900);
+    --chart-categorical-1: var(--blue-400);
+    --chart-categorical-2: var(--orange-400);
+    --chart-categorical-3: var(--aqua-400);
+    --chart-categorical-4: var(--yellow-350);
+    --chart-categorical-5: var(--magenta-400);
+    --chart-categorical-6: var(--green-500);
+    --chart-categorical-7: var(--violet-350);
+    --chart-categorical-8: var(--red-350);
+    --chart-sequential-1: var(--blue-700);
+    --chart-sequential-2: var(--blue-600);
+    --chart-sequential-3: var(--blue-500);
+    --chart-sequential-4: var(--blue-400);
+    --chart-sequential-5: var(--blue-300);
+    --chart-sequential-6: var(--blue-200);
+    --chart-sequential-7: var(--blue-100);
+    --chart-diverging-1: var(--blue-300);
+    --chart-diverging-2: var(--blue-450);
+    --chart-diverging-3: var(--blue-600);
+    --chart-diverging-4: var(--gray-700);
+    --chart-diverging-5: var(--red-600);
+    --chart-diverging-6: var(--red-450);
+    --chart-diverging-7: var(--red-300);
+    --chart-status-good: var(--green-400);
+    --chart-status-warning: var(--yellow-200);
+    --chart-status-serious: var(--orange-300);
+    --chart-status-critical: var(--red-450);
+    --chart-muted: var(--gray-550);
+    --chart-reference: var(--gray-350);
+    --chart-reference-tint: hsl(from var(--gray-350) h s l / 15%);
+    --chart-axis: var(--gray-700);
+    --chart-baseline: var(--gray-700);
+  }
+}
+@media screen and (prefers-color-scheme: dark) {
+  :root:where(:not([data-mode="light"])),
+  [data-mode="system"] {
+    --border-accent: var(--role-accent-700);
+    --border-danger: var(--role-danger-700);
+    --border-success: var(--role-success-700);
+    --border-warning: var(--role-warning-700);
+    --border-pro: var(--role-pro-700);
+    --border-editor-comment: var(--yellow-300);
+    --border-editor-comment-open: var(--yellow-200);
+    --shadow-color: rgba(0, 0, 0, 0.24);
+    --shadow-popover: 0 8px 24px rgb(0 0 0 / 0.32), 0 2px 6px rgb(0 0 0 / 0.2);
+    --ring-outer: 0px;
+    --ring-inner: 1px;
+    --ring-color: var(--alpha-2);
+    --focus-shadow: inset 0 0 0 1px var(--page-bg), 0 0 0 1px var(--fill-accent), 0 0 6px 1px hsl(from var(--role-accent-600) h s l / 60%);
+    --focus-shadow-danger: inset 0 0 0 1px var(--page-bg), 0 0 0 1px var(--fill-danger), 0 0 6px 1px hsl(from var(--role-danger-600) h s l / 60%);
+    --pictogram-highlight-default: var(--gray-650);
+    --pictogram-highlight-heather: var(--plum);
+    --pictogram-highlight-cactus: var(--mineral);
+    --neutral-0: var(--gray-900);
+    --neutral-10: var(--gray-890);
+    --neutral-20: var(--gray-880);
+    --neutral-30: var(--gray-870);
+    --neutral-40: var(--gray-860);
+    --neutral-50: var(--gray-850);
+    --neutral-60: var(--gray-840);
+    --neutral-70: var(--gray-830);
+    --neutral-80: var(--gray-820);
+    --neutral-90: var(--gray-810);
+    --neutral-100: var(--gray-800);
+    --neutral-150: var(--gray-750);
+    --neutral-200: var(--gray-700);
+    --neutral-250: var(--gray-650);
+    --neutral-300: var(--gray-600);
+    --neutral-350: var(--gray-550);
+    --neutral-400: var(--gray-500);
+    --neutral-450: var(--gray-450);
+    --neutral-500: var(--gray-400);
+    --neutral-550: var(--gray-350);
+    --neutral-600: var(--gray-300);
+    --neutral-650: var(--gray-250);
+    --neutral-700: var(--gray-200);
+    --neutral-750: var(--gray-150);
+    --neutral-800: var(--gray-100);
+    --neutral-810: var(--gray-90);
+    --neutral-820: var(--gray-80);
+    --neutral-830: var(--gray-70);
+    --neutral-840: var(--gray-60);
+    --neutral-850: var(--gray-50);
+    --neutral-860: var(--gray-40);
+    --neutral-870: var(--gray-30);
+    --neutral-880: var(--gray-20);
+    --neutral-890: var(--gray-10);
+    --neutral-900: var(--gray-0);
+    --surface-0: var(--gray-900);
+    --surface-1: var(--gray-850);
+    --surface-2: var(--gray-830);
+    --surface-3: var(--gray-800);
+    --fill-git-added: var(--text-git-added);
+    --fill-git-added-hover: #27c840;
+    --fill-git-removed-hover: #ff1342;
+    --fill-git-modified: var(--text-git-modified);
+    --fill-git-modified-hover: #fac800;
+    --fill-git-merged: var(--text-git-merged);
+    --fill-git-merged-hover: #a67dff;
+    --fill-git-closed: var(--text-git-closed);
+    --fill-git-closed-hover: #ff4940;
+    --fill-git-conflicting: var(--text-git-conflicting);
+    --fill-git-conflicting-hover: #f97a1f;
+    --fill-git-draft-hover: #999999;
+    --fill-primary-hover: var(--gray-100);
+    --fill-secondary: var(--alpha-2);
+    --fill-secondary-hover: hsl(from var(--neutral-900) h s l / 14%);
+    --fill-secondary-ring: transparent;
+    --fill-field: var(--alpha-1);
+    --fill-ghost-hover: hsl(from var(--neutral-900) h s l / 7.5%);
+    --fill-ghost-selected: hsl(from var(--neutral-900) h s l / 15%);
+    --bg-accent: var(--role-accent-800);
+    --bg-danger: var(--role-danger-800);
+    --bg-success: var(--role-success-800);
+    --bg-warning: var(--role-warning-800);
+    --bg-pro: var(--role-pro-800);
+    --bg-tint-red: rgb(from var(--red-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-red-opaque: var(--red-800);
+    --bg-tint-orange: rgb(from var(--orange-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-orange-opaque: var(--orange-800);
+    --bg-tint-yellow: rgb(from var(--yellow-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-yellow-opaque: var(--yellow-800);
+    --bg-tint-green: rgb(from var(--green-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-green-opaque: var(--green-800);
+    --bg-tint-aqua: rgb(from var(--aqua-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-aqua-opaque: var(--aqua-800);
+    --bg-tint-blue: rgb(from var(--blue-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-blue-opaque: var(--blue-800);
+    --bg-tint-violet: rgb(from var(--violet-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-violet-opaque: var(--violet-800);
+    --bg-tint-magenta: rgb(from var(--magenta-800) calc((r - 5.25) / 0.75) calc((g - 5.25) / 0.75) calc((b - 5.25) / 0.75) / 75%);
+    --bg-tint-magenta-opaque: var(--magenta-800);
+    --backdrop: rgb(0 0 0 / 0.5);
+    --text-accent: var(--role-accent-300);
+    --text-danger: var(--role-danger-300);
+    --text-success: var(--role-success-400);
+    --text-warning: var(--role-warning-300);
+    --text-pro: var(--role-pro-300);
+    --text-tint-red: var(--red-300);
+    --text-tint-orange: var(--orange-300);
+    --text-tint-yellow: var(--yellow-300);
+    --text-tint-green: var(--green-300);
+    --text-tint-aqua: var(--aqua-300);
+    --text-tint-blue: var(--blue-300);
+    --text-tint-violet: var(--violet-300);
+    --text-tint-magenta: var(--magenta-300);
+    --text-git-added: #32d74b;
+    --text-git-removed: #ff2c56;
+    --text-git-modified: #ffd014;
+    --text-git-merged: #b796ff;
+    --text-git-closed: #ff6159;
+    --text-git-conflicting: #fa832e;
+    --text-git-draft: #a6a6a6;
+    --text-primary: var(--gray-50);
+    --text-secondary: var(--gray-200);
+    --text-muted: var(--gray-400);
+    --on-git-added: var(--gray-900);
+    --on-git-removed: var(--gray-900);
+    --on-git-modified: var(--gray-900);
+    --on-git-merged: var(--gray-900);
+    --on-git-closed: var(--gray-900);
+    --on-git-conflicting: var(--gray-900);
+    --on-git-draft: var(--gray-900);
+    --chart-categorical-1: var(--blue-400);
+    --chart-categorical-2: var(--orange-400);
+    --chart-categorical-3: var(--aqua-400);
+    --chart-categorical-4: var(--yellow-350);
+    --chart-categorical-5: var(--magenta-400);
+    --chart-categorical-6: var(--green-500);
+    --chart-categorical-7: var(--violet-350);
+    --chart-categorical-8: var(--red-350);
+    --chart-sequential-1: var(--blue-700);
+    --chart-sequential-2: var(--blue-600);
+    --chart-sequential-3: var(--blue-500);
+    --chart-sequential-4: var(--blue-400);
+    --chart-sequential-5: var(--blue-300);
+    --chart-sequential-6: var(--blue-200);
+    --chart-sequential-7: var(--blue-100);
+    --chart-diverging-1: var(--blue-300);
+    --chart-diverging-2: var(--blue-450);
+    --chart-diverging-3: var(--blue-600);
+    --chart-diverging-4: var(--gray-700);
+    --chart-diverging-5: var(--red-600);
+    --chart-diverging-6: var(--red-450);
+    --chart-diverging-7: var(--red-300);
+    --chart-status-good: var(--green-400);
+    --chart-status-warning: var(--yellow-200);
+    --chart-status-serious: var(--orange-300);
+    --chart-status-critical: var(--red-450);
+    --chart-muted: var(--gray-550);
+    --chart-reference: var(--gray-350);
+    --chart-reference-tint: hsl(from var(--gray-350) h s l / 15%);
+    --chart-axis: var(--gray-700);
+    --chart-baseline: var(--gray-700);
+  }
+}
+:root,
+[data-platform="web"],
+[data-platform="desktop"] {
+  --cursor-interactive: pointer;
+}
+[data-platform="desktop"] {
+  --cursor-interactive: default;
+}
+[data-mode="light"]:not(:root),
+[data-mode="system"]:not(:root) {
+  color-scheme: light;
+}
+@media screen {
+  [data-mode="dark"]:not(:root) {
+    color-scheme: dark;
+  }
+}
+@media screen and (prefers-color-scheme: dark) {
+  [data-mode="system"]:not(:root) {
+    color-scheme: dark;
+  }
+}
+:root {
+  color-scheme: light dark;
+  --font-serif: "anthropic-serif", Georgia, "Times New Roman", serif;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+input,
+select,
+textarea,
+button {
+  font-family: inherit;
+}
+body {
+  font-family:
+    "anthropic-sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  background: transparent;
+}
+html:where(:not([data-saved])),
+:where(html:not([data-saved])) body {
+  scrollbar-width: none;
+}
+html:where(:not([data-saved]))::-webkit-scrollbar,
+:where(html:not([data-saved])) body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+:root {
+  --p: var(--text-primary);
+  --s: var(--text-secondary);
+  --t: var(--text-muted);
+  --bg2: var(--surface-1);
+  --b: var(--border-strong);
+}
+.t {
+  font-size: 14px;
+  fill: var(--p);
+}
+.ts {
+  font-size: 12px;
+  fill: var(--s);
+}
+.th {
+  font-size: 14px;
+  fill: var(--p);
+  font-weight: 500;
+}
+.box {
+  fill: var(--bg2);
+  stroke: var(--b);
+}
+.arr {
+  stroke: var(--t);
+  fill: none;
+  stroke-width: 1.5;
+}
+.node {
+  cursor: pointer;
+}
+.node:hover rect,
+.node:hover .box {
+  filter: brightness(0.97);
+}
+.node:hover text {
+  opacity: 0.8;
+}
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not(
+    form.elicit *
+  ),
+select:not(form.elicit *),
+textarea:not(form.elicit *) {
+  --input-font-size: max(16px, var(--font-text-md-size, 16px));
+  width: 100%;
+  height: calc(var(--input-font-size) * 2.25);
+  padding: 8px 12px;
+  font-size: var(--input-font-size);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 0.5px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+textarea {
+  height: auto;
+  min-height: 80px;
+  resize: vertical;
+}
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not(
+    form.elicit *
+  ):hover,
+select:not(form.elicit *):hover,
+textarea:not(form.elicit *):hover {
+  border-color: var(--border-strong);
+}
+input:not([type="range"]):not([type="checkbox"]):not([type="radio"]):not(
+    form.elicit *
+  ):focus,
+select:not(form.elicit *):focus,
+textarea:not(form.elicit *):focus {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 3px var(--bg-accent);
+}
+select {
+  cursor: pointer;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.1));
+  border-radius: 2px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    transform 0.15s;
+}
+input[type="range"]:hover::-webkit-slider-thumb {
+  border-color: var(--border-stronger);
+  transform: scale(1.1);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+}
+button:not(
+    #action-btns button,
+    :where(#vis-container ~ #larger-btns) button
+  ):not(form.elicit button) {
+  padding: 8px 16px;
+  font-size: var(--font-text-sm-size, 14px);
+  background: transparent;
+  color: var(--text-primary);
+  border: 0.5px solid var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+button:not(
+    #action-btns button,
+    :where(#vis-container ~ #larger-btns) button
+  ):not(form.elicit button):hover {
+  background: var(--surface-1);
+}
+button:not(
+    #action-btns button,
+    :where(#vis-container ~ #larger-btns) button
+  ):not(form.elicit button):active {
+  background: var(--border);
+  transform: scale(0.98);
+}
+form.elicit {
+  background: var(--surface-2);
+  border: 0.5px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.04);
+  margin: 4px 20px 24px;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  font-size: var(--font-text-sm-size, 14px);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition:
+    background-color 200ms ease-out,
+    box-shadow 200ms ease-out,
+    border-radius 200ms ease-out,
+    padding 200ms ease-out,
+    margin 200ms ease-out;
+  --elicit-border-faint: color-mix(in srgb, var(--border) 25%, transparent);
+  --elicit-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+form.elicit :is(button, input, textarea) {
+  font: inherit;
+}
+form.elicit .elicit-header,
+form.elicit .elicit-question {
+  font-family: var(--font-voice);
+  font-size: var(--font-text-md-size, 16px);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+form.elicit .elicit-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: calc(var(--font-text-md-size, 16px) * 2.75);
+  padding: 0 16px;
+  border-bottom: 0.5px solid var(--border);
+}
+form.elicit .elicit-header > svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+form.elicit .elicit-header > span {
+  flex: 1;
+}
+form.elicit .elicit-body {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+form.elicit .elicit-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+form.elicit .elicit-question {
+  margin: 0;
+}
+form.elicit .elicit-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+form.elicit .elicit-pill {
+  padding: 8px 12px;
+  border: 0.5px solid var(--border);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+form.elicit .elicit-pill:hover {
+  border-color: var(--border-strong);
+}
+form.elicit .elicit-pill[data-accent="warning"] {
+  border-color: var(--text-warning);
+  background: color-mix(in srgb, var(--text-warning) 15%, transparent);
+  color: var(--text-warning);
+}
+form.elicit .elicit-pill[data-accent="danger"] {
+  border-color: var(--text-danger);
+  background: color-mix(in srgb, var(--text-danger) 15%, transparent);
+  color: var(--text-danger);
+}
+form.elicit .elicit-pill[data-accent="success"] {
+  border-color: var(--text-success);
+  background: color-mix(in srgb, var(--text-success) 15%, transparent);
+  color: var(--text-success);
+}
+form.elicit .elicit-pill[aria-pressed="true"] {
+  border: 0.5px solid var(--text-accent);
+  background: color-mix(in srgb, var(--text-accent) 15%, transparent);
+  color: var(--text-accent);
+}
+form.elicit .elicit-other {
+  margin-top: 8px;
+  height: calc(var(--font-text-sm-size, 14px) * 40 / 14);
+  padding: 0 12px;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  width: 100%;
+  box-sizing: border-box;
+}
+form.elicit .elicit-other[hidden] {
+  display: none;
+}
+form.elicit .elicit-textarea {
+  min-height: 84px;
+  padding: 12px;
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  resize: vertical;
+  box-sizing: border-box;
+  width: 100%;
+}
+form.elicit .elicit-textarea::placeholder {
+  color: var(--text-muted);
+}
+form.elicit .elicit-date {
+  padding: 12px 16px;
+  border: 0.5px solid var(--border);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-primary);
+  width: fit-content;
+  cursor: pointer;
+}
+form.elicit .elicit-other:focus,
+form.elicit .elicit-textarea:focus,
+form.elicit .elicit-date:focus {
+  outline: none;
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 3px var(--bg-accent);
+}
+form.elicit .elicit-files {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+}
+form.elicit .elicit-dropzone {
+  width: 120px;
+  height: 120px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  box-shadow: var(--elicit-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  background: color-mix(in srgb, var(--text-primary) 2%, var(--surface-2));
+  color: var(--text-muted);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease;
+}
+form.elicit .elicit-dropzone:hover {
+  border-color: var(--text-accent);
+  background: color-mix(in srgb, var(--text-accent) 4%, transparent);
+}
+form.elicit .elicit-dropzone svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+form.elicit .elicit-dropzone input[type="file"] {
+  display: none;
+}
+form.elicit .elicit-file-tile {
+  width: 120px;
+  height: 120px;
+  border: 0.5px solid var(--elicit-border-faint);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--surface-2);
+  box-shadow: var(--elicit-shadow-sm);
+  box-sizing: border-box;
+  position: relative;
+}
+form.elicit .elicit-file-tile .name {
+  font-size: var(--font-text-xs-size, 12px);
+  color: var(--text-primary);
+  word-break: break-word;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+form.elicit .elicit-file-tile .badge {
+  align-self: flex-start;
+  height: calc(var(--font-text-xs-size, 12px) * 1.5);
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  border: 0.5px solid var(--elicit-border-faint);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  box-shadow: var(--elicit-shadow-sm);
+  font-size: calc(var(--font-text-xs-size, 12px) * 0.75);
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+form.elicit .elicit-file-tile .remove {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0.5px solid var(--elicit-border-faint);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    color 120ms ease,
+    background-color 120ms ease;
+}
+form.elicit .elicit-file-tile .remove:hover {
+  color: var(--text-secondary);
+  background: color-mix(in srgb, var(--surface-2) 50%, transparent);
+}
+form.elicit .elicit-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  height: calc(var(--font-text-sm-size, 14px) * 68 / 14);
+  padding: 0 24px;
+  border-top: 0.5px solid var(--border);
+}
+form.elicit .elicit-skip,
+form.elicit .elicit-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--font-text-sm-size, 14px) * 36 / 14);
+  min-width: 80px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 100ms ease-out,
+    border-color 100ms ease-out,
+    transform 150ms cubic-bezier(0.165, 0.85, 0.45, 1);
+}
+form.elicit .elicit-skip:active,
+form.elicit .elicit-submit:active {
+  transform: scale(0.96);
+}
+form.elicit .elicit-skip {
+  border: 0.5px solid color-mix(in srgb, var(--border-strong) 30%, transparent);
+  background: transparent;
+  color: var(--text-primary);
+}
+form.elicit .elicit-skip:hover {
+  background: var(--surface-1);
+  border-color: transparent;
+}
+form.elicit .elicit-submit {
+  border: none;
+  background: var(--text-primary);
+  color: var(--surface-2);
+}
+form.elicit .elicit-submit:hover {
+  transform: scaleX(1.005) scaleY(1.015);
+}
+form.elicit .elicit-submit:hover:active {
+  transform: scale(0.96);
+}
+form.elicit .elicit-body {
+  transition: opacity 150ms ease-out;
+}
+form.elicit.elicit-transitioning .elicit-body {
+  opacity: 0;
+}
+form.elicit.elicit-submitted {
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: none;
+  padding: 16px;
+  margin: 4px;
+}
+form.elicit .elicit-header,
+form.elicit .elicit-footer {
+  transition:
+    opacity 200ms ease-out,
+    height 200ms ease-out,
+    padding 200ms ease-out,
+    border-width 200ms ease-out,
+    visibility 0s linear 200ms;
+}
+form.elicit.elicit-submitted .elicit-header,
+form.elicit.elicit-submitted .elicit-footer {
+  opacity: 0;
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+}
+form.elicit.elicit-submitted .elicit-body {
+  padding: 0;
+}
+form.elicit.elicit-submitted .elicit-body:not(:has(.elicit-summary)) {
+  pointer-events: none;
+  opacity: 0.5;
+}
+form.elicit.elicit-restored,
+form.elicit.elicit-restored .elicit-body,
+form.elicit.elicit-restored .elicit-header,
+form.elicit.elicit-restored .elicit-footer {
+  transition: none;
+}
+form.elicit .elicit-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+form.elicit .elicit-summary-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+form.elicit .elicit-summary-q {
+  font-family: var(--font-voice);
+  font-size: var(--font-text-sm-size, 14px);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+form.elicit .elicit-summary-a {
+  font-weight: 430;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+}
+.leader {
+  stroke: var(--t);
+  stroke-width: 0.5;
+  stroke-dasharray: 4 3;
+  fill: none;
+}
+g.c-purple > rect,
+g.c-purple > ellipse,
+g.c-purple > circle,
+g.c-purple > polygon,
+rect.c-purple,
+ellipse.c-purple,
+circle.c-purple,
+polygon.c-purple {
+  fill: light-dark(#eeedfe, #3c3489);
+  stroke: light-dark(#534ab7, #afa9ec);
+}
+.c-purple > .th,
+.c-purple > .t {
+  fill: light-dark(#3c3489, #cecbf6);
+}
+.c-purple > .ts {
+  fill: light-dark(#534ab7, #afa9ec);
+}
+g.c-teal > rect,
+g.c-teal > ellipse,
+g.c-teal > circle,
+g.c-teal > polygon,
+rect.c-teal,
+ellipse.c-teal,
+circle.c-teal,
+polygon.c-teal {
+  fill: light-dark(#e1f5ee, #085041);
+  stroke: light-dark(#0f6e56, #5dcaa5);
+}
+.c-teal > .th,
+.c-teal > .t {
+  fill: light-dark(#085041, #9fe1cb);
+}
+.c-teal > .ts {
+  fill: light-dark(#0f6e56, #5dcaa5);
+}
+g.c-coral > rect,
+g.c-coral > ellipse,
+g.c-coral > circle,
+g.c-coral > polygon,
+rect.c-coral,
+ellipse.c-coral,
+circle.c-coral,
+polygon.c-coral {
+  fill: light-dark(#faece7, #712b13);
+  stroke: light-dark(#993c1d, #f0997b);
+}
+.c-coral > .th,
+.c-coral > .t {
+  fill: light-dark(#712b13, #f5c4b3);
+}
+.c-coral > .ts {
+  fill: light-dark(#993c1d, #f0997b);
+}
+g.c-pink > rect,
+g.c-pink > ellipse,
+g.c-pink > circle,
+g.c-pink > polygon,
+rect.c-pink,
+ellipse.c-pink,
+circle.c-pink,
+polygon.c-pink {
+  fill: light-dark(#fbeaf0, #72243e);
+  stroke: light-dark(#993556, #ed93b1);
+}
+.c-pink > .th,
+.c-pink > .t {
+  fill: light-dark(#72243e, #f4c0d1);
+}
+.c-pink > .ts {
+  fill: light-dark(#993556, #ed93b1);
+}
+g.c-gray > rect,
+g.c-gray > ellipse,
+g.c-gray > circle,
+g.c-gray > polygon,
+rect.c-gray,
+ellipse.c-gray,
+circle.c-gray,
+polygon.c-gray {
+  fill: light-dark(#f1efe8, #444441);
+  stroke: light-dark(#5f5e5a, #b4b2a9);
+}
+.c-gray > .th,
+.c-gray > .t {
+  fill: light-dark(#444441, #d3d1c7);
+}
+.c-gray > .ts {
+  fill: light-dark(#5f5e5a, #b4b2a9);
+}
+g.c-blue > rect,
+g.c-blue > ellipse,
+g.c-blue > circle,
+g.c-blue > polygon,
+rect.c-blue,
+ellipse.c-blue,
+circle.c-blue,
+polygon.c-blue {
+  fill: light-dark(#e6f1fb, #0c447c);
+  stroke: light-dark(#185fa5, #85b7eb);
+}
+.c-blue > .th,
+.c-blue > .t {
+  fill: light-dark(#0c447c, #b5d4f4);
+}
+.c-blue > .ts {
+  fill: light-dark(#185fa5, #85b7eb);
+}
+g.c-green > rect,
+g.c-green > ellipse,
+g.c-green > circle,
+g.c-green > polygon,
+rect.c-green,
+ellipse.c-green,
+circle.c-green,
+polygon.c-green {
+  fill: light-dark(#eaf3de, #27500a);
+  stroke: light-dark(#3b6d11, #97c459);
+}
+.c-green > .th,
+.c-green > .t {
+  fill: light-dark(#27500a, #c0dd97);
+}
+.c-green > .ts {
+  fill: light-dark(#3b6d11, #97c459);
+}
+g.c-amber > rect,
+g.c-amber > ellipse,
+g.c-amber > circle,
+g.c-amber > polygon,
+rect.c-amber,
+ellipse.c-amber,
+circle.c-amber,
+polygon.c-amber {
+  fill: light-dark(#faeeda, #633806);
+  stroke: light-dark(#854f0b, #ef9f27);
+}
+.c-amber > .th,
+.c-amber > .t {
+  fill: light-dark(#633806, #fac775);
+}
+.c-amber > .ts {
+  fill: light-dark(#854f0b, #ef9f27);
+}
+g.c-red > rect,
+g.c-red > ellipse,
+g.c-red > circle,
+g.c-red > polygon,
+rect.c-red,
+ellipse.c-red,
+circle.c-red,
+polygon.c-red {
+  fill: light-dark(#fcebeb, #791f1f);
+  stroke: light-dark(#a32d2d, #f09595);
+}
+.c-red > .th,
+.c-red > .t {
+  fill: light-dark(#791f1f, #f7c1c1);
+}
+.c-red > .ts {
+  fill: light-dark(#a32d2d, #f09595);
+}
+svg.classDiagram,
+svg.erDiagram {
+  font-size: 13px;
+  max-width: 100%;
+  height: auto;
+}
+svg.classDiagram foreignObject,
+svg.erDiagram foreignObject {
+  overflow: visible;
+}
+svg.classDiagram foreignObject > div,
+svg.erDiagram foreignObject > div {
+  max-width: none !important;
+}
+svg.classDiagram .nodeLabel,
+svg.erDiagram .nodeLabel,
+svg.classDiagram .label foreignObject div,
+svg.erDiagram .label foreignObject div {
+  font-family: var(--font-sans) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: var(--text-secondary) !important;
+}
+svg.classDiagram .label-group .nodeLabel,
+svg.erDiagram .name .nodeLabel {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--text-primary) !important;
+}
+svg.classDiagram .label-group .label {
+  font-weight: 500 !important;
+}
+svg.classDiagram .edgeLabel,
+svg.classDiagram .edgeLabel span,
+svg.classDiagram .edgeTerminals foreignObject div,
+svg.erDiagram .edgeLabel,
+svg.erDiagram .edgeLabel span {
+  font-size: 11px !important;
+  color: var(--text-muted) !important;
+}
+svg.classDiagram .node path[stroke]:not([stroke="none"]),
+svg.classDiagram .divider path,
+svg.erDiagram .node path[stroke]:not([stroke="none"]),
+svg.erDiagram .divider path {
+  stroke: var(--border) !important;
+  stroke-width: 0.5px !important;
+  fill: none !important;
+}
+svg.classDiagram .node .basic path[fill]:not([fill="none"]) {
+  fill: var(--surface-2) !important;
+  stroke: none !important;
+  stroke-width: 0 !important;
+}
+svg.erDiagram .node > g:first-child > path[fill]:not([fill="none"]) {
+  fill: var(--surface-1) !important;
+}
+svg.erDiagram .row-rect-odd path[fill]:not([fill="none"]) {
+  fill: var(--surface-2) !important;
+}
+svg.erDiagram .row-rect-even path[fill]:not([fill="none"]) {
+  fill: var(--surface-1) !important;
+}
+svg.erDiagram .relationshipLine,
+svg.classDiagram .relation {
+  stroke: var(--text-muted) !important;
+  stroke-width: 1px !important;
+}
+svg.classDiagram .marker,
+svg.classDiagram marker path,
+svg.erDiagram .marker,
+svg.erDiagram marker path {
+  stroke: var(--text-muted) !important;
+  stroke-width: 1px !important;
+}
+svg.classDiagram marker path[fill]:not([fill="none"]):not([fill="transparent"]),
+svg.erDiagram marker path[fill]:not([fill="none"]):not([fill="transparent"]) {
+  fill: var(--text-muted) !important;
+}
+svg.classDiagram .labelBkg,
+svg.erDiagram .labelBkg {
+  background-color: var(--surface-2) !important;
+  opacity: 1 !important;
+}
+body {
+  position: relative;
+}
+#vis-container {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  color: var(--text-primary);
+}
+@property --wide-fade-left {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --wide-fade-right {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+:root:not([data-open-larger]) #vis-container.scrolls-wide:not(.whole-width) {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: 32px;
+  scrollbar-width: none;
+}
+#vis-container.scrolls-wide::-webkit-scrollbar {
+  height: 0;
+}
+:root:not([data-open-larger]) #vis-container.scrolls-wide:focus-visible {
+  outline-offset: -2px;
+}
+:root:not([data-open-larger]):not([data-picture])
+  #vis-container.scrolls-wide:not(.whole-width):not(
+    :focus-visible
+  )[data-wide-more] {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--wide-fade-left),
+    #000 calc(100% - var(--wide-fade-right)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--wide-fade-left),
+    #000 calc(100% - var(--wide-fade-right)),
+    transparent
+  );
+}
+#vis-container.whole-width {
+  overflow-x: visible;
+  overflow-y: clip;
+}
+#vis-container.whole-width-block {
+  display: flow-root;
+}
+:where(#vis-container.whole-width) {
+  min-width: 0;
+  min-height: 0;
+}
+#vis-container > svg {
+  display: block;
+  margin-inline: auto;
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+:where(:root[data-center-content] #vis-container) > div:where(:only-of-type) {
+  margin-inline: auto;
+}
+#action-btns {
+  position: absolute;
+  top: min(8px, (100vh - 28px) / 2);
+  right: 8px;
+  z-index: 2147483647;
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+#action-btns[hidden] {
+  display: none;
+}
+body:hover #action-btns,
+#action-btns[data-hold-open] {
+  opacity: 1;
+}
+@media (hover: none) and (pointer: coarse) {
+  #action-btns {
+    display: none;
+  }
+}
+:root[data-keep-menu-clear]
+  #action-btns[data-quiet]:not([data-hold-open]):not(:focus-within) {
+  opacity: 0;
+  pointer-events: none;
+}
+:root[data-keep-menu-clear][data-menu-room]:not([data-open-larger]) body {
+  padding-top: var(--menu-room) !important;
+}
+:root[data-keep-menu-clear][data-menu-held]:not([data-open-larger]) body {
+  min-height: var(--menu-held) !important;
+}
+#vis-container ~ #larger-btns {
+  all: revert;
+  display: contents !important;
+}
+#vis-container ~ #larger-btns::before,
+#vis-container ~ #larger-btns::after {
+  content: none !important;
+}
+#vis-container ~ #larger-btns button {
+  position: relative !important;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+#vis-container ~ #larger-btns button::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+}
+#vis-container ~ #larger-btns button[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: default;
+}
+#vis-container ~ #larger-btns #larger-open {
+  position: absolute !important;
+  top: 8px;
+  top: min(8px, (100vh - 36px) / 2);
+  right: 8px;
+  z-index: 2147483646;
+}
+@media (hover: none) {
+  #vis-container ~ #larger-btns #larger-open[data-resting]:not(:focus-visible) {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #vis-container ~ #larger-btns #larger-open[data-arming] {
+    pointer-events: none;
+  }
+}
+#vis-container ~ #larger-btns #larger-open {
+  transition: opacity 0.2s ease;
+}
+#vis-container ~ #larger-btns #larger-open[hidden],
+#vis-container ~ #larger-btns #larger-zoom[hidden] {
+  display: none !important;
+}
+@media (hover: hover), (pointer: fine) {
+  #vis-container ~ #larger-btns #larger-open {
+    right: 40px;
+  }
+}
+:root[data-open-larger] {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  inset: auto;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  --larger-button-size: 44px;
+}
+:root[data-open-larger] body {
+  display: grid;
+  position: relative;
+  float: none;
+  margin: 0;
+  border: 0;
+  inset: auto;
+  box-sizing: border-box;
+  min-height: 0;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+  grid: none;
+  gap: 0;
+  place-items: start;
+  justify-content: start;
+  align-content: start;
+  height: 100vh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: calc(var(--host-inset-top, 0px) + 12px + var(--larger-lead-y, 0px))
+    calc(
+      var(--host-inset-right, 0px) + 12px + var(--larger-button-size) + 2px +
+        12px
+    )
+    calc(var(--host-inset-bottom, 0px) + 12px)
+    calc(var(--host-inset-left, 0px) + 12px + var(--larger-lead-x, 0px));
+}
+:root[data-open-larger][data-zoomed-in] body {
+  padding-top: calc(
+    var(--host-inset-top, 0px) + 12px + 2 * var(--larger-button-size) + 2px +
+      12px + var(--larger-lead-y, 0px)
+  );
+}
+:root[data-open-larger] body {
+  touch-action: pan-x pan-y;
+}
+:root[data-open-larger] #vis-container {
+  overflow: visible;
+}
+:root[data-open-larger] #action-btns {
+  display: none;
+}
+#vis-container ~ #larger-btns #larger-zoom-status {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+#vis-container ~ #larger-btns #larger-zoom {
+  position: fixed !important;
+  margin: 0;
+  top: calc(var(--host-inset-top, 0px) + 12px);
+  right: calc(var(--host-inset-right, 0px) + 12px);
+  z-index: 2147483646;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--surface-1);
+  border: 1px solid var(--alpha-5);
+  box-shadow: 0 1px 3px var(--alpha-2);
+}
+#vis-container ~ #larger-btns #larger-zoom button {
+  width: var(--larger-button-size);
+  height: var(--larger-button-size);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-primary);
+}
+#vis-container ~ #larger-btns #larger-zoom button::before {
+  content: none;
+}
+#vis-container ~ #larger-btns #larger-zoom button:focus-visible {
+  outline-offset: -2px;
+}
+#vis-container ~ #larger-btns #larger-zoom button + button {
+  border-top: 1px solid var(--alpha-3);
+}
+#vis-container ~ #larger-btns #larger-zoom button[aria-disabled="true"] {
+  opacity: 1;
+}
+#vis-container ~ #larger-btns #larger-zoom button[aria-disabled="true"] svg {
+  opacity: 0.45;
+}
+#action-btns > button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: var(--surface-1);
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+#action-btns > button:hover {
+  background: var(--surface-0);
+}
+:root[data-keep-menu-clear] #action-btns {
+  top: min(4px, (100vh - 22px) / 2);
+  right: 4px;
+}
+:root[data-keep-menu-clear] #action-btns > button {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: transparent;
+  opacity: 0.7;
+  transition:
+    background 0.15s ease,
+    opacity 0.15s ease;
+}
+:root[data-keep-menu-clear] #action-btns:hover > #more-btn,
+:root[data-keep-menu-clear] #action-btns[data-hold-open] > #more-btn,
+:root[data-keep-menu-clear] #action-btns > #more-btn:focus-visible {
+  background: var(--surface-0);
+  opacity: 1;
+}
+:root[data-keep-menu-clear] #action-btns > button > svg {
+  width: 16px;
+  height: 16px;
+  filter: drop-shadow(0 0 1px var(--surface-0));
+}
+#more-popover {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  min-width: 8rem;
+  padding: 6px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-strong);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 2px 8px light-dark(rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.24));
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0s linear 0.15s;
+}
+#more-btn:hover ~ #more-popover,
+#more-popover:hover,
+#action-btns[data-hold-open] #more-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease,
+    visibility 0s;
+}
+.more-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans) !important;
+  color: inherit;
+  transition: background 0.1s ease;
+  white-space: nowrap;
+}
+.more-item[hidden] {
+  display: none;
+}
+.more-item:hover {
+  background: var(--surface-1);
+  color: var(--text-primary);
+}
+.more-item-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.more-item-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.more-item-label {
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-text-sm-size, 14px);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+#action-btns[data-beside] #more-popover {
+  top: 50%;
+  right: calc(100% + 4px);
+  translate: 0 -50%;
+  display: flex;
+  min-width: 0;
+  max-width: calc(100vw - 48px);
+  padding: 0;
+  border-radius: 8px;
+}
+:root[data-keep-menu-clear] #action-btns[data-beside] #more-popover {
+  max-width: calc(100vw - 34px);
+}
+#action-btns[data-beside] .more-item {
+  width: auto;
+  min-width: 0;
+  padding: 3px 8px;
+  gap: 6px;
+}
+#action-btns[data-beside] .more-item-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#action-btns[data-beside] #copy-btn {
+  flex-shrink: 1000000;
+  min-width: 36px;
+}
+#action-btns[data-beside] #copy-btn[title] .more-item-label {
+  display: none;
+}
+#copy-toast.visible ~ #action-btns[data-beside] #more-popover {
+  opacity: 0;
+  visibility: hidden;
+}
+@media (max-width: 640px) {
+  #copy-toast.visible ~ #action-btns #more-popover {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.more-item[aria-busy="true"] {
+  cursor: progress;
+}
+.more-item[aria-busy="true"] .more-item-icon {
+  position: relative;
+}
+.more-item[aria-busy="true"] .more-item-icon svg {
+  visibility: hidden;
+}
+.more-item[aria-busy="true"] .more-item-icon::before,
+.more-item[aria-busy="true"] .more-item-icon::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+}
+.more-item[aria-busy="true"] .more-item-icon::before {
+  border: 1.75px solid color-mix(in srgb, currentColor 25%, transparent);
+}
+.more-item[aria-busy="true"] .more-item-icon::after {
+  background: conic-gradient(transparent 40%, currentColor);
+  -webkit-mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 1.75px),
+    #000 calc(100% - 1.25px)
+  );
+  mask: radial-gradient(
+    farthest-side,
+    transparent calc(100% - 1.75px),
+    #000 calc(100% - 1.25px)
+  );
+  animation: moreItemSpin 1s linear infinite;
+}
+@keyframes moreItemSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .more-item[aria-busy="true"] .more-item-icon::after {
+    animation: none;
+  }
+}
+#vis-container ~ #not-sent {
+  all: revert;
+  position: absolute;
+}
+body[data-not-sent] {
+  flex-wrap: wrap;
+}
+body[data-not-sent] > #vis-container ~ #not-sent {
+  position: static;
+  width: 100%;
+  grid-column: 1 / -1;
+}
+:root[data-open-larger] body[data-not-sent] > #vis-container ~ #not-sent {
+  max-width: calc(
+    100vw - var(--host-inset-left, 0px) - var(--host-inset-right, 0px) - 24px -
+      var(--larger-button-size) - 14px - var(--larger-lead-x, 0px)
+  );
+}
+#vis-container ~ #not-sent > p {
+  margin-top: 8px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: calc(var(--font-text-sm-size, 14px) * 13 / 14);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+#vis-container ~ #not-sent > p[hidden] {
+  display: none;
+}
+#copy-toast {
+  position: fixed;
+  top: 12px;
+  top: min(12px, (100vh - 1lh - 18px) / 2);
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: var(--bg-danger);
+  color: var(--text-danger);
+  border: 1px solid var(--border-danger);
+  font-family: var(--font-sans);
+  font-size: calc(var(--font-text-sm-size, 14px) * 13 / 14);
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  pointer-events: none;
+  opacity: 0;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+  z-index: 2147483647;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: calc(100vw - 88px);
+  text-align: center;
+  white-space: pre-line;
+}
+#copy-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+#vis-container.scripts-loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+#vis-container.scripts-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 10000;
+  overflow: hidden;
+}
+#vis-container.scripts-loading::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: 0;
+  width: 60%;
+  height: 200%;
+  z-index: 10001;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    light-dark(rgba(0, 0, 0, 0.06), rgba(255, 255, 255, 0.08)) 50%,
+    transparent 100%
+  );
+  animation: scriptsShimmer 2s ease-in-out infinite;
+}
+@keyframes scriptsShimmer {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+  }
+}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@keyframes svgFadeInScale {
+  from {
+    opacity: 0;
+    scale: 0.95;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+#vis-container.streaming
+  :where(
+    svg,
+    circle,
+    rect,
+    path,
+    polygon,
+    polyline,
+    line,
+    ellipse,
+    g,
+    text
+  ):not([transform]):not([opacity]) {
+  transition:
+    fill 0.4s ease-out,
+    stroke 0.4s ease-out,
+    opacity 0.4s ease-out;
+  animation: svgFadeInScale 0.5s ease-out;
+  transform-origin: center;
+}
+:root {
+  --color-background-primary: light-dark(rgba(255, 255, 255, 1), rgba(48, 48, 46, 1));
+  --color-background-secondary: light-dark(rgba(245, 244, 237, 1), rgba(38, 38, 36, 1));
+  --color-background-tertiary: light-dark(rgba(250, 249, 245, 1), rgba(20, 20, 19, 1));
+  --color-background-inverse: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
+  --color-background-ghost: light-dark(rgba(255, 255, 255, 0), rgba(48, 48, 46, 0));
+  --color-background-info: light-dark(rgba(214, 228, 246, 1), rgba(37, 62, 95, 1));
+  --color-background-danger: light-dark(rgba(247, 236, 236, 1), rgba(96, 42, 40, 1));
+  --color-background-success: light-dark(rgba(233, 241, 220, 1), rgba(27, 70, 20, 1));
+  --color-background-warning: light-dark(rgba(246, 238, 223, 1), rgba(72, 58, 15, 1));
+  --color-background-disabled: light-dark(rgba(255, 255, 255, 0.5), rgba(48, 48, 46, 0.5));
+  --color-text-primary: light-dark(rgba(20, 20, 19, 1), rgba(250, 249, 245, 1));
+  --color-text-secondary: light-dark(rgba(61, 61, 58, 1), rgba(194, 192, 182, 1));
+  --color-text-tertiary: light-dark(rgba(115, 114, 108, 1), rgba(156, 154, 146, 1));
+  --color-text-inverse: light-dark(rgba(255, 255, 255, 1), rgba(20, 20, 19, 1));
+  --color-text-info: light-dark(rgba(50, 102, 173, 1), rgba(128, 170, 221, 1));
+  --color-text-danger: light-dark(rgba(127, 44, 40, 1), rgba(238, 136, 132, 1));
+  --color-text-success: light-dark(rgba(38, 91, 25, 1), rgba(122, 185, 72, 1));
+  --color-text-warning: light-dark(rgba(90, 72, 21, 1), rgba(209, 160, 65, 1));
+  --color-text-disabled: light-dark(rgba(20, 20, 19, 0.5), rgba(250, 249, 245, 0.5));
+  --color-text-ghost: light-dark(rgba(115, 114, 108, 0.5), rgba(156, 154, 146, 0.5));
+  --color-border-primary: light-dark(rgba(31, 30, 29, 0.4), rgba(222, 220, 209, 0.4));
+  --color-border-secondary: light-dark(rgba(31, 30, 29, 0.3), rgba(222, 220, 209, 0.3));
+  --color-border-tertiary: light-dark(rgba(31, 30, 29, 0.15), rgba(222, 220, 209, 0.15));
+  --color-border-inverse: light-dark(rgba(255, 255, 255, 0.3), rgba(20, 20, 19, 0.15));
+  --color-border-ghost: light-dark(rgba(31, 30, 29, 0), rgba(222, 220, 209, 0));
+  --color-border-info: light-dark(rgba(70, 130, 213, 1), rgba(70, 130, 213, 1));
+  --color-border-danger: light-dark(rgba(167, 61, 57, 1), rgba(205, 92, 88, 1));
+  --color-border-success: light-dark(rgba(67, 116, 38, 1), rgba(89, 145, 48, 1));
+  --color-border-warning: light-dark(rgba(128, 92, 31, 1), rgba(168, 120, 41, 1));
+  --color-border-disabled: light-dark(rgba(31, 30, 29, 0.1), rgba(222, 220, 209, 0.1));
+  --color-ring-primary: light-dark(rgba(20, 20, 19, 0.7), rgba(250, 249, 245, 0.7));
+  --color-ring-secondary: light-dark(rgba(61, 61, 58, 0.7), rgba(194, 192, 182, 0.7));
+  --color-ring-inverse: light-dark(rgba(255, 255, 255, 0.7), rgba(20, 20, 19, 0.7));
+  --color-ring-info: light-dark(rgba(50, 102, 173, 0.5), rgba(128, 170, 221, 0.5));
+  --color-ring-danger: light-dark(rgba(167, 61, 57, 0.5), rgba(205, 92, 88, 0.5));
+  --color-ring-success: light-dark(rgba(67, 116, 38, 0.5), rgba(89, 145, 48, 0.5));
+  --color-ring-warning: light-dark(rgba(128, 92, 31, 0.5), rgba(168, 120, 41, 0.5));
+  --font-sans: "anthropic-sans", sans-serif;
+  --font-mono: ui-monospace, monospace;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-text-xs-size: 12px;
+  --font-text-sm-size: 14px;
+  --font-text-md-size: 16px;
+  --font-text-lg-size: 20px;
+  --font-heading-xs-size: 12px;
+  --font-heading-sm-size: 14px;
+  --font-heading-md-size: 16px;
+  --font-heading-lg-size: 20px;
+  --font-heading-xl-size: 24px;
+  --font-heading-2xl-size: 28px;
+  --font-heading-3xl-size: 36px;
+  --font-text-xs-line-height: 1.4;
+  --font-text-sm-line-height: 1.4;
+  --font-text-md-line-height: 1.4;
+  --font-text-lg-line-height: 1.25;
+  --font-heading-xs-line-height: 1.4;
+  --font-heading-sm-line-height: 1.4;
+  --font-heading-md-line-height: 1.4;
+  --font-heading-lg-line-height: 1.25;
+  --font-heading-xl-line-height: 1.25;
+  --font-heading-2xl-line-height: 1.1;
+  --font-heading-3xl-line-height: 1;
+  --border-radius-xs: 4px;
+  --border-radius-sm: 6px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 10px;
+  --border-radius-xl: 12px;
+  --border-radius-full: 9999px;
+  --border-width-regular: 0.5px;
+  --shadow-hairline: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}</style><style>body { padding: 16px; background: var(--surface-1); }
+#vis-container { overflow: visible; }</style></head><body><svg style="position:absolute;width:0;height:0" aria-hidden="true">
+    <defs>
+      <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      </marker>
+    </defs>
+  </svg><div id="vis-container">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:inherit}
+.wrap{padding:1rem 0}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:0.5px solid var(--border)}
+.page-title{font-size:18px;font-weight:500;color:var(--text-primary)}
+.page-sub{font-size:12px;color:var(--text-secondary);margin-top:2px}
+.badge{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--bg-accent);color:var(--text-accent);font-weight:500}
+
+.tabs{display:flex;gap:3px;flex-wrap:wrap;padding:4px;background:var(--surface-1);border-radius:10px;margin-bottom:1.2rem}
+.tab{font-size:12px;padding:5px 11px;border-radius:7px;cursor:pointer;color:var(--text-secondary);border:none;background:transparent;white-space:nowrap;transition:all .15s}
+.tab:hover{color:var(--text-primary)}
+.tab.on{color:var(--text-primary);background:var(--surface-2);font-weight:500;border:0.5px solid var(--border)}
+
+.sec{display:none}
+.sec.on{display:block}
+
+/* ── shared components ── */
+.card{background:var(--surface-2);border:0.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.card-head{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;user-select:none}
+.card-head:hover{background:var(--surface-1)}
+.card-icon{font-size:17px;width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-title{font-size:13px;font-weight:500;flex:1;color:var(--text-primary)}
+.card-body{display:none;border-top:0.5px solid var(--border);padding:12px 14px 14px}
+.card-body.on{display:block}
+.chev{font-size:11px;color:var(--text-muted);transition:transform .2s}
+.chev.r{transform:rotate(180deg)}
+
+.q-row{display:flex;gap:8px;margin-bottom:10px}
+.q-label{font-size:10px;font-weight:500;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;min-width:72px;padding-top:2px;flex-shrink:0}
+.q-text{font-size:13px;color:var(--text-primary);line-height:1.55;flex:1}
+.q-text b{font-weight:500}
+
+.rule-row{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:0.5px solid var(--border)}
+.rule-row:last-child{border-bottom:none;padding-bottom:0}
+.rdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.rtext{font-size:13px;color:var(--text-primary);line-height:1.5;flex:1}
+.rtext b{font-weight:500}
+
+.principle-card{border:0.5px solid var(--border);border-radius:10px;background:var(--surface-2);margin-bottom:8px;overflow:hidden}
+.p-head{display:flex;align-items:center;gap:10px;padding:11px 13px;cursor:pointer}
+.p-head:hover{background:var(--surface-1)}
+.p-num{width:26px;height:26px;border-radius:50%;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.p-title{font-size:13px;font-weight:500;flex:1}
+.p-body{display:none;padding:10px 13px 13px 49px;font-size:13px;color:var(--text-secondary);line-height:1.55;border-top:0.5px solid var(--border)}
+.p-body.on{display:block}
+.p-action{margin-top:8px;font-size:12px;font-weight:500;color:var(--text-accent)}
+
+.table-wrap{overflow-x:auto;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:6px 8px;background:var(--surface-1);font-weight:500;color:var(--text-secondary);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+td{padding:7px 8px;border-bottom:0.5px solid var(--border);color:var(--text-primary);line-height:1.4;vertical-align:top}
+tr:last-child td{border-bottom:none}
+
+.open-q{border:0.5px solid var(--border);border-radius:9px;background:var(--surface-2);margin-bottom:6px;overflow:hidden}
+.oq-head{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer}
+.oq-head:hover{background:var(--surface-1)}
+.oq-circle{width:18px;height:18px;border-radius:50%;border:0.5px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-success)}
+.oq-circle.done{background:var(--bg-success);border-color:var(--border-success)}
+.oq-title{font-size:13px;font-weight:500;flex:1}
+.oq-body{display:none;padding:8px 12px 12px 38px;font-size:12px;color:var(--text-secondary);line-height:1.5;border-top:0.5px solid var(--border)}
+.oq-body.on{display:block}
+
+.vision-box{border-left:3px solid var(--border-accent,#378ADD);padding:12px 16px;margin-bottom:12px;border-radius:0 8px 8px 0;background:var(--surface-1)}
+.vision-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);margin-bottom:6px}
+.vision-text{font-size:13px;line-height:1.6;color:var(--text-primary);font-style:italic}
+
+.dos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.dos-col{border:0.5px solid var(--border);border-radius:10px;padding:12px;background:var(--surface-2)}
+.dos-label{font-size:11px;font-weight:500;margin-bottom:8px}
+.dos-item{display:flex;gap:6px;align-items:flex-start;font-size:12px;color:var(--text-primary);padding:4px 0;border-bottom:0.5px solid var(--border);line-height:1.4}
+.dos-item:last-child{border-bottom:none;padding-bottom:0}
+.dos-mark{flex-shrink:0;font-size:12px;margin-top:1px}
+
+.ninety-phase{margin-bottom:14px}
+.phase-head{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.phase-badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.phase-title{font-size:13px;font-weight:500}
+.task{display:flex;align-items:flex-start;gap:8px;padding:7px 10px;background:var(--surface-1);border-radius:7px;margin-bottom:4px;cursor:pointer;transition:background .1s}
+.task:hover{background:var(--surface-0)}
+.task-box{width:15px;height:15px;border:0.5px solid var(--border-strong);border-radius:3px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px}
+.task-box.done{background:var(--bg-success);border-color:var(--border-success);color:var(--text-success)}
+.task-text{font-size:12px;line-height:1.45;flex:1}
+.task-text.done{color:var(--text-muted);text-decoration:line-through}
+.prog-wrap{margin-bottom:14px}
+.prog-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:5px}
+.prog-bar{height:5px;background:var(--surface-0);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--fill-success);border-radius:3px;transition:width .3s}
+</style>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <div class="page-title"><i class="ti ti-book-2" style="font-size:16px;margin-right:6px;vertical-align:-2px" aria-hidden="true"></i>Life reference book</div>
+      <div class="page-sub">Summary from V1 — 18 chapters · 120+ life thoughts</div>
+    </div>
+    <span class="badge">Personal</span>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" onclick="go('dash',this)">Overview</button>
+    <button class="tab" onclick="go('principles',this)">Principles</button>
+    <button class="tab" onclick="go('chapters',this)">Chapters</button>
+    <button class="tab" onclick="go('rules',this)">Rules</button>
+    <button class="tab" onclick="go('vision',this)">Vision</button>
+    <button class="tab" onclick="go('plan',this)">90-day</button>
+    <button class="tab" onclick="go('open',this)">Open questions</button>
+  </div>
+
+  <!-- ══ OVERVIEW ══════════════════════════════════════════════ -->
+  <div class="sec on" id="sec-dash">
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:1rem">
+      This book converts 120+ scattered life thoughts into permanent wisdom, practical answers, and principles I can look up any time. Review it when confused, when facing a decision, or once a month as a reset.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:1.2rem">
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:12px 14px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:4px">Chapters</div><div style="font-size:22px;font-weight:500">18</div></div>
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:12px 14px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:4px">Core principles</div><div style="font-size:22px;font-weight:500">6</div></div>
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:12px 14px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:4px">Decision rules</div><div style="font-size:22px;font-weight:500">16</div></div>
+      <div style="background:var(--surface-1);border-radius:var(--radius);padding:12px 14px"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);margin-bottom:4px">Open questions</div><div style="font-size:22px;font-weight:500">9</div></div>
+    </div>
+
+    <div style="font-size:11px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">One sentence from each chapter</div>
+    <div id="one-liners"></div>
+  </div>
+
+  <!-- ══ PRINCIPLES ════════════════════════════════════════════ -->
+  <div class="sec" id="sec-principles">
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:1rem">Six principles that connect most of the 120+ questions. When confused about any decision, check which one applies.</div>
+    <div id="plist"></div>
+  </div>
+
+  <!-- ══ CHAPTERS ══════════════════════════════════════════════ -->
+  <div class="sec" id="sec-chapters">
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:1rem">Each entry: question I had → what I understand → practical answer → what to do → principle to remember. Tap to expand.</div>
+    <div id="chlist"></div>
+  </div>
+
+  <!-- ══ RULES ═════════════════════════════════════════════════ -->
+  <div class="sec" id="sec-rules">
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:1rem">Fast lookup rules — one sentence each. Filter by area for quick reference during a real decision.</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:1rem">
+      <button class="tab on" style="font-size:11px;padding:4px 10px" onclick="filterR('all',this)">All</button>
+      <button class="tab" style="font-size:11px;padding:4px 10px" onclick="filterR('career',this)">Career</button>
+      <button class="tab" style="font-size:11px;padding:4px 10px" onclick="filterR('money',this)">Money</button>
+      <button class="tab" style="font-size:11px;padding:4px 10px" onclick="filterR('family',this)">Family</button>
+      <button class="tab" style="font-size:11px;padding:4px 10px" onclick="filterR('mind',this)">Mind</button>
+      <button class="tab" style="font-size:11px;padding:4px 10px" onclick="filterR('health',this)">Health</button>
+    </div>
+    <div style="border:0.5px solid var(--border);border-radius:10px;background:var(--surface-2);padding:4px 12px" id="rulelist"></div>
+  </div>
+
+  <!-- ══ VISION ════════════════════════════════════════════════ -->
+  <div class="sec" id="sec-vision">
+    <div class="vision-box">
+      <div class="vision-label">My vision</div>
+      <div class="vision-text">To build a financially secure, healthy, and meaningful life for myself and my family — where my children receive a good education, my wife feels happy and supported, my career continues to grow, and I have enough time and freedom to enjoy life while contributing to others.</div>
+    </div>
+    <div class="vision-box" style="border-left-color:var(--border-success,#3B6D11)">
+      <div class="vision-label">My mission — 6 commitments</div>
+      <div id="mission-list"></div>
+    </div>
+    <div style="font-size:11px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Do's and don'ts</div>
+    <div class="dos-grid" id="dos-grid"></div>
+    <div style="margin-top:14px;font-size:11px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Personal OS — one sentence</div>
+    <div style="font-size:13px;font-style:italic;color:var(--text-secondary);line-height:1.7;padding:10px 14px;border:0.5px solid var(--border);border-radius:10px;background:var(--surface-1)">
+      Understand society → choose deliberately → build skills → protect money → maintain relationships with boundaries → protect attention → raise capable children → keep learning → accept what you cannot control.
+    </div>
+  </div>
+
+  <!-- ══ 90-DAY ═════════════════════════════════════════════════ -->
+  <div class="sec" id="sec-plan">
+    <div class="prog-wrap">
+      <div class="prog-row"><span>Overall progress</span><span id="prog-txt">0 / 14</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0"></div></div>
+    </div>
+    <div id="phases"></div>
+  </div>
+
+  <!-- ══ OPEN QUESTIONS ════════════════════════════════════════ -->
+  <div class="sec" id="sec-open">
+    <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:1rem">These need specific research or professional advice before acting. Do not decide from general advice alone. Mark resolved when done and move the answer to the right chapter.</div>
+    <div id="oqlist"></div>
+  </div>
+</div>
+
+<script>
+function go(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('sec-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* ── ONE-LINERS ─────────────────────────────────────────── */
+const oneLiners = [
+  {e:'🧠', ch:'Ch 1 · Mind', line:'Repeated small actions rewire behaviour more reliably than willpower alone.'},
+  {e:'❤️', ch:'Ch 2 · Marriage', line:'You cannot fix the past. You can create new memories. Start now.'},
+  {e:'👨‍👩‍👧‍👦', ch:'Ch 3 · Family', line:'Your self-respect comes from how you conduct yourself — not from others\' acknowledgement.'},
+  {e:'👧', ch:'Ch 4 · Children', line:'Praise effort and improvement — not perfect output.'},
+  {e:'💼', ch:'Ch 5 · Career', line:'Move from fast implementer to visible technical owner.'},
+  {e:'🤖', ch:'Ch 6 · AI & Tech', line:'AI raises the value of judgment. Build your judgment.'},
+  {e:'💰', ch:'Ch 7 · Money', line:'Mutual funds are the vehicle. Your life goals are the destination.'},
+  {e:'🏠', ch:'Ch 8 · House', line:'Spend no construction money until legal rights are clear.'},
+  {e:'📚', ch:'Ch 9 · Learning', line:'One applied concept beats 10 watched videos every time.'},
+  {e:'🧘', ch:'Ch 10 · Spirituality', line:'Peace doesn\'t require abandoning ambition. It requires stopping ambition from consuming everything.'},
+  {e:'🌍', ch:'Ch 11 · Society', line:'Understand society. Design your life deliberately within it.'},
+  {e:'⏰', ch:'Ch 12 · Productivity', line:'Make productive behaviour easier. Make distraction harder.'},
+  {e:'🏃', ch:'Ch 13 · Health', line:'Sleep is not a luxury. It is the foundation for every other area of life.'},
+  {e:'🔧', ch:'Ch 14 · Technology', line:'Different tools for different problems. All roads lead to the processor.'},
+  {e:'🚗', ch:'Ch 15 · Daily life', line:'Build toward goals visibly. Progress seen is motivation maintained.'},
+  {e:'🌱', ch:'Ch 16 · Future', line:'Teach children that AI is a tool for extending capability — not a replacement for judgment.'},
+  {e:'🧭', ch:'Ch 17 · Principles', line:'Build a life that works on ordinary days — not only after every goal is met.'},
+  {e:'❓', ch:'Ch 18 · Open Qs', line:'Research → Decision in 3-5 lines → Date → Move to the right chapter.'},
+];
+const olContainer = document.getElementById('one-liners');
+oneLiners.forEach(o => {
+  olContainer.insertAdjacentHTML('beforeend', `
+    <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:0.5px solid var(--border)">
+      <span style="font-size:15px;width:24px;flex-shrink:0">${o.e}</span>
+      <div>
+        <div style="font-size:10px;color:var(--text-muted);margin-bottom:2px">${o.ch}</div>
+        <div style="font-size:13px;color:var(--text-primary);line-height:1.5">${o.line}</div>
+      </div>
+    </div>`);
+});
+olContainer.lastChild.style.borderBottom = 'none';
+
+/* ── PRINCIPLES ─────────────────────────────────────────── */
+const principles = [
+  {
+    title:'Protect your foundation before chasing growth',
+    bg:'#E6F1FB', tc:'#0C447C',
+    body:'Health, family relationships, emergency savings, and employability come first. A new car, expensive investment, or home purchase that weakens these foundations is not progress — it is risk.',
+    do_:'Before any new commitment, ask: does this protect or weaken my foundation?',
+    example:'Career growth and emergency fund matter more than buying a car because others have one.'
+  },
+  {
+    title:'Increase earning power, not just savings rate',
+    bg:'#EAF3DE', tc:'#27500A',
+    body:'Saving ₹1,000 extra per month is useful. Building a skill that adds ₹20,000 per month to your income is far more powerful. Do both — but give serious attention to career growth.',
+    do_:'This quarter: what one skill, project, or interview will increase my earning power?',
+    example:'Interview preparation and market testing beats waiting for an internal promotion.'
+  },
+  {
+    title:'Don\'t expect everyone to think as you do',
+    bg:'#FAEEDA', tc:'#633806',
+    body:'Your wife, colleagues, relatives, and neighbours have different experiences, fears, and incentives. Try to understand them, communicate clearly, and set limits — instead of expecting perfect fairness.',
+    do_:'In the next disagreement: ask "what are they trying to protect?" before responding.',
+    example:'Wife wants a car now. You want to wait. Neither is wrong — discuss the real concern.'
+  },
+  {
+    title:'Turn knowledge into action',
+    bg:'#E1F5EE', tc:'#085041',
+    body:'Watching videos, reading articles, and asking AI feels useful — but the real benefit only arrives when you implement one idea, review the result, and improve. Research without a decision changes nothing.',
+    do_:'After every important topic: Question → Answer in own words → Decision → Action → Review date.',
+    example:'"Learn AI" is not actionable. "Build one React component that streams an AI response today" is.'
+  },
+  {
+    title:'Be kind without being exploitable',
+    bg:'#EEEDFE', tc:'#3C3489',
+    body:'Give generously within your means. Verify important claims. Document financial agreements. Learn to say no. Generosity does not require sacrificing your children\'s needs or your family\'s security.',
+    do_:'Generosity order: household needs → dependants protected → commitments met → then give freely.',
+    example:'Do not borrow money to donate. Do not give because a speech made you feel guilty.'
+  },
+  {
+    title:'Build a life that works on ordinary days',
+    bg:'#FAECE7', tc:'#712B13',
+    body:'A good life is not only a high salary, a large house, or a big portfolio. It is also manageable daily routines, meaningful time with your children, a supportive marriage, adequate rest, and some enjoyment today.',
+    do_:'Plan one genuinely enjoyable thing this week — not after the house is built. Now.',
+    example:'The goal is not to optimise every area simultaneously. Improve the few things that matter most.'
+  },
+];
+const plist = document.getElementById('plist');
+principles.forEach((p, i) => {
+  plist.insertAdjacentHTML('beforeend', `
+    <div class="principle-card">
+      <div class="p-head" onclick="tp(${i})">
+        <div class="p-num" style="background:${p.bg};color:${p.tc}">${i+1}</div>
+        <div class="p-title">${p.title}</div>
+        <i class="ti ti-chevron-down" id="pch${i}" style="font-size:12px;color:var(--text-muted);transition:transform .2s" aria-hidden="true"></i>
+      </div>
+      <div class="p-body" id="pb${i}">
+        <div style="margin-bottom:10px">${p.body}</div>
+        <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:4px">What to do</div>
+        <div class="p-action" style="margin-bottom:8px">→ ${p.do_}</div>
+        <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:4px">Real example from my life</div>
+        <div style="font-size:12px;color:var(--text-secondary);font-style:italic">${p.example}</div>
+      </div>
+    </div>`);
+});
+function tp(i) {
+  const b = document.getElementById('pb'+i), c = document.getElementById('pch'+i);
+  const o = b.classList.toggle('on');
+  c.style.transform = o ? 'rotate(180deg)' : '';
+}
+
+/* ── CHAPTERS ───────────────────────────────────────────── */
+const chapters = [
+  {
+    e:'🧠', t:'Mind, thinking and self-control', bg:'#E6F1FB',
+    summary:'Your habits run on autopilot. The subconscious handles anything practised enough times. Distraction wins because it pays off now; productive work pays off later. Comparison hurts when you treat it as a verdict instead of information.',
+    qa:[
+      {q:'What is the subconscious mind?', a:'Patterns you practise enough times until they run automatically — typing, morning routines, emotional reactions.'},
+      {q:'Why do I keep watching YouTube instead of studying?', a:'Your brain prefers immediate reward. The fix is not more discipline — it is making the productive path easier and the distraction harder.'},
+      {q:'Why does comparison with others hurt?', a:'You are comparing your complete behind-the-scenes life with others\' visible highlights. Use comparison as fuel, not as a verdict.'},
+      {q:'Why does research not stick?', a:'Passive consumption creates familiarity, not knowledge. Knowledge needs application and review: Question → Answer → Decision → Action → Review.'},
+    ],
+    principle:'Repeated small actions rewire behaviour more reliably than willpower alone.'
+  },
+  {
+    e:'❤️', t:'Marriage and wife relationship', bg:'#FBEAF0',
+    summary:'Family life requires coordinating people with different needs and timelines. Arguments mostly come from treating preferences as necessities. The missed honeymoon cannot be fixed — but new memories can be created starting today. Household clarity reduces resentment more than any financial goal.',
+    qa:[
+      {q:'Why is life harder after marriage than when alone?', a:'You controlled everything alone. Now you coordinate with someone who has different needs, sleep patterns, and priorities. This is normal — not a sign that marriage was wrong.'},
+      {q:'Wife says I cheated her because of the loan and missed honeymoon.', a:'Two truths: (1) you should have disclosed the loan before marriage — accept that honestly. (2) COVID cancelled the honeymoon, not only the loan. Stop arguing the past; plan new experiences now.'},
+      {q:'How do I reduce arguments?', a:'Before any disputed decision, ask together: What problem does this solve? How often used? What if we wait 3 months? Is there a cheaper option for both?'},
+      {q:'How do we divide household work fairly?', a:'Write it down. Cooking, school prep, night childcare, groceries, cleaning, bills — who owns what. Household clarity reduces resentment more than any financial goal.'},
+    ],
+    principle:'You cannot fix the past. You can create new memories. Start now.'
+  },
+  {
+    e:'👨‍👩‍👧‍👦', t:'Family and relationships', bg:'#E1F5EE',
+    summary:'You cannot know relatives\' reasons for ignoring you without asking. Neighbours asking about fees or salary does not require disclosure. Generosity follows an order: household first, dependants second, commitments third, then give. One honest conversation with your brother — then release the outcome.',
+    qa:[
+      {q:'Relatives ignore me at functions. What do I do?', a:'Greet once warmly. If ignored, move on without a scene. If a specific relationship matters, ask privately. Don\'t explain family finances at public events.'},
+      {q:'Neighbours ask about school fees, salary, purchases.', a:'Share only what you are comfortable with. "It\'s going well" / "We\'re still deciding" — polite vague answers work. No explanation needed.'},
+      {q:'Should I give money when spiritually inspired?', a:'Give in order: household needs met → dependants protected → commitments met → then give comfortably. Do not borrow to donate.'},
+      {q:'Brother doesn\'t attend functions or share his address.', a:'One calm conversation: "If something between us bothers you, tell me." If he explains — listen. If not — accept and maintain civil distance.'},
+    ],
+    principle:'Your self-respect comes from how you conduct yourself — not from whether everyone acknowledges you.'
+  },
+  {
+    e:'👧', t:'Children and parenting', bg:'#FAEEDA',
+    summary:'LKG homework goal is confidence, not perfection. Short task → break → short task — not force. Measure your daughter against her own last month, not neighbours\' children. Toddlers hit from frustration not malice. Future-skill education: communication, reasoning, digital literacy, creativity, financial literacy.',
+    qa:[
+      {q:'Daughter stops homework after a few letters. Should I force?', a:'No. LKG goal is confidence and familiarity. Gentle 30-40 min routine: small homework section → picture book → counting objects → drawing → talk → free play. Praise effort, not perfect shapes.'},
+      {q:'Younger child hits older child. What to do?', a:'"No hitting. Hands are gentle." Separate briefly. Attend the hurt child. Teach: "If you want the toy, say give me." Intervene early — before escalation.'},
+      {q:'Neighbour\'s child writes better. Should I worry?', a:'You see their highlights, not their struggles. Measure your daughter against her own last month. Is she recognising more letters? More confident? More curious? That is progress.'},
+      {q:'My child eats independently at school but needs feeding at home.', a:'She learned that at home parents will feed her. Week 1: first 5 bites herself. Week 2: first half herself. Week 3: most of the meal. Praise the attempt.'},
+    ],
+    principle:'Praise effort and improvement — not perfect output.'
+  },
+  {
+    e:'💼', t:'Career and professional growth', bg:'#E6F1FB',
+    summary:'Promotions reward visible impact, not invisible effort. Your real salary ceiling is what companies offer you after interviewing — not what your manager says. Move from ticket completer to outcome owner. The 9-month roadmap: architecture (1-3), AI engineering (3-6), Tech Lead applications (4-9).',
+    qa:[
+      {q:'I work hard but others get promoted. Why?', a:'Promotions reward visible impact. If you complete technical work and someone else presents the summary, their contribution is remembered. Add: architecture decisions, root cause explanations, mentoring, business impact communication.'},
+      {q:'Manager says I already get a good salary. Should I believe it?', a:'No. That is one opinion filtered through their desire to retain you cheaply. Your real market value is what companies offer after interviewing. Test it every 6 months.'},
+      {q:'How do I make my contribution visible without boasting?', a:'Weekly: what did I deliver, what problem did I solve, what risk did I reduce? Use this at appraisal time as evidence — not "I worked hard."'},
+      {q:'Manager says another developer did the same in 30 minutes.', a:'Don\'t argue about speed. Clarify what is included. "I\'ll validate one module first, then estimate the rest." Generation time ≠ implementation time ≠ delivery time.'},
+    ],
+    principle:'Move from fast implementer to visible technical owner.'
+  },
+  {
+    e:'🤖', t:'AI, software and future technology', bg:'#E1F5EE',
+    summary:'AI can generate boilerplate but cannot understand business requirements, design for scale, or own outcomes. Your risk is staying positioned as someone who only implements tickets. After any AI-generated code, ask: "Could I explain, debug, and maintain this without the tool?" Review large AI changes in layers — not file by file.',
+    qa:[
+      {q:'Will AI replace my React developer job?', a:'AI tools generate code — but cannot understand requirements, design systems, validate correctness, or own outcomes. Your risk is remaining a ticket implementer. Move to outcome owner.'},
+      {q:'How do I use Claude Code without weakening my skills?', a:'Write requirements yourself first. Ask AI for options and risks. Review every diff. Run tests. Verify security and edge cases. Key test: "Could I explain this without the AI tool?"'},
+      {q:'Claude changed 100 files. How do I review?', a:'Review in layers: Requirement → Architecture → Risk (auth, APIs, security) → Tests → Runtime. Not file by file.'},
+      {q:'Will every company build its own AI, making Claude unnecessary?', a:'Training frontier models costs hundreds of millions. Most companies will customise on top of external models. Three layers will coexist: open/self-hosted models, cloud APIs, enterprise platforms.'},
+    ],
+    principle:'AI raises the value of judgment. Build your judgment.'
+  },
+  {
+    e:'💰', t:'Money, salary and investments', bg:'#EAF3DE',
+    summary:'Organise money into 4 buckets: Security → Near-term → Medium-term → Long-term. Never raid Bucket 4 for immediate wants. Gold is family reserve — not free construction financing. Pledging gold is gold-backed debt with interest. The retirement formula: monthly need × 12 × 25 = rough starting target in today\'s money.',
+    qa:[
+      {q:'I have many goals. How do I organise money?', a:'4 buckets: (1) Security — emergency fund, insurance. (2) Near-term 0-3 years — car, down payment. (3) Medium 3-7 years — children\'s education. (4) Long-term 7+ years — retirement, wealth. Security always first.'},
+      {q:'Should I pledge wife\'s jewellery and build the house now, or continue SIP?', a:'Pledging gold is not free money — it is gold-backed debt with interest. If you won\'t live there for 5-10 years, the urgency for pledging family jewellery weakens significantly.'},
+      {q:'How does compounding work? Is ₹1 crore enough for retirement?', a:'Three factors work together: amount invested × time invested × actual return. Rough formula: monthly need × 12 × 25 = starting target in today\'s money. Actual need is higher due to inflation.'},
+      {q:'How do I fund my AI side business?', a:'Don\'t fund it from family savings or loans. First target is not ₹1 lakh/month — it is ONE paying customer who confirms you solve a real problem.'},
+    ],
+    principle:'Mutual funds are the vehicle. Your life goals are the destination.'
+  },
+  {
+    e:'🏠', t:'House, rent and major purchases', bg:'#FAEEDA',
+    summary:'A rent increase alone is not sufficient reason to rush into buying. Before any construction, get title deeds, encumbrance certificate, and legal advice — a verbal promise is not legal ownership. Create a visible car fund with a target date instead of saying "wait 4 years." Show progress.',
+    qa:[
+      {q:'Is buying always better than renting?', a:'Neither is always better. Buy when: long-term location, affordable, legal clarity, family ready. Rent when: location uncertain, purchase consumes all investments, EMI creates stress. Better test: "Can I buy without sacrificing emergency savings and children\'s future?"'},
+      {q:'Should I construct first floor on existing house or wait for garden plot?', a:'Do NOT start until ownership, consent, and all family members\' rights are legally clear. A verbal promise from mother ≠ legal ownership. Get title deeds + encumbrance certificate + property lawyer first.'},
+      {q:'Landlord raised rent from ₹9,000 to ₹12,000. What do I do?', a:'Three options: negotiate a smaller increase, compare nearby flats including move cost, or accept if the home\'s value justifies it. Sample script: "We\'ve been here 2 years — could we agree on a smaller increase with revision at renewal?"'},
+      {q:'Should I buy a ₹10 lakh car now or wait?', a:'Create a visible car fund: ₹Target / ₹Saved / ₹Monthly allocation / Target date. Show wife the progress bar. "Progress seen is motivation maintained" — better than saying "we have to wait 4 years."'},
+    ],
+    principle:'Spend no construction money until legal rights are clear.'
+  },
+  {
+    e:'📚', t:'Learning and education', bg:'#E6F1FB',
+    summary:'Passive consumption creates familiarity, not knowledge. Knowledge needs: apply within 48 hours, review at 1 day / 1 week / 1 month. Certificates are evidence of studying — not evidence of doing. A working project beats any certificate in interviews. Java → Spring Boot path has 5 clear layers.',
+    qa:[
+      {q:'I watch videos and read articles but nothing sticks. Why?', a:'Passive consumption creates familiarity, not knowledge. After learning: write 3-10 lines in own words. Apply within 48 hours. Review at 1 day, 1 week, 1 month.'},
+      {q:'Do I need more certifications?', a:'A working project with clear architecture and decisions impresses more in interviews than another certificate. Certify only when it opens a specific door — like a cloud cert for a GCC role.'},
+      {q:'I know Java basics. How do I reach Spring Boot production level?', a:'5 layers: Java refresh → Spring Core → Spring Boot (REST, services, repos) → Database (JPA, transactions) → Production (security, JWT, logging, Docker). Then build ONE complete project.'},
+      {q:'How do I stop reading from scripts during demos?', a:'Click → Explain → Pause. Speaker notes: Purpose / Action / Result / Benefit per screen. Understand the story deeply enough to tell it naturally — not word-for-word memorised.'},
+    ],
+    principle:'One applied concept beats 10 watched videos every time.'
+  },
+  {
+    e:'🧘', t:'Spirituality and philosophy', bg:'#EEEDFE',
+    summary:'Work and spiritual growth are not opposites — greed and ego are the obstacles, not activity itself. Treat intuitive thoughts as useful reminders to investigate, not unquestionable commands. People think differently because they have different histories, fears, and incentives. Teach Thirukkural by age, not by memorising 1,330 couplets.',
+    qa:[
+      {q:'If God-realization is the ultimate goal, why work?', a:'Many Indian traditions teach that work done honestly and responsibly, without ego or greed, is itself spiritual practice. You can earn, raise children, and pursue inner peace simultaneously.'},
+      {q:'Sometimes a useful thought appears briefly and disappears. Higher source?', a:'Treat it as a useful reminder — not an unquestionable command. Capture it immediately. Write the action in one sentence. Verify before acting on anything involving money or major decisions.'},
+      {q:'Why doesn\'t my wife or colleague see things my way?', a:'Different genes, experiences, family environments, fears, and incentives. Same situation — different histories. The goal is not to make everyone think identically. It is to disagree without humiliating each other.'},
+      {q:'When should my children learn Thirukkural?', a:'Ages 4-7: kindness, truth, sharing, anger control. Ages 8-12: friendship, discipline, avoiding harm. Ages 13-17: money, leadership, relationships. 18+: deeper meanings. Goal: can they make a better decision because of a principle?'},
+    ],
+    principle:'Peace doesn\'t require abandoning ambition. It requires stopping ambition from consuming everything.'
+  },
+  {
+    e:'🌍', t:'Society and human behaviour', bg:'#E1F5EE',
+    summary:'Don\'t copy society blindly. Don\'t rebel blindly. Use the infrastructure — banking, healthcare, education, law — without being controlled by status expectations. When the world is unfair, focus on what you can influence: your skills, choices, communication, boundaries. Release what you cannot control.',
+    qa:[
+      {q:'Everyone buys cars, takes home loans, goes to expensive schools. Do I have to?', a:'Decision test: "Does this help my health, family, freedom, financial security, or long-term happiness?" If no — skip it regardless of what others do. Understand society; design your life deliberately.'},
+      {q:'Colleague gets promoted, relatives are unsupportive. Is the world unfair?', a:'Sometimes yes. Practical response: neither expect complete fairness nor become suspicious of everyone. Focus on what you can influence — your skills, boundaries, choices, communication.'},
+      {q:'Friends behave differently after money changes. Why?', a:'Lives change with marriage, children, location, and financial status. Some friendships naturally weaken. Identify which relationships are reciprocal today and invest in those.'},
+    ],
+    principle:'Understand society. Design your life deliberately within it.'
+  },
+  {
+    e:'⏰', t:'Time, productivity and habits', bg:'#FAEEDA',
+    summary:'5-step reset for low-motivation days: choose one 5-minute task → begin before opening any app → work 20-25 min → break → record next step. Weekly review: 6 items, 15 minutes. 3 out of 6 in a hard week = meaningful progress. A routine you sustain for months beats an ideal schedule that collapses in 3 days.',
+    qa:[
+      {q:'Plan to study but end up watching YouTube. What to do?', a:'5-step reset: (1) Choose one 5-minute task. (2) Begin before opening any app. (3) Work 20-25 min if energy allows. (4) Short break. (5) Record next step before switching. Specificity matters: "Build one streaming React component" not "learn AI."'},
+      {q:'How do I track progress without feeling overwhelmed?', a:'6-item weekly review: Career task / Finance check / Family improvement agreed / Children undistracted time / Learning skill built / Rest planned. 3 of 6 in a hard week = meaningful progress.'},
+    ],
+    principle:'Make productive behaviour easier. Make distraction harder.'
+  },
+  {
+    e:'🏃', t:'Health and lifestyle', bg:'#EAF3DE',
+    summary:'A nutritious Tamil diet built from rice, dal, eggs, groundnuts, seasonal vegetables, curd, and local fruits beats expensive superfoods. Start with 20-30 min walking — gym is optional. Protect 7-9 hours sleep consistently. For urges and distractions: notice without judging → change environment → 5-min reset → return to a small task.',
+    qa:[
+      {q:'Do I need expensive superfoods for my family to eat well?', a:'No. Protein: dal, sambar, eggs, chana, green gram. Calcium: milk, curd. Vitamins: seasonal local vegetables and fruits. Healthy fats: groundnut and sesame oil. Balance and diversity, not cost.'},
+      {q:'I want to exercise but can\'t reach a gym consistently.', a:'Start with 20-30 minutes of walking or any enjoyable activity. Shorter sessions on busy days still count. Involve children in physical play — that counts too.'},
+      {q:'Children wake at night. How do I protect my sleep?', a:'Protect 7-9 hours when possible — sleep debt reduces judgment and patience. Rotate night duty where possible. Prepare evenings to reduce morning scramble. Persistent severe waking → paediatrician.'},
+      {q:'Sexual urges sometimes interrupt planned work. How to manage?', a:'Notice without judging. Change environment: stand up, walk, change rooms. 5-minute reset: walk, stretch, wash face. Return to a smaller task for just 5 minutes. Review without self-hatred.'},
+    ],
+    principle:'Sleep is not a luxury. It is the foundation for every other area of life.'
+  },
+  {
+    e:'🔧', t:'Technology — how things work', bg:'#E6F1FB',
+    summary:'Hundreds of programming languages exist because humans need different tools for different problems — all eventually translate for the hardware. Wi-Fi, Bluetooth, and cellular all use radio waves but differ in frequency, range, and power. QR codes decode to a URL → Android resolves it via App Links → app opens via Intent.',
+    qa:[
+      {q:'If computers only know 0s and 1s, why do so many languages exist?', a:'Machine representation and human expression are different things. Languages differ in abstraction, type systems, safety, performance, ecosystem. All eventually translate into operations the hardware can execute.'},
+      {q:'How does data travel through the air (Wi-Fi, Bluetooth, cellular)?', a:'Transmitters encode data into electromagnetic radio waves. Antennas send and receive them. Receivers decode. Wi-Fi: high speed, short range. Bluetooth: very short, low power. Cellular: long range, nationwide infrastructure.'},
+      {q:'How does a QR code open an app on Android?', a:'QR code contains a URL → Camera decodes it → Android resolves via App Links or custom URI schemes → app receives URL via Intent → navigates to right screen.'},
+    ],
+    principle:'Different tools for different problems. All roads lead to the processor.'
+  },
+  {
+    e:'🚗', t:'Daily-life decisions', bg:'#FAEEDA',
+    summary:'Inverter vs backup fan: inverter if you need Wi-Fi + laptop + multiple devices during outages; backup unit if you only need one fan and basic lighting. A strong, well-installed safe matters more than electronic features. For any repairman: ask them to show the fault, get an itemised estimate, second opinion for anything expensive.',
+    qa:[
+      {q:'Should I buy an inverter or just a battery-backup fan and light?', a:'Frequent outages + Wi-Fi + laptop + multiple devices → inverter. Short outages + just one fan + basic lighting → battery backup unit. Calculate wattage needed + backup duration before buying.'},
+      {q:'How do I keep jewellery safe at home?', a:'Strong safe, securely anchored in a concealed location. Keep jewellery photos and purchase records. Don\'t share the location unnecessarily. A strong installation matters more than the number of electronic features.'},
+      {q:'How do I know if a repairman recommends unnecessary work?', a:'Ask them to show the fault and evidence. Get an itemised estimate. Ask what happens if you postpone. Second opinion for expensive or unclear repairs. Inspect progress before final payment.'},
+    ],
+    principle:'Build toward goals visibly. Progress seen is motivation maintained.'
+  },
+  {
+    e:'🌱', t:"Children's future and family future", bg:'#EAF3DE',
+    summary:'No school category guarantees quality — compare the actual school: teacher quality, classroom size, emotional climate, travel time, fees. Future skills that transfer across careers: communication, reasoning, digital literacy, creativity, adaptability, financial literacy, emotional intelligence, practical independence.',
+    qa:[
+      {q:'AI is changing jobs. What should my children actually learn?', a:'Transferable capabilities, not specific degrees: communication, reasoning, digital and AI literacy, creativity, adaptability, financial literacy, emotional skills, practical independence. AI is a tool for extending capability — not replacing judgment.'},
+      {q:'Is a private school / CBSE always better than a government school?', a:'No category guarantees quality. Compare: teacher quality, individual attention, classroom size, teacher turnover, foundational literacy approach, safety, emotional climate, parent-teacher communication, travel time, fees.'},
+    ],
+    principle:"Teach children that AI extends human capability — it doesn't replace judgment."
+  },
+  {
+    e:'🧭', t:'My life principles', bg:'#EEEDFE',
+    summary:'Six core principles + a clear vision + mission + do\'s and don\'ts + one personal OS sentence. These are the permanent layer of the book — the part that does not change with circumstances. Review this chapter every month.',
+    qa:[
+      {q:'What are the 6 core principles in one place?', a:'(1) Protect foundation first. (2) Increase earning power. (3) Don\'t expect everyone to think as you do. (4) Turn knowledge into action. (5) Be kind without being exploitable. (6) Build a life that works on ordinary days.'},
+      {q:'What is my Personal OS in one sentence?', a:'Understand society → choose deliberately → build skills → protect money → maintain relationships with boundaries → protect attention → raise capable children → keep learning → accept what you cannot control.'},
+    ],
+    principle:'Build a life that works on ordinary days — not only after every goal is met.'
+  },
+  {
+    e:'❓', t:'Questions still open', bg:'#F1EFE8',
+    summary:'These 9 questions need specific, current, or professional research before acting. Do not decide from general advice alone. When resolved: write the decision in 3-5 lines, note the date and information you had, then move it to the right chapter.',
+    qa:[
+      {q:'How do I close an open question?', a:'Research using primary sources (government sites, official docs, qualified professionals). Write the decision in 3-5 lines. Note the date and what information you had. Move it out of this chapter into the relevant one.'},
+    ],
+    principle:'Research → Decision in 3-5 lines → Date → Move to the right chapter.'
+  },
+];
+
+const chlist = document.getElementById('chlist');
+chapters.forEach((c, i) => {
+  const qrows = c.qa.map(q => `
+    <div class="q-row" style="margin-bottom:8px;padding-bottom:8px;border-bottom:0.5px solid var(--border)">
+      <div class="q-label">Question</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary);margin-bottom:4px">${q.q}</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.5">${q.a}</div></div>
+    </div>`).join('');
+  chlist.insertAdjacentHTML('beforeend', `
+    <div class="card">
+      <div class="card-head" onclick="tc(${i})">
+        <div class="card-icon" style="background:${c.bg}">${c.e}</div>
+        <div>
+          <div class="card-title">Ch ${i+1} — ${c.t}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:1px">${c.summary.substring(0,70)}…</div>
+        </div>
+        <i class="ti ti-chevron-down" id="cch${i}" style="font-size:12px;color:var(--text-muted);transition:transform .2s;flex-shrink:0" aria-hidden="true"></i>
+      </div>
+      <div class="card-body" id="cb${i}">
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:12px;padding-bottom:12px;border-bottom:0.5px solid var(--border)">${c.summary}</div>
+        ${qrows}
+        <div style="background:var(--surface-1);border-radius:7px;padding:8px 10px;margin-top:4px">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted);margin-bottom:3px">Principle</div>
+          <div style="font-size:13px;font-weight:500;color:var(--text-primary)">${c.principle}</div>
+        </div>
+      </div>
+    </div>`);
+});
+function tc(i) {
+  const b = document.getElementById('cb'+i), c = document.getElementById('cch'+i);
+  const o = b.classList.toggle('on');
+  c.style.transform = o ? 'rotate(180deg)' : '';
+}
+
+/* ── RULES ──────────────────────────────────────────────── */
+const rules = [
+  {cat:'career', color:'#378ADD', text:'<b>Market value rule:</b> A manager\'s "good salary" is not market data. A competing offer is. Test your market every 6 months.'},
+  {cat:'career', color:'#378ADD', text:'<b>Visibility rule:</b> Weekly log — what did I deliver, what problem did I solve, what risk did I reduce? This becomes appraisal evidence.'},
+  {cat:'career', color:'#378ADD', text:'<b>AI code rule:</b> After any AI-generated code: "Could I explain, debug, and maintain this without the tool?" If no — you built a dependency, not a skill.'},
+  {cat:'career', color:'#378ADD', text:'<b>Promotion rule:</b> Move from ticket completer to outcome owner. Track: design decisions, defects prevented, teammates mentored, business impact explained.'},
+  {cat:'career', color:'#378ADD', text:'<b>Speed rule:</b> Generation time ≠ implementation time ≠ delivery time. Don\'t accept a 30-min AI estimate as a 30-min production commitment.'},
+  {cat:'money', color:'#3B6D11', text:'<b>Gold rule:</b> Gold is family reserve — not free construction financing. Pledging gold is gold-backed debt with interest.'},
+  {cat:'money', color:'#3B6D11', text:'<b>House rule:</b> Get title deeds, encumbrance certificate, and professional legal advice BEFORE spending any construction money.'},
+  {cat:'money', color:'#3B6D11', text:'<b>Bucket rule:</b> Security bucket always first. Don\'t raid Bucket 4 (long-term wealth) every time someone wants something immediately.'},
+  {cat:'money', color:'#3B6D11', text:'<b>Side business rule:</b> First target is not ₹1 lakh/month. It is ONE paying customer who confirms your skills solve a real problem.'},
+  {cat:'money', color:'#3B6D11', text:'<b>Retirement formula:</b> Monthly need × 12 × 25 = rough starting target in today\'s money. Actual need is higher due to inflation.'},
+  {cat:'family', color:'#BA7517', text:'<b>Household matrix rule:</b> Write down who owns what. Household clarity reduces resentment more than any financial goal.'},
+  {cat:'family', color:'#BA7517', text:'<b>Argument rule:</b> Before any disputed decision: What problem? How often used? What if we wait 3 months? Cheaper option for both?'},
+  {cat:'family', color:'#BA7517', text:'<b>Children homework rule:</b> Short task → break → short task. Praise: "You wrote those 3 letters carefully" — not "why can\'t you finish like others?"'},
+  {cat:'family', color:'#BA7517', text:'<b>Comparison trap:</b> Measure your children against their own last month — not neighbours\' children. You see highlights, not struggles.'},
+  {cat:'mind', color:'#1D9E75', text:'<b>Distraction rule:</b> Before YouTube — one 5-minute task first. Momentum comes from starting, not from motivation.'},
+  {cat:'mind', color:'#1D9E75', text:'<b>Knowledge system:</b> Every topic: Question → Answer in own words → Decision → Action → Review (1 day, 1 week, 1 month).'},
+  {cat:'mind', color:'#1D9E75', text:'<b>Comparison rule:</b> Measure yourself against your own last 12 months — not against others\' visible highlights.'},
+  {cat:'mind', color:'#1D9E75', text:'<b>Society test:</b> "Does this help my health, family, freedom, financial security, or long-term happiness?" If no — skip it.'},
+  {cat:'health', color:'#639922', text:'<b>Sleep rule:</b> Protect 7-9 hours consistently. Sleep debt reduces judgment, patience, and work quality more than almost anything else.'},
+  {cat:'health', color:'#639922', text:'<b>Nutrition rule:</b> Dal, eggs, groundnuts, seasonal vegetables, curd, local fruits — this is excellent nutrition. Expensive superfoods are not required.'},
+  {cat:'health', color:'#639922', text:'<b>Urge rule:</b> Notice → change environment → 5-min physical reset → return to one small task. The loop becomes easier with practice.'},
+];
+let currentCat = 'all';
+function filterR(cat, btn) {
+  currentCat = cat;
+  document.querySelectorAll('#sec-rules .tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRules();
+}
+function renderRules() {
+  const rl = document.getElementById('rulelist');
+  const filtered = currentCat === 'all' ? rules : rules.filter(r => r.cat === currentCat);
+  rl.innerHTML = filtered.map(r => `
+    <div class="rule-row">
+      <div class="rdot" style="background:${r.color}"></div>
+      <div class="rtext">${r.text}</div>
+    </div>`).join('');
+}
+renderRules();
+
+/* ── VISION ─────────────────────────────────────────────── */
+const missions = [
+  'Grow from experienced engineer to strong technical leader with AI capability',
+  'Increase income through career progression and disciplined financial decisions',
+  'Build a secure home without unnecessary debt or unresolved property risks',
+  'Be a patient father, supportive husband, and responsible family member',
+  'Protect physical health, emotional wellbeing, and personal integrity',
+  'Continue learning, enjoying life, and helping others — without constantly comparing',
+];
+const mlist = document.getElementById('mission-list');
+missions.forEach(m => {
+  mlist.insertAdjacentHTML('beforeend', `<div style="font-size:13px;color:var(--text-primary);padding:5px 0;border-bottom:0.5px solid var(--border);display:flex;gap:8px;line-height:1.4"><span style="color:var(--text-accent);flex-shrink:0">→</span><span>${m}</span></div>`);
+});
+mlist.lastChild.style.borderBottom = 'none';
+
+const dos = {
+  do:[
+    'Make career growth measurable — skills, projects, interviews',
+    'Maintain emergency savings; invest for goals with separate buckets',
+    'Get legal clarity before any property investment',
+    'Give wife and children regular time and real attention',
+    'Use small repeatable habits for study, parenting, health',
+    'Review progress monthly; adjust plan based on evidence',
+  ],
+  dont:[
+    'Treat long working hours as proof of fair pay',
+    'Collect certificates without applying the knowledge',
+    'Take loans mainly because relatives are pressuring you',
+    'Compare children\'s development with neighbours constantly',
+    'Expect yourself to follow every improvement idea you read',
+    'Postpone all enjoyment until every financial goal is met',
+  ]
+};
+const dg = document.getElementById('dos-grid');
+dg.innerHTML = `
+  <div class="dos-col">
+    <div class="dos-label" style="color:var(--text-success)">Do ✓</div>
+    ${dos.do.map(d => `<div class="dos-item"><span class="dos-mark" style="color:var(--text-success)">✓</span><span>${d}</span></div>`).join('')}
+  </div>
+  <div class="dos-col">
+    <div class="dos-label" style="color:var(--text-danger)">Don't ✕</div>
+    ${dos.dont.map(d => `<div class="dos-item"><span class="dos-mark" style="color:var(--text-danger)">✕</span><span>${d}</span></div>`).join('')}
+  </div>`;
+
+/* ── 90-DAY PLAN ────────────────────────────────────────── */
+const planPhases = [
+  { label:'Days 1–30', badge:'Stabilise', bg:'#E6F1FB', tc:'#0C447C', tasks:[
+    'Calculate exact CTC, variable pay, and annual compensation',
+    'Review emergency savings and essential expenses — are buckets funded?',
+    'Arrange teacher meeting about daughter\'s learning progress',
+    'Write down all legal and financial questions about the family property',
+    'Create a written household responsibility matrix with wife',
+  ]},
+  { label:'Days 31–60', badge:'Build leverage', bg:'#EAF3DE', tc:'#27500A', tasks:[
+    'Study system design and architecture consistently — 30-60 min per day',
+    'Complete one production-quality React and AI application',
+    'Practise technical explanations and mock interview answers',
+    'Research relevant external roles and compare requirements with current role',
+    'Schedule at least one family outing — put it on the calendar',
+  ]},
+  { label:'Days 61–90', badge:'Test options', bg:'#FAEEDA', tc:'#633806', tasks:[
+    'Apply to suitable jobs and evaluate interview feedback honestly',
+    'Discuss promotion criteria with manager — bring evidence, not feelings',
+    'Talk to 10 potential side-business customers about their actual problems',
+    'Review family budget, study routine, and housing decision together',
+  ]},
+];
+const ph = document.getElementById('phases');
+let totalT = 0, doneT = 0;
+planPhases.forEach((p, pi) => {
+  totalT += p.tasks.length;
+  ph.insertAdjacentHTML('beforeend', `
+    <div class="ninety-phase">
+      <div class="phase-head">
+        <span class="phase-badge" style="background:${p.bg};color:${p.tc}">${p.label}</span>
+        <span class="phase-title">${p.badge}</span>
+      </div>
+      ${p.tasks.map((t,ti) => `
+        <div class="task" onclick="toggleT(${pi},${ti})">
+          <div class="task-box" id="tb${pi}_${ti}"></div>
+          <div class="task-text" id="tt${pi}_${ti}">${t}</div>
+        </div>`).join('')}
+    </div>`);
+});
+document.getElementById('prog-txt').textContent = `0 / ${totalT}`;
+function toggleT(pi, ti) {
+  const b = document.getElementById(`tb${pi}_${ti}`), t = document.getElementById(`tt${pi}_${ti}`);
+  const done = b.classList.toggle('done');
+  b.textContent = done ? '✓' : '';
+  t.classList.toggle('done', done);
+  doneT += done ? 1 : -1;
+  document.getElementById('prog-fill').style.width = Math.round(doneT/totalT*100)+'%';
+  document.getElementById('prog-txt').textContent = `${doneT} / ${totalT}`;
+}
+
+/* ── OPEN QUESTIONS ─────────────────────────────────────── */
+const openQs = [
+  { t:'Property legal clarity — native house', d:'Get title deeds, encumbrance certificate, and professional legal advice before spending any construction money. Verbal promise ≠ legal ownership. Rights of all family members must be clear.' },
+  { t:'Garden plot — waste yard investigation', d:'Check distance, prevailing wind direction, odour, groundwater impact, future land-use plans, and any official remediation or relocation timeline before committing.' },
+  { t:'HDFC Sampoorn Nivesh / ULIP — full review', d:'Ask for the personalised benefit illustration with all charges (allocation, admin, mortality, fund management). Check lock-in period, surrender conditions, and compare with separate term + mutual fund.' },
+  { t:'GIFT City / overseas investing — product details', d:'Examine the actual investment: currency exposure, charges, taxation in India, regulatory framework, liquidity. Do not invest because a YouTuber predicted rupee weakness.' },
+  { t:"Wife's WFH / remote career path", d:'Research Tamil content annotation, AI evaluation, customer support, and back-office roles. Verify any opportunity is salaried employment — not a commission scheme or deposit trap.' },
+  { t:"Son's JE vaccination — schedule and availability", d:'Confirm exact schedule with paediatrician for his current age and weight. Call the specific facility before visiting to confirm stock is available.' },
+  { t:'LIC policy individual review', d:'Evaluate each existing policy individually: IRR, surrender value, tax treatment, insurance cover. Do not cancel or keep blindly based on general advice.' },
+  { t:'Chennai rent trend in your specific locality', d:'Compare recent rents in your exact area, including impact of new metro, construction activity, and housing supply. Do not assume citywide trends apply to your location.' },
+  { t:'School fee discount eligibility', d:'Read the specific school\'s eligibility criteria, payment deadlines, and verification terms before assuming a sibling discount or early-payment discount is available.' },
+];
+const oql = document.getElementById('oqlist');
+openQs.forEach((q, i) => {
+  oql.insertAdjacentHTML('beforeend', `
+    <div class="open-q">
+      <div class="oq-head" onclick="toq(${i})">
+        <div class="oq-circle" id="oqc${i}"></div>
+        <div class="oq-title">${q.t}</div>
+        <i class="ti ti-chevron-down" id="oqch${i}" style="font-size:12px;color:var(--text-muted);transition:transform .2s" aria-hidden="true"></i>
+      </div>
+      <div class="oq-body" id="oqb${i}">
+        <div style="margin-bottom:10px">${q.d}</div>
+        <div style="display:flex;gap:6px">
+          <button style="font-size:11px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:transparent;color:var(--text-secondary);cursor:pointer" onclick="resolveQ(${i},event)">Mark resolved</button>
+          <button style="font-size:11px;padding:4px 10px;border-radius:var(--radius);border:0.5px solid var(--border-strong);background:transparent;color:var(--text-secondary);cursor:pointer">Add research note</button>
+        </div>
+      </div>
+    </div>`);
+});
+function toq(i) {
+  const b = document.getElementById('oqb'+i), c = document.getElementById('oqch'+i);
+  const o = b.classList.toggle('on');
+  c.style.transform = o ? 'rotate(180deg)' : '';
+}
+function resolveQ(i, e) {
+  e.stopPropagation();
+  const c = document.getElementById('oqc'+i);
+  c.classList.toggle('done');
+  c.textContent = c.classList.contains('done') ? '✓' : '';
+}
+</script>
+</div>
+<!-- Generated by GitHub Copilot - Oct-11-2026 -->
+<script src="/life-reference-accessibility.js" data-title="Life Reference Summary"></script>
+</body></html>
