@@ -48,6 +48,10 @@ Additional concerns such as kids, health, and personal growth are modeled using 
 
 ### Life Reference Book
 
+UI pages live at `src/app/life-reference/{summary,detailed,audiobook}/page.tsx`.
+Only the content endpoint belongs under `src/app/api/life-reference/[edition]/route.ts`.
+Putting UI pages under `api` changes their URLs and can conflict with the content endpoint.
+
 The three editions follow User Guide in the navigation and are linked from the
 guide itself. The HTML editions are stored server-side in `src/content/life-reference`,
 not in `public` or the client bundle. `/api/life-reference/summary` and
@@ -60,8 +64,8 @@ documents in the deployed Vercel functions.
 
 The client loads the verified HTML into sandboxed frames without giving the
 documents access to session tokens, app cookies, or storage. Their interactions
-are document-local; they do not save changes to Supabase. **Open in new tab**
-opens the protected app page rather than exposing a raw HTML URL.
+are document-local; they do not save changes to Supabase. Summary and detailed
+editions are viewed in-app; **Open in new tab** is available only for the audiobook.
 Previously deployed public copies must be removed by redeploying; old deployment
 URLs, saved downloads, and previously cached copies cannot be revoked by this change.
 
